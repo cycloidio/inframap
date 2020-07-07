@@ -1,0 +1,35 @@
+package provider
+
+import (
+	"github.com/cycloidio/tfdocs/resource"
+)
+
+// NopProvider holds the default methods for
+// the provider.Interface so if one Provider
+// does not implement one method we do not have
+// to write the method
+type NopProvider struct{}
+
+// Type returns the name of the Provider
+func (n NopProvider) Type() Type { return Type(9999) }
+
+// IsNode checks if the resource should be considered
+// a Node or not
+func (n NopProvider) IsNode(rsc string) bool { return false }
+
+// IsEdge checks if the resource should be considered
+// an Edge or not
+func (n NopProvider) IsEdge(rsc string) bool { return false }
+
+// Resource returns the resource information
+func (n NopProvider) Resource(rsc string) (*resource.Resource, error) { return nil, nil }
+
+// DataSource returns the resource information
+func (n NopProvider) DataSource(rsc string) (*resource.Resource, error) { return nil, nil }
+
+// ResourceInOut returns the resource In Out from a
+// state config. As an example in AWS this would be
+// an "aws_security_group" "ingress" and "egress"
+func (n NopProvider) ResourceInOut(rs string, cfg map[string]interface{}) (in, out []string) {
+	return nil, nil
+}
