@@ -3,7 +3,6 @@ package cmd
 import (
 	"errors"
 	"fmt"
-	"io/ioutil"
 
 	"github.com/cycloidio/infraview/infraview"
 	"github.com/spf13/cobra"
@@ -11,19 +10,14 @@ import (
 
 var (
 	generateCmd = &cobra.Command{
-		Use:     "generate",
+		Use:     "generate [FILE]",
 		Short:   "Generates the Graph",
 		Long:    "Generates the Graph from TFState or HCL",
-		Args:    cobra.ExactValidArgs(1),
 		Example: "infraview generate state.json",
+		Args:    cobra.MaximumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if tfstate {
-				b, err := ioutil.ReadFile(args[0])
-				if err != nil {
-					return err
-				}
-
-				g, _, err := infraview.FromState(b)
+				g, _, err := infraview.FromState(file)
 				if err != nil {
 					return err
 				}
