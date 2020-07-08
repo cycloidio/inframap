@@ -33,3 +33,8 @@ func (n NopProvider) DataSource(rsc string) (*resource.Resource, error) { return
 func (n NopProvider) ResourceInOut(rs string, cfg map[string]interface{}) (in, out []string) {
 	return nil, nil
 }
+
+// UsedAttributes returns all the attributes that are
+// required/used/needed on the providers, so when we have to
+// prune we know what to keep
+func (n NopProvider) UsedAttributes() []string { return nil }

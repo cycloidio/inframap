@@ -28,4 +28,9 @@ type Provider interface {
 	// state config. As an example in AWS this would be
 	// an "aws_security_group" "ingress" and "egress"
 	ResourceInOut(rs string, cfg map[string]interface{}) (in, out []string)
+
+	// UsedAttributes returns all the attributes that are
+	// required/used/needed on the providers, so when we have to
+	// prune we know what to keep
+	UsedAttributes() []string
 }
