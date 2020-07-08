@@ -16,6 +16,16 @@ type Provider struct {
 	provider.NopProvider
 }
 
+var (
+	usedAttributes = []string{
+		"id",
+		"egress",
+		"ingress",
+		"source_security_group_id",
+		"security_group_id",
+	}
+)
+
 // Type returns the type of the implementation
 func (a Provider) Type() provider.Type { return provider.AWS }
 
@@ -103,4 +113,8 @@ func (a Provider) ResourceInOut(rs string, cfg map[string]interface{}) ([]string
 		}
 	}
 	return ins, outs
+}
+
+func (a Provider) UsedAttributes() []string {
+	return usedAttributes
 }
