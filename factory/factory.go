@@ -5,9 +5,9 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/cycloidio/infraview/aws"
 	"github.com/cycloidio/infraview/errcode"
 	"github.com/cycloidio/infraview/provider"
+	"github.com/cycloidio/infraview/provider/aws"
 )
 
 var (
