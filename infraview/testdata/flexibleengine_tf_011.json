@@ -1,0 +1,129 @@
+{
+  "version": 4,
+  "terraform_version": "0.12.28",
+  "serial": 3,
+  "lineage": "0bd7e20b-0609-bece-a74e-2f22a6a1037d",
+  "outputs": {},
+  "resources": [
+    {
+      "mode": "managed",
+      "type": "flexibleengine_compute_instance_v2",
+      "name": "CpCKR",
+      "provider": "provider.flexibleengine",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes_flat": {
+            "id": "74e5d095-0da6-405a-b083-2eb186ecd814"
+          },
+          "depends_on": [
+            "flexibleengine_networking_port_v2.Maycs"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "flexibleengine_compute_instance_v2",
+      "name": "uwGDt",
+      "provider": "provider.flexibleengine",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes_flat": {
+            "id": "0f6dab7f-cd6e-4751-864d-173b344c3b20"
+          },
+          "depends_on": [
+            "flexibleengine_networking_port_v2.QkWrX"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "flexibleengine_networking_port_v2",
+      "name": "Maycs",
+      "provider": "provider.flexibleengine",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes_flat": {
+            "id": "70349ef1-b1c5-4fc6-8741-6ed4664e4473",
+            "security_group_ids.#": "1",
+            "security_group_ids.3535293312": "61e04be8-1fdf-47a9-82ea-421e90e606b6"
+          },
+          "depends_on": [
+            "flexibleengine_networking_secgroup_v2.hlwMN"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "flexibleengine_networking_port_v2",
+      "name": "QkWrX",
+      "provider": "provider.flexibleengine",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes_flat": {
+            "id": "444f871a-f662-4327-8578-a6da8011ebb0",
+            "security_group_ids.#": "1",
+            "security_group_ids.1216456113": "058995dd-0dc7-4e23-b753-cff6a27caea5"
+          },
+          "depends_on": [
+            "flexibleengine_networking_secgroup_v2.wVneZ"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "flexibleengine_networking_secgroup_rule_v2",
+      "name": "CbxAB",
+      "provider": "provider.flexibleengine",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes_flat": {
+            "direction": "ingress",
+            "id": "29ebedf1-7b21-42f2-9569-70857fb12da8",
+            "remote_group_id": "058995dd-0dc7-4e23-b753-cff6a27caea5"
+          },
+          "depends_on": [
+            "flexibleengine_networking_secgroup_v2.hlwMN",
+            "flexibleengine_networking_secgroup_v2.wVneZ"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "flexibleengine_networking_secgroup_v2",
+      "name": "hlwMN",
+      "provider": "provider.flexibleengine",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes_flat": {
+            "id": "61e04be8-1fdf-47a9-82ea-421e90e606b6"
+          }
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "flexibleengine_networking_secgroup_v2",
+      "name": "wVneZ",
+      "provider": "provider.flexibleengine",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes_flat": {
+            "id": "058995dd-0dc7-4e23-b753-cff6a27caea5"
+          }
+        }
+      ]
+    }
+  ]
+}

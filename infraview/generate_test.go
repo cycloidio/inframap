@@ -194,4 +194,126 @@ func TestFromState_OpenStack(t *testing.T) {
 }
 
 func TestFromState_FlexibelEngine(t *testing.T) {
+	t.Run("SuccessFlexibleEngine", func(t *testing.T) {
+		src, err := ioutil.ReadFile("./testdata/flexibleengine.json")
+		require.NoError(t, err)
+
+		g, cfg, err := infraview.FromState(src)
+		require.NoError(t, err)
+		require.NotNil(t, g)
+		require.NotNil(t, cfg)
+
+		eg := &graph.Graph{
+			Nodes: []*graph.Node{
+				&graph.Node{
+					Canonical: "flexibleengine_compute_instance_v2.Aumwn",
+				},
+				&graph.Node{
+					Canonical: "flexibleengine_compute_instance_v2.bkbLl",
+				},
+				&graph.Node{
+					Canonical: "flexibleengine_blockstorage_volume_v2.hOHQu",
+				},
+			},
+			Edges: []*graph.Edge{
+				&graph.Edge{
+					Target: "flexibleengine_compute_instance_v2.Aumwn",
+					Source: "flexibleengine_compute_instance_v2.bkbLl",
+					Canonicals: []string{
+						"flexibleengine_networking_port_v2.nLwOe",
+						"flexibleengine_networking_port_v2.nLyuK",
+						"flexibleengine_networking_secgroup_rule_v2.ZPPPO",
+						"flexibleengine_networking_secgroup_v2.mDAul",
+						"flexibleengine_networking_secgroup_v2.uiWdG",
+					},
+				},
+				&graph.Edge{
+					Target:     "flexibleengine_blockstorage_volume_v2.hOHQu",
+					Source:     "flexibleengine_compute_instance_v2.bkbLl",
+					Canonicals: nil,
+				},
+				&graph.Edge{
+					Target:     "flexibleengine_blockstorage_volume_v2.hOHQu",
+					Source:     "flexibleengine_compute_instance_v2.Aumwn",
+					Canonicals: nil,
+				},
+			},
+		}
+
+		assertEqualGraph(t, eg, g, cfg)
+	})
+
+	t.Run("SuccessWithFlexibleEngine011", func(t *testing.T) {
+		src, err := ioutil.ReadFile("./testdata/flexibleengine_tf_011.json")
+		require.NoError(t, err)
+
+		g, cfg, err := infraview.FromState(src)
+		require.NoError(t, err)
+		require.NotNil(t, g)
+		require.NotNil(t, cfg)
+
+		eg := &graph.Graph{
+			Nodes: []*graph.Node{
+				&graph.Node{
+					Canonical: "flexibleengine_compute_instance_v2.CpCKR",
+				},
+				&graph.Node{
+					Canonical: "flexibleengine_compute_instance_v2.uwGDt",
+				},
+			},
+			Edges: []*graph.Edge{
+				&graph.Edge{
+					Target: "flexibleengine_compute_instance_v2.CpCKR",
+					Source: "flexibleengine_compute_instance_v2.uwGDt",
+					Canonicals: []string{
+						"flexibleengine_networking_port_v2.Maycs",
+						"flexibleengine_networking_port_v2.QkWrX",
+						"flexibleengine_networking_secgroup_rule_v2.CbxAB",
+						"flexibleengine_networking_secgroup_v2.hlwMN",
+						"flexibleengine_networking_secgroup_v2.wVneZ",
+					},
+				},
+			},
+		}
+
+		assertEqualGraph(t, eg, g, cfg)
+	})
+
+	t.Run("SuccessWithComputeInterfaceAttach", func(t *testing.T) {
+		src, err := ioutil.ReadFile("./testdata/flexibleengine_attach.json")
+		require.NoError(t, err)
+
+		g, cfg, err := infraview.FromState(src)
+		require.NoError(t, err)
+		require.NotNil(t, g)
+		require.NotNil(t, cfg)
+
+		eg := &graph.Graph{
+			Nodes: []*graph.Node{
+				&graph.Node{
+					Canonical: "flexibleengine_compute_instance_v2.KnHdC",
+				},
+				&graph.Node{
+					Canonical: "flexibleengine_compute_instance_v2.LJwaI",
+				},
+			},
+			Edges: []*graph.Edge{
+				&graph.Edge{
+					Target: "flexibleengine_compute_instance_v2.KnHdC",
+					Source: "flexibleengine_compute_instance_v2.LJwaI",
+					Canonicals: []string{
+						"flexibleengine_compute_interface_attach_v2.cXqiJ",
+						"flexibleengine_compute_interface_attach_v2.cvlHf",
+						"flexibleengine_networking_port_v2.KMFHw",
+						"flexibleengine_networking_port_v2.cXecO",
+						"flexibleengine_networking_secgroup_rule_v2.mAaoN",
+						"flexibleengine_networking_secgroup_v2.HjOXk",
+						"flexibleengine_networking_secgroup_v2.tRwVT",
+					},
+				},
+			},
+		}
+
+		assertEqualGraph(t, eg, g, cfg)
+	})
 }

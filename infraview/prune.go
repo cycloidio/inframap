@@ -112,6 +112,8 @@ func Prune(tfstate json.RawMessage, replaceCanonicals bool) (json.RawMessage, er
 					}
 					iv.Current.AttrsJSON = b
 				} else {
+					// We need to empty the AttrsFlat first
+					iv.Current.AttrsFlat = make(map[string]string)
 					for k, v := range aux {
 						iv.Current.AttrsFlat[k] = v.(string)
 					}

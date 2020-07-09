@@ -18,12 +18,13 @@ type Provider struct {
 var (
 	usedAttributes = []string{
 		"id",
-		"flexibleengine_compute_interface_attach_v2",
-		"flexibleengine_networking_secgroup_rule_v2",
-		"flexibleengine_networking_port_v2",
-		"flexibleengine_lb_listener_v2",
-		"flexibleengine_lb_pool_v2",
-		"flexibleengine_lb_member_v2",
+		"instance_id",
+		"direction",
+		"remote_group_id",
+		"security_group_ids",
+		"loadbalancer_id",
+		"listener_id",
+		"pool_id",
 	}
 )
 

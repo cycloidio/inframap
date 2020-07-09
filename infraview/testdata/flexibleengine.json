@@ -1,0 +1,157 @@
+{
+  "version": 4,
+  "terraform_version": "0.12.28",
+  "serial": 304,
+  "lineage": "cf6f7feb-36ef-0aca-cae9-6d36b96c86da",
+  "outputs": {},
+  "resources": [
+    {
+      "mode": "managed",
+      "type": "flexibleengine_blockstorage_volume_v2",
+      "name": "hOHQu",
+      "each": "list",
+      "provider": "provider.flexibleengine",
+      "instances": [
+        {
+          "index_key": 0,
+          "schema_version": 0,
+          "attributes": {
+            "id": "2ff83afc-ccfa-452c-8569-c7ab49870fd2"
+          }
+        },
+        {
+          "index_key": 1,
+          "schema_version": 0,
+          "attributes": {
+            "id": "41695a2e-4a13-43ed-b361-7f21856c2535"
+          }
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "flexibleengine_compute_instance_v2",
+      "name": "Aumwn",
+      "provider": "provider.flexibleengine",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "141a1e75-11c2-4b3d-90cf-243f384b1fbb"
+          },
+          "depends_on": [
+            "flexibleengine_blockstorage_volume_v2.hOHQu",
+            "flexibleengine_networking_port_v2.nLwOe"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "flexibleengine_compute_instance_v2",
+      "name": "bkbLl",
+      "provider": "provider.flexibleengine",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "21bc79d5-7ff4-4c6e-81ba-eff95fd0daea"
+          },
+          "depends_on": [
+            "flexibleengine_blockstorage_volume_v2.hOHQu",
+            "flexibleengine_networking_port_v2.nLyuK"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "flexibleengine_networking_port_v2",
+      "name": "nLwOe",
+      "provider": "provider.flexibleengine",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "17800f09-3853-4562-84d5-f67081d7f5df",
+            "security_group_ids": [
+              "465d4ac0-faf7-4975-91c2-b57ae8adc1c7"
+            ]
+          },
+          "depends_on": [
+            "flexibleengine_networking_secgroup_v2.uiWdG"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "flexibleengine_networking_port_v2",
+      "name": "nLyuK",
+      "provider": "provider.flexibleengine",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "5ae4b714-5642-4004-ba66-b24e3a94fc54",
+            "security_group_ids": [
+              "f1473c82-1db7-4cf7-862d-70b91d0a61da"
+            ]
+          },
+          "depends_on": [
+            "flexibleengine_networking_secgroup_v2.mDAul"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "flexibleengine_networking_secgroup_rule_v2",
+      "name": "ZPPPO",
+      "provider": "provider.flexibleengine",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "direction": "ingress",
+            "id": "7246bfe1-88cf-4a65-970c-1121a2468bac",
+            "remote_group_id": "f1473c82-1db7-4cf7-862d-70b91d0a61da"
+          },
+          "depends_on": [
+            "flexibleengine_networking_secgroup_v2.uiWdG",
+            "flexibleengine_networking_secgroup_v2.mDAul"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "flexibleengine_networking_secgroup_v2",
+      "name": "mDAul",
+      "provider": "provider.flexibleengine",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "f1473c82-1db7-4cf7-862d-70b91d0a61da"
+          }
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "flexibleengine_networking_secgroup_v2",
+      "name": "uiWdG",
+      "provider": "provider.flexibleengine",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "465d4ac0-faf7-4975-91c2-b57ae8adc1c7"
+          }
+        }
+      ]
+    }
+  ]
+}
+
