@@ -6,25 +6,34 @@ import (
 	"errors"
 	"fmt"
 	"regexp"
+	"strings"
 
+	"github.com/chr4/pwgen"
 	"github.com/cycloidio/infraview/errcode"
 	"github.com/cycloidio/infraview/factory"
 	"github.com/hashicorp/terraform/addrs"
 	"github.com/hashicorp/terraform/states/statefile"
 )
 
-func Prune(tfstate json.RawMessage) (json.RawMessage, error) {
+// Prune will prune the tfstate of unneeded information and if replaceCanonicals is specified
+// the resource canonicals will also be changed, for exmple 'aws_lb.front' will be changed to
+// a random name like 'aws_lb.XptaK'
+func Prune(tfstate json.RawMessage, replaceCanonicals bool) (json.RawMessage, error) {
 	buf := bytes.NewBuffer(tfstate)
 	file, err := statefile.Read(buf)
 	if err != nil {
 		return nil, fmt.Errorf("error while reading TFState: %w", err)
 	}
 
+	// canonicals holds the old canonical of the resource "aws_elb.front" as key
+	// and as value the new name it has been randomly given
+	canonicals := make(map[string]string)
 	for _, m := range file.State.Modules {
 		removeKeys := make([]string, 0)
 		for rk, rv := range m.Resources {
 			// If it's not a Resource we ignore it
 			if rv.Addr.Mode != addrs.ManagedResourceMode {
+				removeKeys = append(removeKeys, rk)
 				continue
 			}
 
@@ -45,6 +54,9 @@ func Prune(tfstate json.RawMessage) (json.RawMessage, error) {
 
 			attrs := pv.UsedAttributes()
 			for _, iv := range rv.Instances {
+				if replaceCanonicals {
+					canonicals[rk] = fmt.Sprintf("%s.%s", rs, pwgen.Alpha(5))
+				}
 				aux := make(map[string]interface{})
 				var legacy bool
 				if iv.Current.AttrsJSON != nil {
@@ -94,6 +106,75 @@ func Prune(tfstate json.RawMessage) (json.RawMessage, error) {
 		// Delete all the resources we do not deal with
 		for _, k := range removeKeys {
 			delete(m.Resources, k)
+		}
+	}
+
+	// Now that the actual State is pruned of unneeded data
+	// we iterate again to change the canonicals and 'depends_on'
+	// if needed
+	if replaceCanonicals {
+		for _, m := range file.State.Modules {
+			for _, rv := range m.Resources {
+				if newCan, ok := canonicals[fmt.Sprintf("%s.%s", rv.Addr.Type, rv.Addr.Name)]; ok {
+					splitCan := strings.Split(newCan, ".")
+					rv.Addr.Type = splitCan[0]
+					rv.Addr.Name = splitCan[1]
+				}
+				for _, iv := range rv.Instances {
+					if len(iv.Current.DependsOn) != 0 {
+						removeDepends := make([]int, 0)
+						deps := make(map[string]struct{})
+						for i, do := range iv.Current.DependsOn {
+							var addr addrs.Resource
+							switch v := do.(type) {
+							case addrs.ResourceInstance:
+								addr = v.Resource
+							case addrs.Resource:
+								addr = v
+							}
+							if newCan, ok := canonicals[fmt.Sprintf("%s.%s", addr.Type, addr.Name)]; ok {
+								// If the dependency it's already present
+								// do not add repeated ones
+								if _, ok := deps[newCan]; ok {
+									removeDepends = append(removeDepends, i)
+								}
+								splitCan := strings.Split(newCan, ".")
+								addr.Type = splitCan[0]
+								addr.Name = splitCan[1]
+								deps[newCan] = struct{}{}
+							} else {
+								removeDepends = append(removeDepends, i)
+							}
+							iv.Current.DependsOn[i] = addr
+						}
+						for i, idx := range removeDepends {
+							iv.Current.DependsOn = append(iv.Current.DependsOn[:(idx-i)], iv.Current.DependsOn[(idx-i)+1:]...)
+						}
+					} else if len(iv.Current.Dependencies) != 0 {
+						removeDepends := make([]int, 0)
+						deps := make(map[string]struct{})
+						for i, d := range iv.Current.Dependencies {
+							if newCan, ok := canonicals[fmt.Sprintf("%s.%s", d.Resource.Type, d.Resource.Name)]; ok {
+								// If the dependency it's already present
+								// do not add repeated ones
+								if _, ok := deps[newCan]; ok {
+									removeDepends = append(removeDepends, i)
+								}
+								splitCan := strings.Split(newCan, ".")
+								d.Resource.Type = splitCan[0]
+								d.Resource.Name = splitCan[1]
+								deps[newCan] = struct{}{}
+							} else {
+								removeDepends = append(removeDepends, i)
+							}
+							iv.Current.Dependencies[i] = d
+						}
+						for i, idx := range removeDepends {
+							iv.Current.Dependencies = append(iv.Current.Dependencies[:(idx-i)], iv.Current.Dependencies[(idx-i)+1:]...)
+						}
+					}
+				}
+			}
 		}
 	}
 

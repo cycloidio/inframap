@@ -9,7 +9,8 @@ import (
 )
 
 var (
-	pruneCmd = &cobra.Command{
+	canonicals bool
+	pruneCmd   = &cobra.Command{
 		Use:     "prune [FILE]",
 		Short:   "Prunes the file",
 		Long:    "Prunes the TFState or HCL file",
@@ -17,7 +18,7 @@ var (
 		Args:    cobra.MaximumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if tfstate {
-				s, err := infraview.Prune(file)
+				s, err := infraview.Prune(file, canonicals)
 				if err != nil {
 					return err
 				}
@@ -31,3 +32,7 @@ var (
 		},
 	}
 )
+
+func init() {
+	pruneCmd.Flags().BoolVar(&canonicals, "canonicals", false, "If the prune command will also assign random names to the resources, EX: aws_lb.front => aws_lb.123")
+}
