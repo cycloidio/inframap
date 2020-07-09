@@ -1,0 +1,224 @@
+{
+  "version": 4,
+  "terraform_version": "0.12.28",
+  "serial": 6,
+  "lineage": "2f9ab173-9fc7-965b-c17d-2e43868f14cf",
+  "outputs": {},
+  "resources": [
+    {
+      "module": "module.lemp",
+      "mode": "managed",
+      "type": "aws_db_instance",
+      "name": "Cpbzf",
+      "each": "list",
+      "provider": "provider.aws",
+      "instances": [
+        {
+          "index_key": 0,
+          "schema_version": 0,
+          "attributes": {
+            "id": "sample-lemp-rds-prod"
+          },
+          "depends_on": [
+            "aws_security_group.LHwFh"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.lemp",
+      "mode": "managed",
+      "type": "aws_launch_template",
+      "name": "vIkyE",
+      "provider": "provider.aws",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "lt-08e7a3cd65dc2457c"
+          },
+          "depends_on": [
+            "aws_security_group.YPHPR"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.lemp",
+      "mode": "managed",
+      "type": "aws_lb",
+      "name": "tQBgz",
+      "provider": "provider.aws",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "5d7daaa0-68a7-4ca5-a491-3f78c102d562"
+          },
+          "depends_on": [
+            "aws_security_group.rZnGI"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.lemp",
+      "mode": "managed",
+      "type": "aws_security_group",
+      "name": "LHwFh",
+      "each": "list",
+      "provider": "provider.aws",
+      "instances": [
+        {
+          "index_key": 0,
+          "schema_version": 1,
+          "attributes": {
+            "egress": [],
+            "id": "sg-011db815ad698b58a",
+            "ingress": [
+              {
+                "cidr_blocks": [],
+                "description": "",
+                "from_port": 3306,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [
+                  "sg-0e74bbe876eba7e6f"
+                ],
+                "self": false,
+                "to_port": 3306
+              }
+            ]
+          },
+          "depends_on": [
+            "aws_security_group.YPHPR"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.lemp",
+      "mode": "managed",
+      "type": "aws_security_group",
+      "name": "YPHPR",
+      "provider": "provider.aws",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "egress": [
+              {
+                "cidr_blocks": [
+                  "0.0.0.0/0"
+                ],
+                "description": "",
+                "from_port": 0,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "-1",
+                "security_groups": [],
+                "self": false,
+                "to_port": 0
+              }
+            ],
+            "id": "sg-0e74bbe876eba7e6f",
+            "ingress": [
+              {
+                "cidr_blocks": [],
+                "description": "",
+                "from_port": 80,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [
+                  "sg-0cfe32960213dea69"
+                ],
+                "self": false,
+                "to_port": 80
+              }
+            ]
+          },
+          "depends_on": [
+            "aws_security_group.rZnGI"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.lemp",
+      "mode": "managed",
+      "type": "aws_security_group",
+      "name": "rZnGI",
+      "provider": "provider.aws",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "egress": [
+              {
+                "cidr_blocks": [
+                  "0.0.0.0/0"
+                ],
+                "description": "",
+                "from_port": 0,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "-1",
+                "security_groups": [],
+                "self": false,
+                "to_port": 0
+              }
+            ],
+            "id": "sg-0cfe32960213dea69",
+            "ingress": [
+              {
+                "cidr_blocks": [
+                  "0.0.0.0/0"
+                ],
+                "description": "",
+                "from_port": 443,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [],
+                "self": false,
+                "to_port": 443
+              },
+              {
+                "cidr_blocks": [
+                  "0.0.0.0/0"
+                ],
+                "description": "",
+                "from_port": 80,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [],
+                "self": false,
+                "to_port": 80
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "module": "module.ec2",
+      "mode": "managed",
+      "type": "aws_security_group_rule",
+      "name": "czNph",
+      "provider": "provider.aws",
+      "instances": [
+        {
+          "schema_version": 2,
+          "attributes": {
+            "id": "sgrule-3405156902",
+            "security_group_id": "sg-0f4d72e0081ca0c09",
+            "source_security_group_id": null
+          }
+        }
+      ]
+    }
+  ]
+}
