@@ -8,4 +8,5 @@ const (
 	Default Type = iota
 	AWS
 	FlexibleEngine
+	OpenStack
 )
