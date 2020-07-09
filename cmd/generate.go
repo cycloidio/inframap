@@ -12,7 +12,8 @@ import (
 )
 
 var (
-	printerFlag string
+	printerType string
+
 	generateCmd = &cobra.Command{
 		Use:     "generate [FILE]",
 		Short:   "Generates the Graph",
@@ -25,7 +26,7 @@ var (
 				if err != nil {
 					return err
 				}
-				p, err := printer.Get(printerFlag)
+				p, err := printer.Get(printerType)
 				if err != nil {
 					return err
 				}
@@ -40,5 +41,5 @@ var (
 )
 
 func init() {
-	generateCmd.Flags().StringVar(&printerFlag, "printer", "dot", fmt.Sprintf("Type of printer to use for the output. Supported ones are: %s", strings.Join(printer.TypeStrings(), ",")))
+	generateCmd.Flags().StringVar(&printerType, "printer", "dot", fmt.Sprintf("Type of printer to use for the output. Supported ones are: %s", strings.Join(printer.TypeStrings(), ",")))
 }
