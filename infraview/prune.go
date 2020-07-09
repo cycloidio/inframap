@@ -13,7 +13,10 @@ import (
 	"github.com/cycloidio/infraview/factory"
 	"github.com/hashicorp/terraform/addrs"
 	"github.com/hashicorp/terraform/states/statefile"
+	uuid "github.com/satori/go.uuid"
 )
+
+var reARN = regexp.MustCompile("^arn:*")
 
 // Prune will prune the tfstate of unneeded information and if replaceCanonicals is specified
 // the resource canonicals will also be changed, for exmple 'aws_lb.front' will be changed to
@@ -72,6 +75,19 @@ func Prune(tfstate json.RawMessage, replaceCanonicals bool) (json.RawMessage, er
 					legacy = true
 					for k, v := range iv.Current.AttrsFlat {
 						aux[k] = v
+					}
+				}
+
+				// Remove the "private" info as we do not need it
+				iv.Current.Private = []byte{}
+
+				// TODO: Think on a more provider agnostic solution for this
+				if v, ok := aux["id"]; ok {
+					vs, ok := v.(string)
+					if ok {
+						if reARN.MatchString(vs) {
+							aux["id"] = uuid.NewV4().String()
+						}
 					}
 				}
 
