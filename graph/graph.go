@@ -3,9 +3,7 @@ package graph
 import (
 	"fmt"
 
-	"github.com/awalterschulze/gographviz"
 	"github.com/cycloidio/infraview/errcode"
-	"github.com/cycloidio/infraview/factory"
 )
 
 // Graph defines the standard format of a Graph
@@ -216,34 +214,6 @@ func (g *Graph) InvertEdge(eID string) {
 			g.edgesSourceTarget[e.Source+e.Target] = e
 		}
 	}
-}
-
-// String returns the visual representation
-// of the Graph in DOT format
-func (g *Graph) String() string {
-	graph := gographviz.NewGraph()
-	parentName := "G"
-	graph.SetName(parentName)
-	graph.SetDir(true)
-	graph.SetStrict(true)
-
-	for _, n := range g.Nodes {
-		pv, rs, _ := factory.GetProviderAndResource(n.Canonical)
-		shape := "ellipse"
-		if pv.IsEdge(rs) {
-			shape = "rectangle"
-		}
-		graph.AddNode(parentName, fmt.Sprintf("%q", n.Canonical), map[string]string{
-			"shape": shape,
-		})
-	}
-	for _, e := range g.Edges {
-		src, _ := g.GetNodeByID(e.Source)
-		tr, _ := g.GetNodeByID(e.Target)
-		graph.AddEdge(fmt.Sprintf("%q", src.Canonical), fmt.Sprintf("%q", tr.Canonical), true, nil)
-	}
-
-	return graph.String()
 }
 
 // removeNodeByID removes the Node with the ID
