@@ -13,6 +13,7 @@ import (
 
 var (
 	printerType string
+	raw         bool
 
 	generateCmd = &cobra.Command{
 		Use:     "generate [FILE]",
@@ -22,7 +23,10 @@ var (
 		Args:    cobra.MaximumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if tfstate {
-				g, _, err := infraview.FromState(file)
+				opt := infraview.GenerateOptions{
+					Raw: raw,
+				}
+				g, _, err := infraview.FromState(file, opt)
 				if err != nil {
 					return err
 				}
@@ -42,4 +46,5 @@ var (
 
 func init() {
 	generateCmd.Flags().StringVar(&printerType, "printer", "dot", fmt.Sprintf("Type of printer to use for the output. Supported ones are: %s", strings.Join(printer.TypeStrings(), ",")))
+	generateCmd.Flags().BoolVar(&raw, "raw", false, "Raw means that will not use any specific logic from the provider, will just display the connections between elements")
 }
