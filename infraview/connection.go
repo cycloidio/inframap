@@ -1,7 +1,6 @@
 package infraview
 
 import (
-	"github.com/cycloidio/infraview/factory"
 	"github.com/cycloidio/infraview/graph"
 )
 
@@ -27,7 +26,7 @@ type connection struct {
 
 // findEdgeConnections for each edge on n returns the closest connection to a Node.
 // The last 'connection' on the []*connection will be a valid provider Node
-func findEdgeConnections(g *graph.Graph, n *graph.Node, visited map[string]struct{}) ([][]*connection, error) {
+func findEdgeConnections(g *graph.Graph, n *graph.Node, visited map[string]struct{}, opt GenerateOptions) ([][]*connection, error) {
 	res := make([][]*connection, 0)
 	edges := g.GetEdgesForNode(n.ID)
 	for _, e := range edges {
@@ -49,7 +48,7 @@ func findEdgeConnections(g *graph.Graph, n *graph.Node, visited map[string]struc
 			return nil, err
 		}
 
-		pv, rs, err := factory.GetProviderAndResource(en.Canonical)
+		pv, rs, err := getProviderAndResource(en.Canonical, opt)
 		if err != nil {
 			return nil, err
 		}
@@ -66,7 +65,7 @@ func findEdgeConnections(g *graph.Graph, n *graph.Node, visited map[string]struc
 		} else {
 
 			// We get all the shortest path to a Node and append it
-			cons, err := getShortestNodePath(g, en, visited)
+			cons, err := getShortestNodePath(g, en, visited, opt)
 			if err != nil {
 				return nil, err
 			}
@@ -83,8 +82,8 @@ func findEdgeConnections(g *graph.Graph, n *graph.Node, visited map[string]struc
 }
 
 // getShortestNodePath get the shortest path to a Node starting from n
-func getShortestNodePath(g *graph.Graph, n *graph.Node, visited map[string]struct{}) ([]*connection, error) {
-	edges, err := findEdgeConnections(g, n, visited)
+func getShortestNodePath(g *graph.Graph, n *graph.Node, visited map[string]struct{}, opt GenerateOptions) ([]*connection, error) {
+	edges, err := findEdgeConnections(g, n, visited, opt)
 	if err != nil {
 		return nil, err
 	}

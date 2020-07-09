@@ -11,12 +11,17 @@ import (
 	"github.com/cycloidio/infraview/errcode"
 	"github.com/cycloidio/infraview/factory"
 	"github.com/cycloidio/infraview/graph"
+	"github.com/cycloidio/infraview/provider"
 	"github.com/hashicorp/terraform/addrs"
 	"github.com/hashicorp/terraform/states/statefile"
 	uuid "github.com/satori/go.uuid"
 )
 
-func FromState(tfstate json.RawMessage) (*graph.Graph, map[string]interface{}, error) {
+type GenerateOptions struct {
+	Raw bool
+}
+
+func FromState(tfstate json.RawMessage, opt GenerateOptions) (*graph.Graph, map[string]interface{}, error) {
 	buf := bytes.NewBuffer(tfstate)
 	file, err := statefile.Read(buf)
 	if err != nil {
@@ -45,7 +50,7 @@ func FromState(tfstate json.RawMessage) (*graph.Graph, map[string]interface{}, e
 				continue
 			}
 
-			pv, rs, err := factory.GetProviderAndResource(rk)
+			pv, rs, err := getProviderAndResource(rk, opt)
 			if err != nil {
 				if errors.Is(err, errcode.ErrProviderNotFound) {
 					continue
@@ -135,17 +140,17 @@ func FromState(tfstate json.RawMessage) (*graph.Graph, map[string]interface{}, e
 
 	g.Clean()
 
-	err = fixEdges(g, cfg)
+	err = fixEdges(g, cfg, opt)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	err = mutate(g)
+	err = mutate(g, opt)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	cleanHangingEdges(g)
+	cleanHangingEdges(g, opt)
 
 	endCfg, err := buildConfig(g, cfg, nodeCanIDs)
 	if err != nil {
@@ -159,9 +164,9 @@ func FromState(tfstate json.RawMessage) (*graph.Graph, map[string]interface{}, e
 // The only case in which this happens is when an Edge is connected to the internet
 // in which then it has N->E without another Node to connect with (which would be internet)
 // it is a usecase we do not support now so we remove them
-func cleanHangingEdges(g *graph.Graph) error {
+func cleanHangingEdges(g *graph.Graph, opt GenerateOptions) error {
 	for _, n := range g.Nodes {
-		pv, rs, err := factory.GetProviderAndResource(n.Canonical)
+		pv, rs, err := getProviderAndResource(n.Canonical, opt)
 		if err != nil {
 			return err
 		}
@@ -255,9 +260,9 @@ var reSG = regexp.MustCompile(`\$\{(?P<type>[^\.][a-z0-9-_]+)\.(?P<name>[^\.][a-
 // This would mean that in case of AWS it'll read the Config and if it's a SG it'll
 // read the actual direction of it and apply it and potentially changing the Edges
 // directions
-func fixEdges(g *graph.Graph, cfg map[string]map[string]interface{}) error {
+func fixEdges(g *graph.Graph, cfg map[string]map[string]interface{}, opt GenerateOptions) error {
 	for _, n := range g.Nodes {
-		pv, rs, err := factory.GetProviderAndResource(n.Canonical)
+		pv, rs, err := getProviderAndResource(n.Canonical, opt)
 		if err != nil {
 			return err
 		}
@@ -342,7 +347,7 @@ func sumConnsDirection(conns []*connection) int {
 
 // mutate will mutate the Graph by merging the Nodes that are Edges on the Provider they belong
 // with the actual Nodes, at the end it'll leave a Graph with just Nodes (Provider Nodes)
-func mutate(g *graph.Graph) error {
+func mutate(g *graph.Graph, opt GenerateOptions) error {
 	conns := make(map[string][]*connection)
 	var bestNode *graph.Node
 	var bestNodeConns []*connection
@@ -353,7 +358,7 @@ func mutate(g *graph.Graph) error {
 	// In case of a tie, we use the Node.Weigh which is the result
 	// of all the Replaces and the Direction of those replaces
 	for _, n := range g.Nodes {
-		pv, rs, err := factory.GetProviderAndResource(n.Canonical)
+		pv, rs, err := getProviderAndResource(n.Canonical, opt)
 		if err != nil {
 			return err
 		}
@@ -365,7 +370,7 @@ func mutate(g *graph.Graph) error {
 		}
 
 		// It is a Node
-		nodes, err := findEdgeConnections(g, n, make(map[string]struct{}))
+		nodes, err := findEdgeConnections(g, n, make(map[string]struct{}), opt)
 		if err != nil {
 			return fmt.Errorf("could not findEdgeConnections: %w", err)
 		}
@@ -450,7 +455,7 @@ func mutate(g *graph.Graph) error {
 	}
 	// As we have mutated something, we restart again
 	// to get the next best Node
-	return mutate(g)
+	return mutate(g, opt)
 }
 
 func instanceCurrentDependenciesToString(deps []addrs.AbsResource) []string {
@@ -467,4 +472,21 @@ func instanceCurrentDependsOnToString(deps []addrs.Referenceable) []string {
 		res = append(res, d.String())
 	}
 	return res
+}
+
+func getProviderAndResource(rk string, opt GenerateOptions) (provider.Provider, string, error) {
+	var (
+		pv  provider.Provider
+		rs  string
+		err error
+	)
+
+	if opt.Raw {
+		pv = provider.RawProvider{}
+		rs = strings.Split(rk, ".")[0]
+	} else {
+		pv, rs, err = factory.GetProviderAndResource(rk)
+	}
+
+	return pv, rs, err
 }
