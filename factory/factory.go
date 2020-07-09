@@ -9,12 +9,14 @@ import (
 	"github.com/cycloidio/infraview/provider"
 	"github.com/cycloidio/infraview/provider/aws"
 	"github.com/cycloidio/infraview/provider/flexibleengine"
+	"github.com/cycloidio/infraview/provider/openstack"
 )
 
 var (
 	providers = map[provider.Type]provider.Provider{
 		provider.AWS:            aws.Provider{},
 		provider.FlexibleEngine: flexibleengine.Provider{},
+		provider.OpenStack:      openstack.Provider{},
 	}
 
 	// reProvider is a regexp to match 'aws' from 'aws' or 'aws_iam_user'

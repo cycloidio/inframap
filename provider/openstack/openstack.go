@@ -17,12 +17,14 @@ type Provider struct {
 
 var (
 	usedAttributes = []string{
-		"openstack_compute_interface_attach_v2",
-		"openstack_networking_secgroup_rule_v2",
-		"openstack_networking_port_v2",
-		"openstack_lb_listener_v2",
-		"openstack_lb_pool_v2",
-		"openstack_lb_member_v2",
+		"id",
+		"instance_id",
+		"direction",
+		"remote_group_id",
+		"security_group_ids",
+		"loadbalancer_id",
+		"listener_id",
+		"pool_id",
 	}
 )
 
