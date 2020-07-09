@@ -5,7 +5,7 @@ type Type int
 //go:generate enumer -type=Type -transform=lower -output=type_string.go
 
 const (
-	Default Type = iota
+	Raw Type = iota
 	AWS
 	FlexibleEngine
 	OpenStack

@@ -6,11 +6,11 @@ import (
 	"fmt"
 )
 
-const _TypeName = "defaultawsflexibleengineopenstack"
+const _TypeName = "rawawsflexibleengineopenstack"
 
-var _TypeIndex = [...]uint8{0, 7, 10, 24, 33}
+var _TypeIndex = [...]uint8{0, 3, 6, 20, 29}
 
-const _TypeLowerName = "defaultawsflexibleengineopenstack"
+const _TypeLowerName = "rawawsflexibleengineopenstack"
 
 func (i Type) String() string {
 	if i < 0 || i >= Type(len(_TypeIndex)-1) {
@@ -22,21 +22,21 @@ func (i Type) String() string {
 var _TypeValues = []Type{0, 1, 2, 3}
 
 var _TypeNameToValueMap = map[string]Type{
-	_TypeName[0:7]:        0,
-	_TypeLowerName[0:7]:   0,
-	_TypeName[7:10]:       1,
-	_TypeLowerName[7:10]:  1,
-	_TypeName[10:24]:      2,
-	_TypeLowerName[10:24]: 2,
-	_TypeName[24:33]:      3,
-	_TypeLowerName[24:33]: 3,
+	_TypeName[0:3]:        0,
+	_TypeLowerName[0:3]:   0,
+	_TypeName[3:6]:        1,
+	_TypeLowerName[3:6]:   1,
+	_TypeName[6:20]:       2,
+	_TypeLowerName[6:20]:  2,
+	_TypeName[20:29]:      3,
+	_TypeLowerName[20:29]: 3,
 }
 
 var _TypeNames = []string{
-	_TypeName[0:7],
-	_TypeName[7:10],
-	_TypeName[10:24],
-	_TypeName[24:33],
+	_TypeName[0:3],
+	_TypeName[3:6],
+	_TypeName[6:20],
+	_TypeName[20:29],
 }
 
 // TypeString retrieves an enum value from the enum constants string name.
