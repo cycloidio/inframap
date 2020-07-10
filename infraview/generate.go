@@ -43,6 +43,13 @@ func FromState(tfstate json.RawMessage, opt GenerateOptions) (*graph.Graph, map[
 	// that we find on the TFState
 	nodeIDEdges := make(map[string][]string)
 
+	if !opt.Raw {
+		opt, err = checkProviders(file, opt)
+		if err != nil {
+			return nil, nil, err
+		}
+	}
+
 	for _, v := range file.State.Modules {
 		for rk, rv := range v.Resources {
 			// If it's not a Resource we ignore it
@@ -489,4 +496,33 @@ func getProviderAndResource(rk string, opt GenerateOptions) (provider.Provider, 
 	}
 
 	return pv, rs, err
+}
+
+func checkProviders(f *statefile.File, opt GenerateOptions) (GenerateOptions, error) {
+	for _, v := range f.State.Modules {
+		for rk, rv := range v.Resources {
+			// If it's not a Resource we ignore it
+			if rv.Addr.Mode != addrs.ManagedResourceMode {
+				continue
+			}
+
+			_, _, err := getProviderAndResource(rk, opt)
+			if err != nil {
+				if errors.Is(err, errcode.ErrProviderNotFound) {
+					continue
+				}
+				return opt, err
+			}
+
+			// If we find a resource that we support the Provider
+			// then we use it
+			return opt, nil
+		}
+	}
+
+	// If we reach here means the we do not support the providers
+	// of the TFState, so Raw has to be used
+	opt.Raw = true
+
+	return opt, nil
 }

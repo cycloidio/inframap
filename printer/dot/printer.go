@@ -8,6 +8,7 @@ import (
 	"github.com/awalterschulze/gographviz"
 	"github.com/cycloidio/infraview/factory"
 	"github.com/cycloidio/infraview/graph"
+	"github.com/cycloidio/infraview/provider"
 )
 
 type Dot struct{}
@@ -20,7 +21,15 @@ func (d Dot) Print(g *graph.Graph, w io.Writer) error {
 	graph.SetStrict(true)
 
 	for _, n := range g.Nodes {
+		// If it's nil the pv, it means we do not know it so we'll use
+		// the RawProvider.
+		// We do not use the infraview.GenerateOptions to see if it was
+		// marked as Raw as we could then see the edges distiction
+		// on the output if needed
 		pv, rs, _ := factory.GetProviderAndResource(n.Canonical)
+		if pv == nil {
+			pv = provider.RawProvider{}
+		}
 		shape := "ellipse"
 		if pv.IsEdge(rs) {
 			shape = "rectangle"
