@@ -39,7 +39,7 @@ TODO: Link of aciinema
 The important subcommands are:
 
 * `generate`: Which generates the Graph from Stdin or File.
-* `pruen`: Which removes all the not needed information fro the State or HCL so it can be shared without any security concern
+* `pruen`: Which removes all the not needed information from the State or HCL so it can be shared without any security concern
 
 ### Example
 
@@ -89,6 +89,8 @@ we apply specific Provider logic if supported. If not supported then that basic 
 * `openstack_lb_member_v2`
 
 ## License
+
+TODO
 
 ## Changelog
 
