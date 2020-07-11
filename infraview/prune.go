@@ -16,6 +16,7 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
+// reARN matches an arn string
 var reARN = regexp.MustCompile("^arn:*")
 
 // Prune will prune the tfstate of unneeded information and if replaceCanonicals is specified
@@ -91,7 +92,7 @@ func Prune(tfstate json.RawMessage, replaceCanonicals bool) (json.RawMessage, er
 					}
 				}
 
-				for k, _ := range aux {
+				for k := range aux {
 					var found bool
 					for _, a := range attrs {
 						if k == a || regexp.MustCompile(fmt.Sprintf(`^%s\.`, a)).MatchString(k) {

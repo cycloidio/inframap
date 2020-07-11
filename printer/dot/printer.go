@@ -11,8 +11,11 @@ import (
 	"github.com/cycloidio/infraview/provider"
 )
 
+// Dot is the struct that implements
+// the Printer of Dot format
 type Dot struct{}
 
+// Print prints into w the g in DOT format
 func (d Dot) Print(g *graph.Graph, w io.Writer) error {
 	graph := gographviz.NewGraph()
 	parentName := "G"
@@ -24,7 +27,7 @@ func (d Dot) Print(g *graph.Graph, w io.Writer) error {
 		// If it's nil the pv, it means we do not know it so we'll use
 		// the RawProvider.
 		// We do not use the infraview.GenerateOptions to see if it was
-		// marked as Raw as we could then see the edges distiction
+		// marked as Raw as we could then see the edges distinction
 		// on the output if needed
 		pv, rs, _ := factory.GetProviderAndResource(n.Canonical)
 		if pv == nil {

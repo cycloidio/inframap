@@ -115,6 +115,9 @@ func (a Provider) ResourceInOut(rs string, cfg map[string]interface{}) ([]string
 	return ins, outs
 }
 
+// UsedAttributes returns all the attributes that are
+// required/used/needed on the providers, so when we have to
+// prune we know what to keep
 func (a Provider) UsedAttributes() []string {
 	return usedAttributes
 }

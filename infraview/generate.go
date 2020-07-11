@@ -17,10 +17,13 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
+// GenerateOptions are the possible options
+// that can be used to generate a Graph
 type GenerateOptions struct {
 	Raw bool
 }
 
+// FromState generate a graph.Graph from the tfstate applying the opt
 func FromState(tfstate json.RawMessage, opt GenerateOptions) (*graph.Graph, map[string]interface{}, error) {
 	buf := bytes.NewBuffer(tfstate)
 	file, err := statefile.Read(buf)
@@ -481,6 +484,8 @@ func instanceCurrentDependsOnToString(deps []addrs.Referenceable) []string {
 	return res
 }
 
+// getProviderAndResource uses factory.GenerateOptions but if the opt.Raw is defined
+// it'll return the RawProvider. It's a helper to not repeat all time the same logic
 func getProviderAndResource(rk string, opt GenerateOptions) (provider.Provider, string, error) {
 	var (
 		pv  provider.Provider
@@ -498,6 +503,8 @@ func getProviderAndResource(rk string, opt GenerateOptions) (provider.Provider, 
 	return pv, rs, err
 }
 
+// checkProviders checks if we support any of the Providers from f, if not it'll set
+// the opt.Raw to true so it can be used with Raw instead of returning an empty Graph
 func checkProviders(f *statefile.File, opt GenerateOptions) (GenerateOptions, error) {
 	for _, v := range f.State.Modules {
 		for rk, rv := range v.Resources {

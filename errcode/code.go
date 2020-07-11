@@ -2,6 +2,7 @@ package errcode
 
 import "errors"
 
+// List of all the errors
 var (
 	ErrGraphEdgeReplace              = errors.New("graph edge replace source not found")
 	ErrGraphRequiredEdgeID           = errors.New("graph edge ID is required")

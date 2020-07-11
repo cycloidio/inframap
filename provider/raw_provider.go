@@ -2,6 +2,9 @@ package provider
 
 import "github.com/cycloidio/tfdocs/resource"
 
+// RawProvider is the provider that would be used
+// when we do not have an specific implementation
+// a Provider
 type RawProvider struct {
 	NopProvider
 }

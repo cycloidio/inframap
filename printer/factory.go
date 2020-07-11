@@ -13,6 +13,7 @@ var (
 	}
 )
 
+// Get returns the specific Printer for t
 func Get(t string) (Printer, error) {
 	ty, err := TypeString(t)
 	if err != nil {
