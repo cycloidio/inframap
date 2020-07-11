@@ -20,7 +20,13 @@ import (
 // GenerateOptions are the possible options
 // that can be used to generate a Graph
 type GenerateOptions struct {
+	// Raw means the RawProvider instead of the
+	// specific one
 	Raw bool
+
+	// Clean means that the Nodes that do not have
+	// any connection will be "removed"
+	Clean bool
 }
 
 // FromState generate a graph.Graph from the tfstate applying the opt
@@ -148,7 +154,9 @@ func FromState(tfstate json.RawMessage, opt GenerateOptions) (*graph.Graph, map[
 		}
 	}
 
-	g.Clean()
+	if opt.Clean {
+		g.Clean()
+	}
 
 	err = fixEdges(g, cfg, opt)
 	if err != nil {
