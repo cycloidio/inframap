@@ -19,11 +19,18 @@ func (i Type) String() string {
 	return _TypeName[_TypeIndex[i]:_TypeIndex[i+1]]
 }
 
-var _TypeValues = []Type{0}
+// An "invalid array index" compiler error signifies that the constant values have changed.
+// Re-run the stringer command to generate them again.
+func _TypeNoOp() {
+	var x [1]struct{}
+	_ = x[DOT-(0)]
+}
+
+var _TypeValues = []Type{DOT}
 
 var _TypeNameToValueMap = map[string]Type{
-	_TypeName[0:3]:      0,
-	_TypeLowerName[0:3]: 0,
+	_TypeName[0:3]:      DOT,
+	_TypeLowerName[0:3]: DOT,
 }
 
 var _TypeNames = []string{
