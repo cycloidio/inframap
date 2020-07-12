@@ -15,7 +15,7 @@ func TestFromState_AWS(t *testing.T) {
 		src, err := ioutil.ReadFile("./testdata/aws_sg.json")
 		require.NoError(t, err)
 
-		g, cfg, err := infraview.FromState(src, infraview.GenerateOptions{})
+		g, cfg, err := infraview.FromState(src, infraview.GenerateOptions{Clean: true})
 		require.NoError(t, err)
 		require.NotNil(t, g)
 		require.NotNil(t, cfg)
@@ -53,7 +53,7 @@ func TestFromState_AWS(t *testing.T) {
 		src, err := ioutil.ReadFile("./testdata/aws_sgr.json")
 		require.NoError(t, err)
 
-		g, cfg, err := infraview.FromState(src, infraview.GenerateOptions{})
+		g, cfg, err := infraview.FromState(src, infraview.GenerateOptions{Clean: true})
 		require.NoError(t, err)
 		require.NotNil(t, g)
 		require.NotNil(t, cfg)
@@ -99,7 +99,7 @@ func TestFromState_AWS(t *testing.T) {
 		src, err := ioutil.ReadFile("./testdata/aws_with_count.json")
 		require.NoError(t, err)
 
-		g, cfg, err := infraview.FromState(src, infraview.GenerateOptions{})
+		g, cfg, err := infraview.FromState(src, infraview.GenerateOptions{Clean: true})
 		require.NoError(t, err)
 		require.NotNil(t, g)
 		require.NotNil(t, cfg)
@@ -112,7 +112,7 @@ func TestFromState_OpenStack(t *testing.T) {
 		src, err := ioutil.ReadFile("./testdata/openstack_lb.json")
 		require.NoError(t, err)
 
-		g, cfg, err := infraview.FromState(src, infraview.GenerateOptions{})
+		g, cfg, err := infraview.FromState(src, infraview.GenerateOptions{Clean: true})
 		require.NoError(t, err)
 		require.NotNil(t, g)
 		require.NotNil(t, cfg)
@@ -159,7 +159,7 @@ func TestFromState_OpenStack(t *testing.T) {
 		src, err := ioutil.ReadFile("./testdata/openstack_sg.json")
 		require.NoError(t, err)
 
-		g, cfg, err := infraview.FromState(src, infraview.GenerateOptions{})
+		g, cfg, err := infraview.FromState(src, infraview.GenerateOptions{Clean: true})
 		require.NoError(t, err)
 		require.NotNil(t, g)
 		require.NotNil(t, cfg)
@@ -198,7 +198,7 @@ func TestFromState_FlexibelEngine(t *testing.T) {
 		src, err := ioutil.ReadFile("./testdata/flexibleengine.json")
 		require.NoError(t, err)
 
-		g, cfg, err := infraview.FromState(src, infraview.GenerateOptions{})
+		g, cfg, err := infraview.FromState(src, infraview.GenerateOptions{Clean: true})
 		require.NoError(t, err)
 		require.NotNil(t, g)
 		require.NotNil(t, cfg)
@@ -247,7 +247,7 @@ func TestFromState_FlexibelEngine(t *testing.T) {
 		src, err := ioutil.ReadFile("./testdata/flexibleengine_tf_011.json")
 		require.NoError(t, err)
 
-		g, cfg, err := infraview.FromState(src, infraview.GenerateOptions{})
+		g, cfg, err := infraview.FromState(src, infraview.GenerateOptions{Clean: true})
 		require.NoError(t, err)
 		require.NotNil(t, g)
 		require.NotNil(t, cfg)
@@ -283,7 +283,7 @@ func TestFromState_FlexibelEngine(t *testing.T) {
 		src, err := ioutil.ReadFile("./testdata/flexibleengine_attach.json")
 		require.NoError(t, err)
 
-		g, cfg, err := infraview.FromState(src, infraview.GenerateOptions{})
+		g, cfg, err := infraview.FromState(src, infraview.GenerateOptions{Clean: true})
 		require.NoError(t, err)
 		require.NotNil(t, g)
 		require.NotNil(t, cfg)
