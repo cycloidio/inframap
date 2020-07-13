@@ -16,6 +16,7 @@ var (
 		Long:    "Prunes the TFState or HCL file",
 		Example: "infraview prune --tfstate state.json",
 		Args:    cobra.MaximumNArgs(1),
+		PreRunE: preRunFile,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if tfstate {
 				s, err := infraview.Prune(file, canonicals)

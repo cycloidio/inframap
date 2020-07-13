@@ -1,9 +1,14 @@
+BIN := infraview
 TOOL_BIN := $(PWD)/bin
 
 GOLINT := $(TOOL_BIN)/golint
 GOIMPORTS := $(TOOL_BIN)/goimports
 ENUMER := $(TOOL_BIN)/enumer
 
+VERSION= $(shell git describe --tags --always)
+
+# Setup the -ldflags option for go build here, interpolate the variable values
+LDFLAGS=-ldflags "-X github.com/cycloidio/infraview/cmd.Version=${VERSION}"
 
 .PHONY: help
 help: Makefile ## This help dialog
@@ -37,3 +42,11 @@ lint: $(GOLINT) $(GOIMPORTS) ## Runs the linter
 .PHONY: generate
 generate: $(ENUMER) ## Generates the needed code
 	@go generate ./...
+
+.PHONY: build
+build: ## Builds the binary
+	go build -o $(BIN) ${LDFLAGS}
+
+.PHONY: install
+install: ## Install the binary
+	go install ${LDFLAGS}

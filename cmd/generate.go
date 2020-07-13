@@ -22,6 +22,7 @@ var (
 		Long:    "Generates the Graph from TFState or HCL",
 		Example: "infraview generate --tfstate state.json",
 		Args:    cobra.MaximumNArgs(1),
+		PreRunE: preRunFile,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if tfstate {
 				opt := infraview.GenerateOptions{
