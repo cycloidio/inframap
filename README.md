@@ -1,6 +1,6 @@
 # InfraMap
 
-Reads your TF State or HCL to generate a Graph specific for each Provider, only showing the
+Read your TF State or HCL to generate a Graph specific for each Provider, only showing the
 Resources that are most important/relevant to see.
 
 ## Cloud Providers
@@ -29,39 +29,40 @@ You can build and install with the latest sources, you will enjoy the new featur
 $ git clone https://github.com/cycloidio/inframap
 $ cd inframap
 $ go mod download
+$ make build
 ```
 
 ## Usage
 
 Using the `inframap --help` you will know the basics.
 
-TODO: Link of aciinema
+[![asciicast](https://asciinema.org/a/347180.svg)](https://asciinema.org/a/347180)
 
 The important subcommands are:
 
 * `generate`: Which generates the Graph from Stdin or File.
-* `pruen`: Which removes all the not needed information from the State or HCL so it can be shared without any security concern
+* `prune`: Which removes all the not needed information from the State or HCL so it can be shared without any security concern
 
 ### Example
 
 Visualizing with dot
 
 ```shell
-$> inframap generate --tfstate state.json | dot -Tsvg > graph.svg
+$ inframap generate --tfstate state.json | dot -Tsvg > graph.svg
 ```
 
-or from the shell itself
+or from the terminal itself
 
 ```shell
-$> inframap generate --tfstate state.json | graph-easy
+$ inframap generate --tfstate state.json | graph-easy
 ```
 
 ## How does it work?
 
-For each of those Providers we support specific types of connections, we have an static list of Resources that can be
-Nodes or Edges. Once we identify the edges we try to create a unique edge from the Resources that they connect.
+For each of those Providers we support specific types of connections, we have a static list of Resources that can be
+Nodes or Edges. Once we identify the edges we try to create an unique edge from the Resources that they connect.
 
-This is based on the `depends_on` on the State and in Interpolation on the HCL to create the base graph in which then
+This is based on the `depends_on` on the State and on Interpolation on the HCL to create the base graph in which then
 we apply specific Provider logic if supported. If not supported then that basic graph is the one returned
 
 ### AWS
