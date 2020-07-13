@@ -18,13 +18,13 @@ help: Makefile ## This help dialog
 	done
 
 $(ENUMER):
-	@GOBIN=$(TOOL_BIN) go get github.com/dmarkham/enumer
+	@GOBIN=$(TOOL_BIN) go install github.com/dmarkham/enumer
 
 $(GOLINT):
-	@GOBIN=$(TOOL_BIN) go get golang.org/x/lint/golint
+	@GOBIN=$(TOOL_BIN) go install golang.org/x/lint/golint
 
 $(GOIMPORTS):
-	@GOBIN=$(TOOL_BIN) go get golang.org/x/tools/cmd/goimports
+	@GOBIN=$(TOOL_BIN) go install golang.org/x/tools/cmd/goimports
 
 .PHONY: test
 test: ## Tests all the project
