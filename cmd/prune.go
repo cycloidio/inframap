@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/cycloidio/infraview/infraview"
+	"github.com/cycloidio/inframap/prune"
 	"github.com/spf13/cobra"
 )
 
@@ -14,12 +14,12 @@ var (
 		Use:     "prune [FILE]",
 		Short:   "Prunes the file",
 		Long:    "Prunes the TFState or HCL file",
-		Example: "infraview prune --tfstate state.json",
+		Example: "inframap prune --tfstate state.json",
 		Args:    cobra.MaximumNArgs(1),
 		PreRunE: preRunFile,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if tfstate {
-				s, err := infraview.Prune(file, canonicals)
+				s, err := prune.Prune(file, canonicals)
 				if err != nil {
 					return err
 				}

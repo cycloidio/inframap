@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/cycloidio/infraview/cmd"
+	"github.com/cycloidio/inframap/cmd"
 )
 
 func main() {

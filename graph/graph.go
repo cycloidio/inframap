@@ -3,7 +3,7 @@ package graph
 import (
 	"fmt"
 
-	"github.com/cycloidio/infraview/errcode"
+	"github.com/cycloidio/inframap/errcode"
 )
 
 // Graph defines the standard format of a Graph

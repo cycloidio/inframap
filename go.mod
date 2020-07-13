@@ -1,4 +1,4 @@
-module github.com/cycloidio/infraview
+module github.com/cycloidio/inframap
 
 go 1.14
 

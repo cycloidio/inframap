@@ -4,8 +4,8 @@ import (
 	"sort"
 	"testing"
 
-	"github.com/cycloidio/infraview/errcode"
-	"github.com/cycloidio/infraview/graph"
+	"github.com/cycloidio/inframap/errcode"
+	"github.com/cycloidio/inframap/graph"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

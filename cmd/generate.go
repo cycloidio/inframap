@@ -6,8 +6,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/cycloidio/infraview/infraview"
-	"github.com/cycloidio/infraview/printer"
+	"github.com/cycloidio/inframap/generate"
+	"github.com/cycloidio/inframap/printer"
 	"github.com/spf13/cobra"
 )
 
@@ -20,16 +20,16 @@ var (
 		Use:     "generate [FILE]",
 		Short:   "Generates the Graph",
 		Long:    "Generates the Graph from TFState or HCL",
-		Example: "infraview generate --tfstate state.json",
+		Example: "inframap generate --tfstate state.json",
 		Args:    cobra.MaximumNArgs(1),
 		PreRunE: preRunFile,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if tfstate {
-				opt := infraview.GenerateOptions{
+				opt := generate.Options{
 					Raw:   raw,
 					Clean: clean,
 				}
-				g, _, err := infraview.FromState(file, opt)
+				g, _, err := generate.FromState(file, opt)
 				if err != nil {
 					return err
 				}

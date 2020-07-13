@@ -1,4 +1,4 @@
-BIN := infraview
+BIN := inframap
 TOOL_BIN := $(PWD)/bin
 
 GOLINT := $(TOOL_BIN)/golint
@@ -8,7 +8,7 @@ ENUMER := $(TOOL_BIN)/enumer
 VERSION= $(shell git describe --tags --always)
 
 # Setup the -ldflags option for go build here, interpolate the variable values
-LDFLAGS=-ldflags "-X github.com/cycloidio/infraview/cmd.Version=${VERSION}"
+LDFLAGS=-ldflags "-X github.com/cycloidio/inframap/cmd.Version=${VERSION}"
 
 .PHONY: help
 help: Makefile ## This help dialog

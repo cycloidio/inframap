@@ -6,9 +6,9 @@ import (
 	"io"
 
 	"github.com/awalterschulze/gographviz"
-	"github.com/cycloidio/infraview/factory"
-	"github.com/cycloidio/infraview/graph"
-	"github.com/cycloidio/infraview/provider"
+	"github.com/cycloidio/inframap/factory"
+	"github.com/cycloidio/inframap/graph"
+	"github.com/cycloidio/inframap/provider"
 )
 
 // Dot is the struct that implements
@@ -26,7 +26,7 @@ func (d Dot) Print(g *graph.Graph, w io.Writer) error {
 	for _, n := range g.Nodes {
 		// If it's nil the pv, it means we do not know it so we'll use
 		// the RawProvider.
-		// We do not use the infraview.GenerateOptions to see if it was
+		// We do not use the inframap.Options to see if it was
 		// marked as Raw as we could then see the edges distinction
 		// on the output if needed
 		pv, rs, _ := factory.GetProviderAndResource(n.Canonical)

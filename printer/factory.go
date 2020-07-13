@@ -3,8 +3,8 @@ package printer
 import (
 	"fmt"
 
-	"github.com/cycloidio/infraview/errcode"
-	"github.com/cycloidio/infraview/printer/dot"
+	"github.com/cycloidio/inframap/errcode"
+	"github.com/cycloidio/inframap/printer/dot"
 )
 
 var (

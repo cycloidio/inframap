@@ -5,11 +5,11 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/cycloidio/infraview/errcode"
-	"github.com/cycloidio/infraview/provider"
-	"github.com/cycloidio/infraview/provider/aws"
-	"github.com/cycloidio/infraview/provider/flexibleengine"
-	"github.com/cycloidio/infraview/provider/openstack"
+	"github.com/cycloidio/inframap/errcode"
+	"github.com/cycloidio/inframap/provider"
+	"github.com/cycloidio/inframap/provider/aws"
+	"github.com/cycloidio/inframap/provider/flexibleengine"
+	"github.com/cycloidio/inframap/provider/openstack"
 )
 
 var (

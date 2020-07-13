@@ -1,7 +1,7 @@
 package graph
 
 import (
-	"github.com/cycloidio/infraview/errcode"
+	"github.com/cycloidio/inframap/errcode"
 )
 
 // Edge defines the standard format of an Edge

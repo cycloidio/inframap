@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"regexp"
 
-	"github.com/cycloidio/infraview/errcode"
-	"github.com/cycloidio/infraview/provider"
+	"github.com/cycloidio/inframap/errcode"
+	"github.com/cycloidio/inframap/provider"
 
 	tfdocAWS "github.com/cycloidio/tfdocs/providers/aws"
 	"github.com/cycloidio/tfdocs/resource"

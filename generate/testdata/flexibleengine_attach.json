@@ -1,0 +1,168 @@
+{
+  "version": 4,
+  "terraform_version": "0.12.28",
+  "serial": 10,
+  "lineage": "bd242fcb-549a-4073-ddf0-e1dc9c597624",
+  "outputs": {},
+  "resources": [
+    {
+      "mode": "managed",
+      "type": "flexibleengine_compute_instance_v2",
+      "name": "KnHdC",
+      "provider": "provider.flexibleengine",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "b1f167c5-7503-4365-95ba-044ac9a86089"
+          }
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "flexibleengine_compute_instance_v2",
+      "name": "LJwaI",
+      "provider": "provider.flexibleengine",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "977ae080-b663-46b1-a656-fb6e360c8d5f"
+          }
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "flexibleengine_compute_interface_attach_v2",
+      "name": "cXqiJ",
+      "each": "list",
+      "provider": "provider.flexibleengine",
+      "instances": [
+        {
+          "index_key": 0,
+          "schema_version": 0,
+          "attributes": {
+            "id": "977ae080-b663-46b1-a656-fb6e360c8d5f/595aa8e5-9752-4fab-b7be-fc5a773ed986",
+            "instance_id": "977ae080-b663-46b1-a656-fb6e360c8d5f"
+          },
+          "depends_on": [
+            "flexibleengine_compute_instance_v2.LJwaI",
+            "flexibleengine_networking_port_v2.KMFHw"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "flexibleengine_compute_interface_attach_v2",
+      "name": "cvlHf",
+      "each": "list",
+      "provider": "provider.flexibleengine",
+      "instances": [
+        {
+          "index_key": 0,
+          "schema_version": 0,
+          "attributes": {
+            "id": "977ae080-b663-46b1-a656-fb6e360c8d5f/595aa8e5-9752-4fab-b7be-fc5a773ed986",
+            "instance_id": "977ae080-b663-46b1-a656-fb6e360c8d5f"
+          },
+          "depends_on": [
+            "flexibleengine_compute_instance_v2.KnHdC",
+            "flexibleengine_networking_port_v2.cXecO"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "flexibleengine_networking_port_v2",
+      "name": "KMFHw",
+      "provider": "provider.flexibleengine",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "595aa8e5-9752-4fab-b7be-fc5a773ed986",
+            "security_group_ids": [
+              "6fbe24d4-d98c-40f1-8e3a-0c1eba8c902e"
+            ]
+          },
+          "depends_on": [
+            "flexibleengine_networking_secgroup_v2.HjOXk"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "flexibleengine_networking_port_v2",
+      "name": "cXecO",
+      "provider": "provider.flexibleengine",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "d91976bc-a677-47b5-80db-afe70fc6c3a4",
+            "security_group_ids": [
+              "0245c8af-17b6-41ae-b9ae-7030a0ce2f22"
+            ]
+          },
+          "depends_on": [
+            "flexibleengine_networking_secgroup_v2.tRwVT"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "flexibleengine_networking_secgroup_rule_v2",
+      "name": "mAaoN",
+      "provider": "provider.flexibleengine",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "direction": "ingress",
+            "id": "a75bf07d-4c20-40cd-b015-d2572969e2c7",
+            "remote_group_id": "6fbe24d4-d98c-40f1-8e3a-0c1eba8c902e"
+          },
+          "depends_on": [
+            "flexibleengine_networking_secgroup_v2.tRwVT",
+            "flexibleengine_networking_secgroup_v2.HjOXk"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "flexibleengine_networking_secgroup_v2",
+      "name": "HjOXk",
+      "provider": "provider.flexibleengine",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "6fbe24d4-d98c-40f1-8e3a-0c1eba8c902e"
+          }
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "flexibleengine_networking_secgroup_v2",
+      "name": "tRwVT",
+      "provider": "provider.flexibleengine",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "0245c8af-17b6-41ae-b9ae-7030a0ce2f22"
+          }
+        }
+      ]
+    }
+  ]
+}
+

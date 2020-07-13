@@ -3,7 +3,7 @@ package printer
 import (
 	"io"
 
-	"github.com/cycloidio/infraview/graph"
+	"github.com/cycloidio/inframap/graph"
 )
 
 // Printer is an abstraction to Print the graph.Graph

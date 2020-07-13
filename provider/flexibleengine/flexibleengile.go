@@ -3,8 +3,8 @@ package flexibleengine
 import (
 	"fmt"
 
-	"github.com/cycloidio/infraview/errcode"
-	"github.com/cycloidio/infraview/provider"
+	"github.com/cycloidio/inframap/errcode"
+	"github.com/cycloidio/inframap/provider"
 
 	tfdocFE "github.com/cycloidio/tfdocs/providers/flexibleengine"
 	"github.com/cycloidio/tfdocs/resource"

@@ -14,7 +14,7 @@ var (
 	file    []byte
 
 	rootCmd = &cobra.Command{
-		Use:   "infraview",
+		Use:   "inframap",
 		Short: "Reads the TFState or HCL to generate a Graphical view",
 		Long:  "Reads the TFState or HCL to generate a Graphical view with Nodes and Edges.",
 	}

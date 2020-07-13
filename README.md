@@ -28,6 +28,7 @@ You can build and install with the latest sources, you will enjoy the new featur
 ```shell
 $ git clone https://github.com/cycloidio/inframap
 $ cd inframap
+$ go mod download
 ```
 
 ## Usage
