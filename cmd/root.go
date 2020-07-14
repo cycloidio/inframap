@@ -12,6 +12,7 @@ var (
 	hcl     bool
 	tfstate bool
 	file    []byte
+	path    string
 
 	rootCmd = &cobra.Command{
 		Use:   "inframap",
@@ -34,7 +35,16 @@ func preRunFile(cmd *cobra.Command, args []string) error {
 		return errors.New("either --hcl or --tfstate have to be defined")
 	}
 	if len(args) == 1 {
-		file, err = ioutil.ReadFile(args[0])
+		path = args[0]
+
+		fi, err := os.Stat(path)
+		if err != nil {
+			return err
+		}
+
+		if !fi.IsDir() {
+			file, err = ioutil.ReadFile(path)
+		}
 	} else {
 		file, err = ioutil.ReadAll(os.Stdin)
 	}
