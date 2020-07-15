@@ -46,6 +46,14 @@ func preRunFile(cmd *cobra.Command, args []string) error {
 			file, err = ioutil.ReadFile(path)
 		}
 	} else {
+		fi, err := os.Stdin.Stat()
+		if err != nil {
+			return err
+		}
+
+		if fi.Mode()&os.ModeNamedPipe == 0 {
+			return errors.New("empty STDIN")
+		}
 		file, err = ioutil.ReadAll(os.Stdin)
 	}
 
