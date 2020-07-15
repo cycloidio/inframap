@@ -1,15 +1,13 @@
 # InfraMap
 
-Read your TF State or HCL to generate a Graph specific for each Provider, only showing the
-Resources that are most important/relevant to see.
+Read your tfstate or HCL to generate a graph specific for each provider, showing only the
+resources that are most important/relevant.
 
 ## Cloud Providers
 
-We support specific implementations of specific Providers that basically allow us to have
-a better visual representation on those Providers.
+We support certain providers. This allows us to better represent information that comes from these providers.
 
-If the State or HCL provided is from a Provider we do not support, then the result
-will be all the resources an how they are connected without making any simplification.
+If your state file or HCL is from a provider we do not support, the resulting representation will simply be all resources present without any simplification or refinement.
 
 Support:
 
@@ -34,14 +32,14 @@ $ make build
 
 ## Usage
 
-Using the `inframap --help` you will know the basics.
+The `inframap --help` will show you the basics.
 
-[![asciicast](https://asciinema.org/a/347180.svg)](https://asciinema.org/a/347180)
+[![asciicast](https://asciinema.org/a/347600.svg)](https://asciinema.org/a/347600)
 
-The important subcommands are:
+The most important subcommands are:
 
-* `generate`: Which generates the Graph from Stdin or File.
-* `prune`: Which removes all the not needed information from the State or HCL (not supported yet) so it can be shared without any security concern
+* `generate`: generates the graph from STDIN or file.
+* `prune`: removes all unecessary information from the state or HCL (not supported yet) so it can be shared without any security concerns
 
 ### Example
 
@@ -71,11 +69,11 @@ $ inframap generate --hcl ./my-module/ | graph-easy
 
 ## How does it work?
 
-For each of those Providers we support specific types of connections, we have a static list of Resources that can be
-Nodes or Edges. Once we identify the edges we try to create an unique edge from the Resources that they connect.
+For each provider, we support specific types of connections; we have a static list of resources that can be
+nodes or edges. Once we identify the edges, we try to create one unique edge from the resources they connect.
 
-This is based on the `depends_on` on the State and on Interpolation on the HCL to create the base graph in which then
-we apply specific Provider logic if supported. If not supported then that basic graph is the one returned
+For a state file, we rely on the `depends_on` key and, for HCL we rely on interpolation to create the base graph one which we then
+apply specific provider logic if supported. If not supported, then basic graph is returned.
 
 ### AWS
 
