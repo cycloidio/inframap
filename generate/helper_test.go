@@ -74,7 +74,7 @@ func assertEqualGraph(t *testing.T, expected, actual *graph.Graph, actualCfg map
 		}
 	}
 
-	// As the GraphFromHCL does not have config
+	// As the FromHCL does not have config
 	// the validation for nil has to be done before, here
 	// it'll be ignored if nil
 	if actualCfg != nil {

@@ -26,4 +26,6 @@ var (
 	ErrInvalidTFStateFile = errors.New("invalid Terraform State file")
 
 	ErrPrinterNotFound = errors.New("printer not found")
+
+	ErrGenerateFromJSON = errors.New("we do not support JSON HCL")
 )

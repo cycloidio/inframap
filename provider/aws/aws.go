@@ -112,6 +112,7 @@ func (a Provider) ResourceInOut(rs string, cfg map[string]interface{}) ([]string
 			outs = append(outs, out.(string))
 		}
 	}
+
 	return ins, outs
 }
 

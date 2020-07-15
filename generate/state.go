@@ -271,7 +271,7 @@ func buildConfig(g *graph.Graph, cfg map[string]map[string]interface{}, nodeCanI
 }
 
 // reVariable matches ${aws_security_group.front.id}
-var reSG = regexp.MustCompile(`\$\{(?P<type>[^\.][a-z0-9-_]+)\.(?P<name>[^\.][a-z0-9-_]+)\.(?P<attr>[a-z0-9-_]+)\}`)
+var reVariable = regexp.MustCompile(`\$\{(?P<type>[^\.][a-z0-9-_]+)\.(?P<name>[^\.][a-z0-9-_]+)\.(?P<attr>[a-z0-9-_]+)\}`)
 
 // fixEdges tries to fix the direction of the edges that was done based on the 'depends_on'
 // to something more Provider dependent by reading the actual config.
@@ -293,12 +293,12 @@ func fixEdges(g *graph.Graph, cfg map[string]map[string]interface{}, opt Options
 			// is this ID and reverse it because we want it to be the Source
 			for _, in := range ins {
 				isID := false
-				res := reSG.FindAllStringSubmatch(in, -1)
+				res := reVariable.FindAllStringSubmatch(in, -1)
 				resMap := make(map[string]string)
 				if len(res) == 0 {
 					isID = true
 				} else {
-					for i, k := range reSG.SubexpNames() {
+					for i, k := range reVariable.SubexpNames() {
 						if res[0][i] != "" {
 							resMap[k] = res[0][i]
 						}
@@ -323,12 +323,12 @@ func fixEdges(g *graph.Graph, cfg map[string]map[string]interface{}, opt Options
 			// is this ID and reverse it because we want it to be the Target
 			for _, out := range outs {
 				isID := false
-				res := reSG.FindAllStringSubmatch(out, -1)
+				res := reVariable.FindAllStringSubmatch(out, -1)
 				resMap := make(map[string]string)
 				if len(res) == 0 {
 					isID = true
 				} else {
-					for i, k := range reSG.SubexpNames() {
+					for i, k := range reVariable.SubexpNames() {
 						if res[0][i] != "" {
 							resMap[k] = res[0][i]
 						}

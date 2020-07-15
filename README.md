@@ -15,9 +15,9 @@ Support:
 
 | Provider | State | HCL |
 |--|:--:|:--:|
-| AWS | Yes | No |
-| FlexibleEngine | Yes | No |
-| OpenStack | Yes | No |
+| AWS | Yes | Yes |
+| FlexibleEngine | Yes | Yes |
+| OpenStack | Yes | Yes |
 
 ## Installation
 
@@ -41,7 +41,7 @@ Using the `inframap --help` you will know the basics.
 The important subcommands are:
 
 * `generate`: Which generates the Graph from Stdin or File.
-* `prune`: Which removes all the not needed information from the State or HCL so it can be shared without any security concern
+* `prune`: Which removes all the not needed information from the State or HCL (not supported yet) so it can be shared without any security concern
 
 ### Example
 
@@ -55,6 +55,18 @@ or from the terminal itself
 
 ```shell
 $ inframap generate --tfstate state.json | graph-easy
+```
+
+or from HCL
+
+```shell
+$ inframap generate --hcl config.tf | graph-easy
+```
+
+or HCL module
+
+```shell
+$ inframap generate --hcl ./my-module/ | graph-easy
 ```
 
 ## How does it work?
