@@ -36,7 +36,7 @@ $ make build
 
 Using the `inframap --help` you will know the basics.
 
-[![asciicast](https://asciinema.org/a/347180.svg)](https://asciinema.org/a/347180)
+[![asciicast](https://asciinema.org/a/347600.svg)](https://asciinema.org/a/347600)
 
 The important subcommands are:
 
