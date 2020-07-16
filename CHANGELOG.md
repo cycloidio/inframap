@@ -1,5 +1,7 @@
 ## [Unreleased]
 
+## [0.1.1] _2020-07-16_
+
 ### Added
 
 - Difference between `terraform graph` and InfraMap to the README
@@ -7,6 +9,6 @@
 - CI/CD configuration and Dockerfile
   ([PR #15](https://github.com/cycloidio/inframap/pull/15))
 
-## [0.0.1] _2020-07-16_
+## [0.1.0] _2020-07-16_
 
 First version and first implementation
