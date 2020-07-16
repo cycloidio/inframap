@@ -9,9 +9,7 @@ We support certain providers. This allows us to better represent information tha
 
 If your state file or HCL is from a provider we do not support, the resulting representation will simply be all resources present without any simplification or refinement.
 
-Support:
-
-Terraform: 0.12.28
+We use Terraform: 0.12.28
 
 | Provider | State | HCL |
 |--|:--:|:--:|
@@ -70,6 +68,33 @@ or HCL module
 ```shell
 $ inframap generate --hcl ./my-module/ | graph-easy
 ```
+
+## What is the difference with `terraform grah`
+
+[Terraform Graph](https://www.terraform.io/docs/commands/graph.html) outputs a dependency graph of all the resources on the tfstate/HCL. We try to go one step forward,
+by trying to make it human readable
+
+If the provider is not supported, the output will be closer to the Terraform one (without displaying provider / variable nodes)
+
+Taking https://github.com/cycloid-community-catalog/stack-magento/ as reference this is the different output:
+
+With `terraform graph`:
+
+<p align="center">
+  <img src="docs/terraformgraph.svg" width="400">
+</p>
+
+With `inframap generate --hcl ./terraform/module-magento/ | dot -Tsvg > inframap.svg`:
+
+<p align="center">
+  <img src="docs/inframap.svg" width="400">
+</p>
+
+With `inframap generate --hcl ./terraform/module-magento/ --raw | dot -Tsvg > inframap.svg`:
+
+<p align="center">
+  <img src="docs/inframapraw.svg" width="400">
+</p>
 
 ## How does it work?
 
