@@ -50,7 +50,7 @@ $ git rebase upstream/master
 
 #### Build from sources
 
-Since InfraMap is a Go project, Go must be installed and configured on your machine (really ?). We currently support Go1.14 and go `modules` as dependency manager. You can simply pull all necessaries dependencies by running an initial.
+Since InfraMap is a Go project, Go must be installed and configured on your machine (really ?). We currently support Go1.13+ and go `modules` as dependency manager. You can simply pull all necessaries dependencies by running an initial.
 
 ```shell
 $ make build
