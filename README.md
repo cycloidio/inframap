@@ -108,7 +108,7 @@ apply specific provider logic if supported. If not supported, then basic graph i
 
 ## License
 
-TODO
+Please see the [MIT LICENSE](https://github.com/cycloidio/inframap/blob/master/LICENSE) file. 
 
 ## Changelog
 
