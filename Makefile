@@ -5,6 +5,9 @@ GOLINT := $(TOOL_BIN)/golint
 GOIMPORTS := $(TOOL_BIN)/goimports
 ENUMER := $(TOOL_BIN)/enumer
 
+ARCHITECTURES=386 amd64
+PLATFORMS=darwin linux windows
+
 VERSION= $(shell git describe --tags --always)
 
 # Setup the -ldflags option for go build here, interpolate the variable values
@@ -50,3 +53,18 @@ build: ## Builds the binary
 .PHONY: install
 install: ## Install the binary
 	go install ${LDFLAGS}
+
+.PHONY: build-all build-compress
+build-all: ## Builds the binaries
+	$(foreach GOOS, $(PLATFORMS),\
+	$(foreach GOARCH, $(ARCHITECTURES),\
+	$(shell export GO111MODULE=on; export CGO_ENABLED=0; export GOOS=$(GOOS); export GOARCH=$(GOARCH); go build -v -o $(BUILD_PATH)/$(BIN)-$(GOOS)-$(GOARCH) ${LDFLAGS})))
+
+build-compress: build-all ## Builds and compress the binaries
+	$(foreach GOOS, $(PLATFORMS),\
+	$(foreach GOARCH, $(ARCHITECTURES),\
+	$(shell export GOOS=$(GOOS); export GOARCH=$(GOARCH); tar -C $(BUILD_PATH) -czf $(BUILD_PATH)/$(BIN)-$(GOOS)-$(GOARCH).tar.gz $(BIN)-$(GOOS)-$(GOARCH))))
+
+.PHONY: dbuild
+dbuild: ## Builds the docker image with same name as the binary
+	@docker build -t $(BIN) .
