@@ -11,17 +11,21 @@ If your state file or HCL is from a provider we do not support, the resulting re
 
 Support:
 
+Terraform: 0.12.28
+
 | Provider | State | HCL |
 |--|:--:|:--:|
 | AWS | Yes | Yes |
 | FlexibleEngine | Yes | Yes |
 | OpenStack | Yes | Yes |
+| [Google](https://github.com/cycloidio/inframap/issues/7) | WIP | WIP | 
+| [AzureRM](https://github.com/cycloidio/inframap/issues/8) | WIP | WIP | 
 
 ## Installation
 
 ### Development
 
-You can build and install with the latest sources, you will enjoy the new features and bug fixes. It uses Go Modules
+You can build and install with the latest sources, you will enjoy the new features and bug fixes. It uses Go Modules (1.13+)
 
 ```shell
 $ git clone https://github.com/cycloidio/inframap
@@ -39,20 +43,20 @@ The `inframap --help` will show you the basics.
 The most important subcommands are:
 
 * `generate`: generates the graph from STDIN or file.
-* `prune`: removes all unecessary information from the state or HCL (not supported yet) so it can be shared without any security concerns
+* `prune`: removes all unnecessary information from the state or HCL (not supported yet) so it can be shared without any security concerns
 
 ### Example
 
 Visualizing with dot
 
 ```shell
-$ inframap generate --tfstate state.json | dot -Tsvg > graph.svg
+$ inframap generate --tfstate state.tfstate | dot -Tsvg > graph.svg
 ```
 
 or from the terminal itself
 
 ```shell
-$ inframap generate --tfstate state.json | graph-easy
+$ inframap generate --tfstate state.tfstate | graph-easy
 ```
 
 or from HCL
@@ -76,6 +80,8 @@ For a state file, we rely on the `depends_on` key and, for HCL we rely on interp
 apply specific provider logic if supported. If not supported, then basic graph is returned.
 
 ### AWS
+
+**Note:** We are currently investigating/trying to implement the grouping (https://github.com/cycloidio/inframap/issues/6) and connections based on iam resources (https://github.com/cycloidio/inframap/issues/11).
 
 * `aws_security_group`
 * `aws_security_group_rule`

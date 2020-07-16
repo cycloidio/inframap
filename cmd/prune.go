@@ -14,7 +14,7 @@ var (
 		Use:     "prune [FILE]",
 		Short:   "Prunes the file",
 		Long:    "Prunes the TFState or HCL file",
-		Example: "inframap prune --tfstate state.json",
+		Example: "inframap prune --tfstate state.tfstate",
 		Args:    cobra.MaximumNArgs(1),
 		PreRunE: preRunFile,
 		RunE: func(cmd *cobra.Command, args []string) error {

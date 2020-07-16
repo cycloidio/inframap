@@ -21,7 +21,7 @@ var (
 		Use:     "generate [FILE]",
 		Short:   "Generates the Graph",
 		Long:    "Generates the Graph from TFState or HCL",
-		Example: "inframap generate --tfstate state.json",
+		Example: "inframap generate --tfstate state.tfstate",
 		Args:    cobra.MaximumNArgs(1),
 		PreRunE: preRunFile,
 		RunE: func(cmd *cobra.Command, args []string) error {
