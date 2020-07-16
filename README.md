@@ -69,7 +69,13 @@ or HCL module
 $ inframap generate --hcl ./my-module/ | graph-easy
 ```
 
-## What is the difference with `terraform grah`
+using docker image (assuming that your Terraform files are in the working directory)
+
+```shell
+$ docker run --rm -v ${PWD}:/opt inframap generate --tfstate /opt/terraform.tfstate
+```
+
+## What is the difference with `terraform graph`
 
 [Terraform Graph](https://www.terraform.io/docs/commands/graph.html) outputs a dependency graph of all the resources on the tfstate/HCL. We try to go one step forward,
 by trying to make it human readable
