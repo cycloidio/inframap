@@ -1,0 +1,33 @@
+#
+# Default variables that shouldn't be changed except if needed
+#
+project: inframap
+env: master
+customer: cycloid-owl
+
+base-context: cycloid-ci
+ci-context: inframap
+
+# Git repository
+github-repo-uri: git@github.com:cycloidio/inframap.git
+github-repo-owner: cycloidio
+github-repo-name: inframap
+github-access-token: ((github_access_token.data))
+github-private-key: ((git_github.ssh_key))
+
+# Docker image version
+docker-image: golang
+docker-image-tag: 1.14.5-alpine3.12
+docker-hub-username: ((docker_hub.username))
+docker-hub-password: ((docker_hub.password))
+
+# Default branch
+branch: master
+
+# Cache path: used for dependencies
+cache-path: go/pkg/mod
+
+# Notifications
+slack-deployment-url: ((custom_slack-webhook-inframap.url))
+event-login: ((cycloid_bot_account.login))
+event-password: ((cycloid_bot_account.password))
