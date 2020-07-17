@@ -1,5 +1,7 @@
 # InfraMap
 
+[![AUR package](https://repology.org/badge/version-for-repo/aur/inframap.svg)](https://repology.org/project/inframap/versions)
+
 Read your tfstate or HCL to generate a graph specific for each provider, showing only the
 resources that are most important/relevant.
 
@@ -20,6 +22,13 @@ We use Terraform: 0.12.28
 | [AzureRM](https://github.com/cycloidio/inframap/issues/8) | WIP | WIP | 
 
 ## Installation
+
+### Stable
+
+To install the latest release of Inframap, you can pick one of this methods:
+  * pull the latest release from the [Releases](https://github.com/cycloidio/inframap/releases/) page
+  * pull the latest docker [image](https://hub.docker.com/r/cycloid/inframap) from the Docker hub
+  * use your Linux package manager (only [AUR](https://aur.archlinux.org/packages/inframap) at the moment)
 
 ### Development
 
@@ -72,7 +81,7 @@ $ inframap generate --hcl ./my-module/ | graph-easy
 using docker image (assuming that your Terraform files are in the working directory)
 
 ```shell
-$ docker run --rm -v ${PWD}:/opt inframap generate --tfstate /opt/terraform.tfstate
+$ docker run --rm -v ${PWD}:/opt cycloid/inframap generate --tfstate /opt/terraform.tfstate
 ```
 
 ## What is the difference with `terraform graph`
