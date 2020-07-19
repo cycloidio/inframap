@@ -105,6 +105,12 @@ With `inframap generate --hcl ./terraform/module-magento/ | dot -Tsvg > inframap
   <img src="docs/inframap.svg" width="400">
 </p>
 
+With `inframap generate --hcl --connections=false ./terraform/module-magento/ | dot -Tsvg > inframapconnections.svg`:
+
+<p align="center">
+  <img src="docs/inframapconnections.svg" width="400">
+</p>
+
 With `inframap generate --hcl ./terraform/module-magento/ --raw | dot -Tsvg > inframap.svg`:
 
 <p align="center">
