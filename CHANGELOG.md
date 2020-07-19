@@ -1,5 +1,10 @@
 ## [Unreleased]
 
+### Added
+
+- New flag to `generate`, `--connections` to apply or not the Provider logic of merging Edges between Nodes
+  ([PR #23](https://github.com/cycloidio/inframap/pull/23))
+
 ## [0.1.1] _2020-07-16_
 
 ### Added
