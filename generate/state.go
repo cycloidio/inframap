@@ -17,18 +17,6 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
-// Options are the possible options
-// that can be used to generate a Graph
-type Options struct {
-	// Raw means the RawProvider instead of the
-	// specific one
-	Raw bool
-
-	// Clean means that the Nodes that do not have
-	// any connection will be "removed"
-	Clean bool
-}
-
 // FromState generate a graph.Graph from the tfstate applying the opt
 func FromState(tfstate json.RawMessage, opt Options) (*graph.Graph, map[string]interface{}, error) {
 	buf := bytes.NewBuffer(tfstate)
@@ -163,12 +151,19 @@ func FromState(tfstate json.RawMessage, opt Options) (*graph.Graph, map[string]i
 		return nil, nil, err
 	}
 
-	err = mutate(g, opt)
-	if err != nil {
-		return nil, nil, err
+	if opt.Connections {
+		err = mutate(g, opt)
+		if err != nil {
+			return nil, nil, err
+		}
 	}
 
-	cleanHangingEdges(g, opt)
+	if opt.Clean {
+		err = cleanHangingEdges(g, opt)
+		if err != nil {
+			return nil, nil, err
+		}
+	}
 
 	endCfg, err := buildConfig(g, cfg, nodeCanIDs)
 	if err != nil {
@@ -191,7 +186,10 @@ func cleanHangingEdges(g *graph.Graph, opt Options) error {
 
 		if pv.IsEdge(rs) {
 			edges := g.GetEdgesForNode(n.ID)
-			if len(edges) > 0 {
+			// If it's a hanging Edge then it should only
+			// have one connection, if it has more than
+			// one it means there is something else wrong
+			if len(edges) == 1 {
 				repID := edges[0].Source
 				if edges[0].Source == n.ID {
 					repID = edges[0].Target

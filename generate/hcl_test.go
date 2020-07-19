@@ -13,7 +13,7 @@ func TestFromHCL_AWS(t *testing.T) {
 	t.Run("SuccessSG", func(t *testing.T) {
 		fs := afero.NewOsFs()
 
-		g, err := generate.FromHCL(fs, "./testdata/aws_hcl_sg.tf", generate.Options{Clean: true})
+		g, err := generate.FromHCL(fs, "./testdata/aws_hcl_sg.tf", generate.Options{Clean: true, Connections: true})
 		require.NoError(t, err)
 		require.NotNil(t, g)
 
@@ -59,7 +59,7 @@ func TestFromHCL_FlexibleEngine(t *testing.T) {
 	t.Run("SuccessSG", func(t *testing.T) {
 		fs := afero.NewOsFs()
 
-		g, err := generate.FromHCL(fs, "./testdata/flexibleengine_hcl.tf", generate.Options{Clean: true})
+		g, err := generate.FromHCL(fs, "./testdata/flexibleengine_hcl.tf", generate.Options{Clean: true, Connections: true})
 		require.NoError(t, err)
 		require.NotNil(t, g)
 
@@ -95,7 +95,7 @@ func TestFromHCL_Module(t *testing.T) {
 	t.Run("SuccessSG", func(t *testing.T) {
 		fs := afero.NewOsFs()
 
-		g, err := generate.FromHCL(fs, "./testdata/tf-module/", generate.Options{Clean: true})
+		g, err := generate.FromHCL(fs, "./testdata/tf-module/", generate.Options{Clean: true, Connections: true})
 		require.NoError(t, err)
 		require.NotNil(t, g)
 
