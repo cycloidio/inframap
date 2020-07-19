@@ -10,7 +10,7 @@ import (
 
 	"github.com/chr4/pwgen"
 	"github.com/cycloidio/inframap/errcode"
-	"github.com/cycloidio/inframap/factory"
+	"github.com/cycloidio/inframap/provider/factory"
 	"github.com/hashicorp/terraform/addrs"
 	"github.com/hashicorp/terraform/states/statefile"
 	uuid "github.com/satori/go.uuid"

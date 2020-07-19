@@ -1,5 +1,6 @@
 # InfraMap
 
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/cycloidio/inframap)](https://pkg.go.dev/github.com/cycloidio/inframap)
 [![AUR package](https://repology.org/badge/version-for-repo/aur/inframap.svg)](https://repology.org/project/inframap/versions)
 
 Read your tfstate or HCL to generate a graph specific for each provider, showing only the
@@ -111,7 +112,7 @@ With `inframap generate --hcl --connections=false ./terraform/module-magento/ | 
   <img src="docs/inframapconnections.svg" width="400">
 </p>
 
-With `inframap generate --hcl ./terraform/module-magento/ --raw | dot -Tsvg > inframap.svg`:
+With `inframap generate --hcl ./terraform/module-magento/ --raw | dot -Tsvg > inframapraw.svg`:
 
 <p align="center">
   <img src="docs/inframapraw.svg" width="400">
@@ -151,6 +152,19 @@ apply specific provider logic if supported. If not supported, then basic graph i
 * `openstack_lb_listener_v2`
 * `openstack_lb_pool_v2`
 * `openstack_lb_member_v2`
+
+## FAQ
+
+### Why is my Graph generated empty?
+
+If a graph is returned empty, it means that we support one of the providers you are using on your HCL/TFState but we do
+not recognize any connection or relevant node.
+
+To show the configuration without any InfraMap applied logic you can use the `--raw` flag logic and print everything that we read.
+If it works, it would be good to try to know why it was empty before so we can take a look
+at it as it could potentially be an issue on InfraMap (open an issue if you want us to take a look).
+
+By default unconnected nodes are removed, you can use `--clean=false` to prevent that.
 
 ## License
 
