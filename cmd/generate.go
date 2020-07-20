@@ -16,6 +16,7 @@ var (
 	printerType string
 	raw         bool
 	clean       bool
+	connections bool
 
 	generateCmd = &cobra.Command{
 		Use:     "generate [FILE]",
@@ -26,8 +27,9 @@ var (
 		PreRunE: preRunFile,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			opt := generate.Options{
-				Raw:   raw,
-				Clean: clean,
+				Raw:         raw,
+				Clean:       clean,
+				Connections: connections,
 			}
 
 			var (
@@ -84,6 +86,7 @@ var (
 
 func init() {
 	generateCmd.Flags().StringVar(&printerType, "printer", "dot", fmt.Sprintf("Type of printer to use for the output. Supported ones are: %s", strings.Join(printer.TypeStrings(), ",")))
-	generateCmd.Flags().BoolVar(&raw, "raw", false, "Raw means that will not use any specific logic from the provider, will just display the connections between elements. It's used by default if none of the Providers is known")
-	generateCmd.Flags().BoolVar(&clean, "clean", true, "Clean means that the generated graph will not have any Node that does not have a connection/edge")
+	generateCmd.Flags().BoolVar(&raw, "raw", false, "Raw will not use any specific logic from the provider, will just display the connections between elements. It's used by default if none of the Providers is known")
+	generateCmd.Flags().BoolVar(&clean, "clean", true, "Clean will the generated graph will not have any Node that does not have a connection/edge")
+	generateCmd.Flags().BoolVar(&connections, "connections", true, "Connections will apply the logic of the provider to remove resources that are not nodes")
 }

@@ -157,12 +157,19 @@ func FromHCL(fs afero.Fs, path string, opt Options) (*graph.Graph, error) {
 		return nil, err
 	}
 
-	err = mutate(g, opt)
-	if err != nil {
-		return nil, err
+	if opt.Connections {
+		err = mutate(g, opt)
+		if err != nil {
+			return nil, err
+		}
 	}
 
-	cleanHangingEdges(g, opt)
+	if opt.Clean {
+		err = cleanHangingEdges(g, opt)
+		if err != nil {
+			return nil, err
+		}
+	}
 
 	return g, nil
 }
