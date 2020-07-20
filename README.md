@@ -85,14 +85,14 @@ using docker image (assuming that your Terraform files are in the working direct
 $ docker run --rm -v ${PWD}:/opt cycloid/inframap generate --tfstate /opt/terraform.tfstate
 ```
 
-## What is the difference with `terraform graph`
+## How is it different to `terraform graph`
 
-[Terraform Graph](https://www.terraform.io/docs/commands/graph.html) outputs a dependency graph of all the resources on the tfstate/HCL. We try to go one step forward,
-by trying to make it human readable
+[Terraform Graph](https://www.terraform.io/docs/commands/graph.html) outputs a dependency graph of all the resources on the tfstate/HCL. We try to go one step further,
+by trying to make it human-readable.
 
-If the provider is not supported, the output will be closer to the Terraform one (without displaying provider / variable nodes)
+If the provider is not supported, the output will be closer to the Terraform Graph version (without displaying provider / variable nodes)
 
-Taking https://github.com/cycloid-community-catalog/stack-magento/ as reference this is the different output:
+Taking https://github.com/cycloid-community-catalog/stack-magento/ as a reference this is the difference in output:
 
 With `terraform graph`:
 
