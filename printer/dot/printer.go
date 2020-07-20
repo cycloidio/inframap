@@ -6,9 +6,9 @@ import (
 	"io"
 
 	"github.com/awalterschulze/gographviz"
-	"github.com/cycloidio/inframap/factory"
 	"github.com/cycloidio/inframap/graph"
 	"github.com/cycloidio/inframap/provider"
+	"github.com/cycloidio/inframap/provider/factory"
 )
 
 // Dot is the struct that implements
