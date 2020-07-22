@@ -30,7 +30,7 @@ func (n NopProvider) DataSource(rsc string) (*resource.Resource, error) { return
 // ResourceInOut returns the resource In Out from a
 // state config. As an example in AWS this would be
 // an "aws_security_group" "ingress" and "egress"
-func (n NopProvider) ResourceInOut(rs string, cfg map[string]interface{}) (in, out []string) {
+func (n NopProvider) ResourceInOut(id, rs string, cfgs map[string]map[string]interface{}) (in, out []string) {
 	return nil, nil
 }
 
@@ -38,3 +38,12 @@ func (n NopProvider) ResourceInOut(rs string, cfg map[string]interface{}) (in, o
 // required/used/needed on the providers, so when we have to
 // prune we know what to keep
 func (n NopProvider) UsedAttributes() []string { return nil }
+
+// PreProcess defines new edges from the config.
+// each element is an edge and for each edge we have the source
+// and the target.
+// [_][0] is the source of the edge
+// [_][1] is the target of the edge
+func (n NopProvider) PreProcess(cfg map[string]map[string]interface{}) [][]string {
+	return nil
+}
