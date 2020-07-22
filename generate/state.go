@@ -141,6 +141,11 @@ func FromState(tfstate json.RawMessage, opt Options) (*graph.Graph, map[string]i
 			}
 		}
 	}
+	// call the preprocess method for each
+	// TF provider in the file
+	if err := preprocess(g, cfg, opt); err != nil {
+		return nil, nil, err
+	}
 
 	if opt.Clean {
 		g.Clean()
@@ -285,7 +290,7 @@ func fixEdges(g *graph.Graph, cfg map[string]map[string]interface{}, opt Options
 
 		if pv.IsEdge(rs) {
 			edges := g.GetEdgesForNode(n.ID)
-			ins, outs := pv.ResourceInOut(rs, cfg[n.ID])
+			ins, outs := pv.ResourceInOut(n.ID, rs, cfg)
 
 			// For the ins we have to check if any of the edges Target
 			// is this ID and reverse it because we want it to be the Source
@@ -538,4 +543,37 @@ func checkProviders(f *statefile.File, opt Options) (Options, error) {
 	opt.Raw = true
 
 	return opt, nil
+}
+
+// preprocess will call PreProcess method of each TF provider supported in the
+// config
+func preprocess(g *graph.Graph, cfg map[string]map[string]interface{}, opt Options) error {
+	visitedProviders := make(map[provider.Type]struct{}, 0)
+	for _, node := range g.Nodes {
+		pv, _, err := getProviderAndResource(node.Canonical, opt)
+		if err != nil {
+			// TF provider not found, no need to
+			// continue or to raise an error
+			continue
+		}
+
+		if _, ok := visitedProviders[pv.Type()]; ok {
+			continue
+		}
+
+		edges := pv.PreProcess(cfg)
+		for _, edge := range edges {
+			err := g.AddEdge(&graph.Edge{
+				ID:     uuid.NewV4().String(),
+				Source: edge[0],
+				Target: edge[1],
+			})
+			if err != nil {
+				return fmt.Errorf("could not add edge: %w", err)
+			}
+		}
+
+		visitedProviders[pv.Type()] = struct{}{}
+	}
+	return nil
 }
