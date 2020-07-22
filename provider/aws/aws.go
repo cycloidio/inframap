@@ -65,8 +65,9 @@ var reSGEgress = regexp.MustCompile(`^egress\.\d+\.security_groups\.\d+$`)
 var reSGIngress = regexp.MustCompile(`^ingress\.\d+\.security_groups\.\d+$`)
 
 // ResourceInOut returns the In and Out of the rs based on the cfg
-func (a Provider) ResourceInOut(rs string, cfg map[string]interface{}) ([]string, []string) {
+func (a Provider) ResourceInOut(id, rs string, cfgs map[string]map[string]interface{}) ([]string, []string) {
 	var ins, outs []string
+	cfg := cfgs[id]
 	if rs == "aws_security_group" {
 		ingress, inok := cfg["ingress"]
 		if inok {

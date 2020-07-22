@@ -62,8 +62,9 @@ func (a Provider) DataSource(resource string) (*resource.Resource, error) {
 }
 
 // ResourceInOut returns the In and Out of the rs based on the cfg
-func (a Provider) ResourceInOut(rs string, cfg map[string]interface{}) ([]string, []string) {
+func (a Provider) ResourceInOut(id, rs string, cfgs map[string]map[string]interface{}) ([]string, []string) {
 	var ins, outs []string
+	cfg := cfgs[id]
 	switch rs {
 	case "openstack_compute_interface_attach_v2":
 		if instanceID, ok := cfg["instance_id"]; ok {
