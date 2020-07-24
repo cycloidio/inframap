@@ -4,6 +4,7 @@ TOOL_BIN := $(PWD)/bin
 GOLINT := $(TOOL_BIN)/golint
 GOIMPORTS := $(TOOL_BIN)/goimports
 ENUMER := $(TOOL_BIN)/enumer
+PKGER := $(TOOL_BIN)/go-bindata
 
 ARCHITECTURES=386 amd64
 PLATFORMS=darwin linux windows
@@ -34,6 +35,9 @@ $(GOLINT):
 $(GOIMPORTS):
 	@GOBIN=$(TOOL_BIN) go install golang.org/x/tools/cmd/goimports
 
+$(PKGER):
+	@GOBIN=$(TOOL_BIN) go install github.com/markbates/pkger/cmd/pkger
+
 .PHONY: test
 test: ## Tests all the project
 	@go test ./...
@@ -45,6 +49,10 @@ lint: $(GOLINT) $(GOIMPORTS) ## Runs the linter
 .PHONY: generate
 generate: $(ENUMER) ## Generates the needed code
 	@go generate ./...
+
+.PHONY: generate
+generate-icons: $(PKGER) ## Generates the needed code and Icons, it's separated as the icons generate always a new output
+	@go generate -tags icons ./... 
 
 .PHONY: build
 build: ## Builds the binary
