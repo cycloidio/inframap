@@ -72,3 +72,32 @@ To add a new test we recommend to run the `inframap prune --canonicals --tfstate
 #### Add a new Printer
 
 To add a new Printer just follow the `printer.Printer` interface and add it to `printer/{printer_name}` and `printer/type.go` and run `make generate`. After that it'll be directly added to the list of available `--printer`.
+
+#### Add new icons
+
+Icons follow the mapping defined in [tfdocs](https://github.com/cycloidio/tfdocs). Instead of `.svg` we use `.png` and files are located under the `assets/{provider}` directory with a size of 72x72.
+To add new icons, or regenerate the ones we have run one of the commands below (depending on the provider) and then copy the result from `resize/` to the corresponding directory on the `assets/{provider}`.
+Once the new icons at the right place, run `go run scripts/assets/main.go --dry` (add `--branch=your-branch` if you did also update `tfdocs` and it's not yet merged) to see if anything could be removed. If so then run it without the `--dry` to clean the icons we do not use so we do not import extra stuff, it'll also display what's missing.
+Then, as a final step run `make generate-icons` and that's it!
+
+If we need to regenerate some icons from Providers, I'll leave here the commands we used for them so the process is easier:
+
+**AWS**
+
+The images provided for AWS on SVG do not map the same way in PNG, so we did convert the SVG ones to PNG with `inkscape`
+
+You need to be in the first level directory, rename all the `&` for `_and_` and the ` ` for `_` and then you can run the command
+
+```
+find SVG_Light/ -type d -exec mkdir resize/{} \; && find . -name '*.svg' -type f -exec inkscape {} -w 72 -h 72 --export-filename resize/{}.png \; && find ./resize/ -type f -name '*.svg.png' -exec sh -c 'f="{}"; mv -- "$f" "${f%.svg.png}.png"' \;
+```
+
+**OpenStack**
+
+They do not provide any PNG so we convert the SVG to PNG.
+
+You need to be in the directory in which the images are defined and have a `resize/` dir.
+
+```
+find . -name '*-gray.svg' -type f -exec inkscape {} -w 72 -h 72 --export-filename resize/{}.png \; && find ./resize/ -type f -name '*.svg.png' -exec sh -c 'f="{}"; mv -- "$f" "${f%.svg.png}.png"' \;
+```
