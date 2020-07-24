@@ -1,21 +1,22 @@
-package printer
+package factory
 
 import (
 	"fmt"
 
 	"github.com/cycloidio/inframap/errcode"
+	"github.com/cycloidio/inframap/printer"
 	"github.com/cycloidio/inframap/printer/dot"
 )
 
 var (
-	printers = map[Type]Printer{
-		DOT: dot.Dot{},
+	printers = map[printer.Type]printer.Printer{
+		printer.DOT: dot.Dot{},
 	}
 )
 
 // Get returns the specific Printer for t
-func Get(t string) (Printer, error) {
-	ty, err := TypeString(t)
+func Get(t string) (printer.Printer, error) {
+	ty, err := printer.TypeString(t)
 	if err != nil {
 		return nil, err
 	}

@@ -4,6 +4,8 @@
 
 - New flag to `generate`, `--connections` to apply or not the Provider logic of merging Edges between Nodes
   ([PR #23](https://github.com/cycloidio/inframap/pull/23))
+- Graph generation with Icons
+  ([Issue #13](https://github.com/cycloidio/inframap/issues/13))
 
 ## [0.1.1] _2020-07-16_
 

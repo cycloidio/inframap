@@ -8,6 +8,7 @@ import (
 	"github.com/cycloidio/inframap/generate"
 	"github.com/cycloidio/inframap/graph"
 	"github.com/cycloidio/inframap/printer"
+	"github.com/cycloidio/inframap/printer/factory"
 	"github.com/spf13/afero"
 	"github.com/spf13/cobra"
 )
@@ -17,6 +18,7 @@ var (
 	raw         bool
 	clean       bool
 	connections bool
+	showIcons   bool
 
 	generateCmd = &cobra.Command{
 		Use:     "generate [FILE]",
@@ -69,12 +71,15 @@ var (
 				return err
 			}
 
-			p, err := printer.Get(printerType)
+			p, err := factory.Get(printerType)
 			if err != nil {
 				return err
 			}
 
-			err = p.Print(g, os.Stdout)
+			popt := printer.Options{
+				ShowIcons: showIcons,
+			}
+			err = p.Print(g, popt, os.Stdout)
 			if err != nil {
 				return err
 			}
@@ -89,4 +94,5 @@ func init() {
 	generateCmd.Flags().BoolVar(&raw, "raw", false, "Raw will not use any specific logic from the provider, will just display the connections between elements. It's used by default if none of the Providers is known")
 	generateCmd.Flags().BoolVar(&clean, "clean", true, "Clean will the generated graph will not have any Node that does not have a connection/edge")
 	generateCmd.Flags().BoolVar(&connections, "connections", true, "Connections will apply the logic of the provider to remove resources that are not nodes")
+	generateCmd.Flags().BoolVar(&showIcons, "show-icons", true, "Toggle the icons on the printed graph")
 }

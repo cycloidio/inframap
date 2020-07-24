@@ -3,12 +3,14 @@ module github.com/cycloidio/inframap
 go 1.14
 
 require (
+	github.com/adrg/xdg v0.2.1
 	github.com/awalterschulze/gographviz v2.0.1+incompatible
 	github.com/chr4/pwgen v1.1.0
-	github.com/cycloidio/tfdocs v0.0.0-20200625151005-32e69112bc5f
+	github.com/cycloidio/tfdocs v0.0.0-20200724124628-2ba5ed06ceae
 	github.com/dmarkham/enumer v1.5.0
 	github.com/hashicorp/hcl/v2 v2.3.0
 	github.com/hashicorp/terraform v0.12.28
+	github.com/markbates/pkger v0.17.0
 	github.com/mitchellh/reflectwalk v1.0.1 // indirect
 	github.com/satori/go.uuid v1.2.0
 	github.com/spf13/afero v1.2.2

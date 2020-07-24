@@ -6,6 +6,10 @@
 Read your tfstate or HCL to generate a graph specific for each provider, showing only the
 resources that are most important/relevant.
 
+<p align="center">
+  <img src="docs/inframap.png" width="400">
+</p>
+
 ## Cloud Providers
 
 We support certain providers. This allows us to better represent information that comes from these providers.
@@ -100,22 +104,22 @@ With `terraform graph`:
   <img src="docs/terraformgraph.svg" width="400">
 </p>
 
-With `inframap generate --hcl ./terraform/module-magento/ | dot -Tsvg > inframap.svg`:
+With `inframap generate --hcl ./terraform/module-magento/ | dot -Tpng > inframap.png`:
 
 <p align="center">
-  <img src="docs/inframap.svg" width="400">
+  <img src="docs/inframap.png" width="400">
 </p>
 
-With `inframap generate --hcl --connections=false ./terraform/module-magento/ | dot -Tsvg > inframapconnections.svg`:
+With `inframap generate --hcl --connections=false ./terraform/module-magento/ | dot -Tpng > inframapconnections.png`:
 
 <p align="center">
-  <img src="docs/inframapconnections.svg" width="400">
+  <img src="docs/inframapconnections.png" width="400">
 </p>
 
-With `inframap generate --hcl ./terraform/module-magento/ --raw | dot -Tsvg > inframapraw.svg`:
+With `inframap generate --hcl ./terraform/module-magento/ --raw | dot -Tpng > inframapraw.png`:
 
 <p align="center">
-  <img src="docs/inframapraw.svg" width="400">
+  <img src="docs/inframapraw.png" width="400">
 </p>
 
 ## How does it work?
