@@ -6,6 +6,8 @@
   ([PR #23](https://github.com/cycloidio/inframap/pull/23))
 - Graph generation with Icons
   ([Issue #13](https://github.com/cycloidio/inframap/issues/13))
+- Google graph generation from TFState
+  ([Issue #7](https://github.com/cycloidio/inframap/issues/7))
 
 ## [0.1.1] _2020-07-16_
 
