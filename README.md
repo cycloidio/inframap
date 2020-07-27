@@ -23,7 +23,7 @@ We use Terraform: 0.12.28
 | AWS | Yes | Yes |
 | FlexibleEngine | Yes | Yes |
 | OpenStack | Yes | Yes |
-| Google | Yes | [WIP](https://github.com/cycloidio/inframap/issues/27) | 
+| Google | Yes | Yes |
 | [AzureRM](https://github.com/cycloidio/inframap/issues/8) | WIP | WIP | 
 
 ## Installation
