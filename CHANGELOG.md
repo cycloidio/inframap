@@ -1,5 +1,7 @@
 ## [Unreleased]
 
+## [0.2.0] _2020-07-27_
+
 ### Added
 
 - New flag to `generate`, `--connections` to apply or not the Provider logic of merging Edges between Nodes
