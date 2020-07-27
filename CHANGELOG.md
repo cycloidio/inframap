@@ -8,6 +8,12 @@
   ([Issue #13](https://github.com/cycloidio/inframap/issues/13))
 - Google graph generation from TFState
   ([Issue #7](https://github.com/cycloidio/inframap/issues/7))
+- Google graph generation from HCL
+  ([Issue #27](https://github.com/cycloidio/inframap/issues/27))
+### Fixed
+
+- HCL generation errors
+  ([Issue #29](https://github.com/cycloidio/inframap/issues/29))
 
 ## [0.1.1] _2020-07-16_
 

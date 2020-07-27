@@ -91,6 +91,38 @@ func TestFromHCL_FlexibleEngine(t *testing.T) {
 	})
 }
 
+func TestFromHCL_Google(t *testing.T) {
+	t.Run("Success", func(t *testing.T) {
+		fs := afero.NewOsFs()
+
+		g, err := generate.FromHCL(fs, "./testdata/google_hcl.tf", generate.Options{Clean: true, Connections: true})
+		require.NoError(t, err)
+		require.NotNil(t, g)
+
+		eg := &graph.Graph{
+			Nodes: []*graph.Node{
+				&graph.Node{
+					Canonical: "google_compute_instance.inframap-tmp-two",
+				},
+				&graph.Node{
+					Canonical: "google_compute_instance.inframap-tmp",
+				},
+			},
+			Edges: []*graph.Edge{
+				&graph.Edge{
+					Target: "google_compute_instance.inframap-tmp",
+					Source: "google_compute_instance.inframap-tmp-two",
+					Canonicals: []string{
+						"google_compute_firewall.allow-ssh",
+					},
+				},
+			},
+		}
+
+		assertEqualGraph(t, eg, g, nil)
+	})
+}
+
 func TestFromHCL_Module(t *testing.T) {
 	t.Run("SuccessSG", func(t *testing.T) {
 		fs := afero.NewOsFs()

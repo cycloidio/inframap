@@ -569,6 +569,10 @@ func preprocess(g *graph.Graph, cfg map[string]map[string]interface{}, opt Optio
 				Target: edge[1],
 			})
 			if err != nil {
+				// If the edge already exists we can ignore it
+				if errors.Is(err, errcode.ErrGraphAlreadyExistsEdge) {
+					continue
+				}
 				return fmt.Errorf("could not add edge: %w", err)
 			}
 		}

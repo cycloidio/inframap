@@ -11,6 +11,7 @@ import (
 	"github.com/hashicorp/hcl/v2/hclsyntax"
 	"github.com/hashicorp/hcl/v2/hclwrite"
 	"github.com/hashicorp/terraform/configs"
+	"github.com/hashicorp/terraform/configs/hcl2shim"
 	uuid "github.com/satori/go.uuid"
 	"github.com/spf13/afero"
 )
@@ -148,6 +149,12 @@ func FromHCL(fs afero.Fs, path string, opt Options) (*graph.Graph, error) {
 		}
 	}
 
+	// call the preprocess method for each
+	// TF provider in the file
+	if err := preprocess(g, resourcesRawConfig, opt); err != nil {
+		return nil, err
+	}
+
 	if opt.Clean {
 		g.Clean()
 	}
@@ -201,22 +208,30 @@ func getBodyJSON(b *hclsyntax.Body) map[string]interface{} {
 		v, _ := attrv.Expr.Value(nil)
 		t := v.Type().FriendlyName()
 		switch t {
-		case "string", "bool", "number":
+		case "string", "bool", "number", "dynamic":
 			for i, vr := range attrv.Expr.Variables() {
 				if i > 0 {
 					continue
 				}
 				links[attrk] = fmt.Sprintf("${%s}", string(hclwrite.TokensForTraversal(vr).Bytes()))
 			}
+			if _, ok := links[attrk]; !ok {
+				links[attrk] = hcl2shim.ConfigValueFromHCL2(v)
+			}
 		case "tuple":
 			aux := make([]interface{}, 0)
 			for _, vr := range attrv.Expr.Variables() {
 				aux = append(aux, fmt.Sprintf("${%s}", string(hclwrite.TokensForTraversal(vr).Bytes())))
 			}
-			// We continue to not add empty information to the config
-			// so it's clean and only has required information
 			if len(aux) == 0 {
-				continue
+				i := hcl2shim.ConfigValueFromHCL2(v)
+				islice, ok := i.([]interface{})
+				if !ok {
+					// We continue to not add empty information to the config
+					// so it's clean and only has required information
+					continue
+				}
+				aux = islice
 			}
 			links[attrk] = aux
 		}
