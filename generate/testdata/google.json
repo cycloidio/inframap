@@ -1,0 +1,84 @@
+{
+  "version": 4,
+  "terraform_version": "0.12.28",
+  "serial": 10,
+  "lineage": "e5dbb7fb-d6a4-7f76-666f-636d219b9b88",
+  "outputs": {},
+  "resources": [
+    {
+      "mode": "managed",
+      "type": "google_compute_firewall",
+      "name": "PEZjy",
+      "provider": "provider.google",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "direction": "INGRESS",
+            "id": "allow-ssh",
+            "source_tags": [
+              "ssh"
+            ],
+            "target_tags": [
+              "front"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "google_compute_firewall",
+      "name": "vZmhG",
+      "provider": "provider.google",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "direction": "INGRESS",
+            "id": "allow-http",
+            "source_tags": [],
+            "target_tags": [
+              "front"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "google_compute_instance",
+      "name": "ZthAT",
+      "provider": "provider.google",
+      "instances": [
+        {
+          "schema_version": 6,
+          "attributes": {
+            "id": "infraview-tmp-two",
+            "tags": [
+              "ssh"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "google_compute_instance",
+      "name": "lodiw",
+      "provider": "provider.google",
+      "instances": [
+        {
+          "schema_version": 6,
+          "attributes": {
+            "id": "infraview-tmp",
+            "tags": [
+              "front"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
+

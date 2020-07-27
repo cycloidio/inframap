@@ -92,6 +92,14 @@ You need to be in the first level directory, rename all the `&` for `_and_` and 
 find SVG_Light/ -type d -exec mkdir resize/{} \; && find . -name '*.svg' -type f -exec inkscape {} -w 72 -h 72 --export-filename resize/{}.png \; && find ./resize/ -type f -name '*.svg.png' -exec sh -c 'f="{}"; mv -- "$f" "${f%.svg.png}.png"' \;
 ```
 
+**Google**
+
+Images are available in PNG format at this link: https://cloud.google.com/icons. Spaces are renamed to `_`. Only the resizing is required.
+
+```shell
+$ find assets/icons/google -name '*.png' -type f -exec convert {} -resize 72x72 {} \;
+```
+
 **OpenStack**
 
 They do not provide any PNG so we convert the SVG to PNG.
@@ -101,3 +109,4 @@ You need to be in the directory in which the images are defined and have a `resi
 ```
 find . -name '*-gray.svg' -type f -exec inkscape {} -w 72 -h 72 --export-filename resize/{}.png \; && find ./resize/ -type f -name '*.svg.png' -exec sh -c 'f="{}"; mv -- "$f" "${f%.svg.png}.png"' \;
 ```
+

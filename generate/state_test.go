@@ -193,7 +193,7 @@ func TestFromState_OpenStack(t *testing.T) {
 
 }
 
-func TestFromState_FlexibelEngine(t *testing.T) {
+func TestFromState_FlexibleEngine(t *testing.T) {
 	t.Run("SuccessFlexibleEngine", func(t *testing.T) {
 		src, err := ioutil.ReadFile("./testdata/flexibleengine.json")
 		require.NoError(t, err)
@@ -309,6 +309,40 @@ func TestFromState_FlexibelEngine(t *testing.T) {
 						"flexibleengine_networking_secgroup_rule_v2.mAaoN",
 						"flexibleengine_networking_secgroup_v2.HjOXk",
 						"flexibleengine_networking_secgroup_v2.tRwVT",
+					},
+				},
+			},
+		}
+
+		assertEqualGraph(t, eg, g, cfg)
+	})
+}
+
+func TestFromState_Google(t *testing.T) {
+	t.Run("SuccessGoogle", func(t *testing.T) {
+		src, err := ioutil.ReadFile("./testdata/google.json")
+		require.NoError(t, err)
+
+		g, cfg, err := generate.FromState(src, generate.Options{Clean: true, Connections: true})
+		require.NoError(t, err)
+		require.NotNil(t, g)
+		require.NotNil(t, cfg)
+
+		eg := &graph.Graph{
+			Nodes: []*graph.Node{
+				&graph.Node{
+					Canonical: "google_compute_instance.ZthAT",
+				},
+				&graph.Node{
+					Canonical: "google_compute_instance.lodiw",
+				},
+			},
+			Edges: []*graph.Edge{
+				&graph.Edge{
+					Target: "google_compute_instance.lodiw",
+					Source: "google_compute_instance.ZthAT",
+					Canonicals: []string{
+						"google_compute_firewall.PEZjy",
 					},
 				},
 			},

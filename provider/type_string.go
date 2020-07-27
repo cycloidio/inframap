@@ -6,11 +6,11 @@ import (
 	"fmt"
 )
 
-const _TypeName = "rawawsflexibleengineopenstack"
+const _TypeName = "rawawsflexibleengineopenstackgoogle"
 
-var _TypeIndex = [...]uint8{0, 3, 6, 20, 29}
+var _TypeIndex = [...]uint8{0, 3, 6, 20, 29, 35}
 
-const _TypeLowerName = "rawawsflexibleengineopenstack"
+const _TypeLowerName = "rawawsflexibleengineopenstackgoogle"
 
 func (i Type) String() string {
 	if i < 0 || i >= Type(len(_TypeIndex)-1) {
@@ -27,9 +27,10 @@ func _TypeNoOp() {
 	_ = x[AWS-(1)]
 	_ = x[FlexibleEngine-(2)]
 	_ = x[OpenStack-(3)]
+	_ = x[Google-(4)]
 }
 
-var _TypeValues = []Type{Raw, AWS, FlexibleEngine, OpenStack}
+var _TypeValues = []Type{Raw, AWS, FlexibleEngine, OpenStack, Google}
 
 var _TypeNameToValueMap = map[string]Type{
 	_TypeName[0:3]:        Raw,
@@ -40,6 +41,8 @@ var _TypeNameToValueMap = map[string]Type{
 	_TypeLowerName[6:20]:  FlexibleEngine,
 	_TypeName[20:29]:      OpenStack,
 	_TypeLowerName[20:29]: OpenStack,
+	_TypeName[29:35]:      Google,
+	_TypeLowerName[29:35]: Google,
 }
 
 var _TypeNames = []string{
@@ -47,6 +50,7 @@ var _TypeNames = []string{
 	_TypeName[3:6],
 	_TypeName[6:20],
 	_TypeName[20:29],
+	_TypeName[29:35],
 }
 
 // TypeString retrieves an enum value from the enum constants string name.

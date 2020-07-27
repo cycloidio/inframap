@@ -11,4 +11,5 @@ const (
 	AWS
 	FlexibleEngine
 	OpenStack
+	Google
 )

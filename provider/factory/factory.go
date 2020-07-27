@@ -9,6 +9,7 @@ import (
 	"github.com/cycloidio/inframap/provider"
 	"github.com/cycloidio/inframap/provider/aws"
 	"github.com/cycloidio/inframap/provider/flexibleengine"
+	"github.com/cycloidio/inframap/provider/google"
 	"github.com/cycloidio/inframap/provider/openstack"
 )
 
@@ -17,6 +18,7 @@ var (
 		provider.AWS:            aws.Provider{},
 		provider.FlexibleEngine: flexibleengine.Provider{},
 		provider.OpenStack:      openstack.Provider{},
+		provider.Google:         google.Provider{},
 	}
 
 	// reProvider is a regexp to match 'aws' from 'aws' or 'aws_iam_user'
