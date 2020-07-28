@@ -7,6 +7,7 @@ import (
 
 	"github.com/cycloidio/inframap/errcode"
 	"github.com/cycloidio/inframap/graph"
+	"github.com/cycloidio/inframap/provider"
 	"github.com/hashicorp/hcl/v2"
 	"github.com/hashicorp/hcl/v2/hclsyntax"
 	"github.com/hashicorp/hcl/v2/hclwrite"
@@ -99,6 +100,7 @@ func FromHCL(fs afero.Fs, path string, opt Options) (*graph.Graph, error) {
 		if ok {
 			links = getBodyLinks(body)
 			cfg := getBodyJSON(body)
+			cfg[provider.HCLCanonicalKey] = rk
 			resourcesRawConfig[n.ID] = cfg
 		} else {
 			// If it's not a hclsyntax.Body normally
