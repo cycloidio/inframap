@@ -197,8 +197,9 @@ func (g *Graph) Replace(srcID, repID string) error {
 		}
 	}
 
-	g.removeNodeByID(srcID)
-	g.removeEdgeByID(mutualEdge.ID)
+	if err = g.RemoveNodeByID(srcID); err != nil {
+		return err
+	}
 
 	return nil
 }
@@ -216,18 +217,22 @@ func (g *Graph) InvertEdge(eID string) {
 	}
 }
 
-// removeNodeByID removes the Node with the ID
-func (g *Graph) removeNodeByID(ID string) {
+// RemoveNodeByID removes the Node with the ID and the Edges
+// associated with it
+func (g *Graph) RemoveNodeByID(ID string) error {
 	for i, n := range g.Nodes {
 		if n.ID == ID {
 			idx := i
 			g.removeNodeByIDX(idx)
+			return nil
 		}
 	}
+	return errcode.ErrGraphNotFoundNode
 }
 
 // removeNodeByIDX removes the idx element (via the copy) and then
-// removes the last element as it's not needed.
+// removes the last element as it's not needed. It also removes
+// the Edges that where connected to this Node
 func (g *Graph) removeNodeByIDX(idx int) {
 	n := g.Nodes[idx]
 
@@ -238,6 +243,17 @@ func (g *Graph) removeNodeByIDX(idx int) {
 	lenNodes := len(g.Nodes)
 	copy(g.Nodes[idx:], g.Nodes[idx+1:])
 	g.Nodes = g.Nodes[:lenNodes-1]
+
+	// Remove the Edges from the Graph
+RESTART:
+	for _, e := range g.Edges {
+		if e.Target == n.ID || e.Source == n.ID {
+			g.removeEdgeByID(e.ID)
+			// We restart the loop because this operation potentially
+			// changes the g.Edges order/items
+			goto RESTART
+		}
+	}
 }
 
 // removeEdgeByID removes the Edge with the ID
