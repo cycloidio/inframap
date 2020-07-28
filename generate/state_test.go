@@ -95,6 +95,48 @@ func TestFromState_AWS(t *testing.T) {
 		assertEqualGraph(t, eg, g, cfg)
 	})
 
+	t.Run("MultipleHangingEdges", func(t *testing.T) {
+		src, err := ioutil.ReadFile("./testdata/aws_state_multiple_hanging_edges.json")
+		require.NoError(t, err)
+
+		g, cfg, err := generate.FromState(src, generate.Options{Clean: true, Connections: true})
+		require.NoError(t, err)
+		require.NotNil(t, g)
+		require.NotNil(t, cfg)
+
+		eg := &graph.Graph{
+			Nodes: []*graph.Node{
+				&graph.Node{
+					Canonical: "aws_lb.load-balancer",
+				},
+				&graph.Node{
+					Canonical: "aws_ecs_service.wordpress",
+				},
+				&graph.Node{
+					Canonical: "aws_ecs_cluster.ecs-cluster",
+				},
+			},
+			Edges: []*graph.Edge{
+				&graph.Edge{
+					Source: "aws_lb.load-balancer",
+					Target: "aws_ecs_service.wordpress",
+					Canonicals: []string{
+						"aws_security_group.ecs_service",
+						"aws_security_group.generated_aws_lb_load-balancer",
+						"aws_security_group_rule.allow-alb",
+					},
+				},
+				&graph.Edge{
+					Source:     "aws_ecs_service.wordpress",
+					Target:     "aws_ecs_cluster.ecs-cluster",
+					Canonicals: []string(nil),
+				},
+			},
+		}
+
+		assertEqualGraph(t, eg, g, cfg)
+	})
+
 	t.Run("WithCount", func(t *testing.T) {
 		src, err := ioutil.ReadFile("./testdata/aws_with_count.json")
 		require.NoError(t, err)

@@ -206,6 +206,27 @@ func cleanHangingEdges(g *graph.Graph, opt Options) error {
 			}
 		}
 	}
+
+	// Now that all the hanging Edges have been cleaned
+	// we'll remove all the other Edges present if those
+	// are not meant to be displayed
+	if opt.Connections {
+	RESTART:
+		for _, n := range g.Nodes {
+			pv, rs, err := getProviderAndResource(n.Canonical, opt)
+			if err != nil {
+				return err
+			}
+			if pv.IsEdge(rs) {
+				if err := g.RemoveNodeByID(n.ID); err != nil {
+					return err
+				}
+				// We restart the loop because this operations potentially
+				// change the g.Nodes order/items
+				goto RESTART
+			}
+		}
+	}
 	return nil
 }
 
