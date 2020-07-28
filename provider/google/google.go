@@ -95,9 +95,27 @@ func (a Provider) ResourceInOut(id, rs string, cfgs map[string]map[string]interf
 			// is it connected and not itself
 			continue
 		}
-		pvid, ok := cfg["id"].(string)
+		ipvid, ok := cfg["id"]
 		if !ok {
-			// If for some reason it's not an String we continue
+			// If the 'id' is not defined then it is HCL and
+			// the HCLCanonicalKey should be present
+			ipvid, ok = cfg[provider.HCLCanonicalKey]
+			if !ok {
+				// If it is also not present
+				// we can ignore it as we cannot
+				// reference it
+				continue
+			}
+			// We need to fake it as a '${}' because that is
+			// how it is expected from the caller
+			// The .something is not important
+			ipvid = fmt.Sprintf("${%s.something}", ipvid)
+		}
+
+		pvid, ok := ipvid.(string)
+		if !ok {
+			// If the ID is not an string
+			// we continue
 			continue
 		}
 		for _, in := range tagins {
