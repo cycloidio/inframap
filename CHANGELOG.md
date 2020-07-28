@@ -4,6 +4,8 @@
 
 - Google graph generation from HCL
   ([PR #34](https://github.com/cycloidio/inframap/pull/34))
+- Generation error when multiple Edges hanging (not merged)
+  ([PR #33](https://github.com/cycloidio/inframap/pull/33))
 
 ## [0.2.0] _2020-07-27_
 
@@ -17,6 +19,7 @@
   ([Issue #7](https://github.com/cycloidio/inframap/issues/7))
 - Google graph generation from HCL
   ([Issue #27](https://github.com/cycloidio/inframap/issues/27))
+
 ### Fixed
 
 - HCL generation errors
