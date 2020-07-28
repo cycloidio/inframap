@@ -91,8 +91,16 @@ func (d Dot) Print(g *graph.Graph, opt printer.Options, w io.Writer) error {
 	}
 
 	for _, e := range g.Edges {
-		src, _ := g.GetNodeByID(e.Source)
-		tr, _ := g.GetNodeByID(e.Target)
+		src, err := g.GetNodeByID(e.Source)
+		if err != nil {
+			return err
+		}
+
+		tr, err := g.GetNodeByID(e.Target)
+		if err != nil {
+			return err
+		}
+
 		graph.AddEdge(fmt.Sprintf("%q", src.Canonical), fmt.Sprintf("%q", tr.Canonical), true, nil)
 	}
 
