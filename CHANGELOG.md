@@ -1,5 +1,10 @@
 ## [Unreleased]
 
+### Fixed
+
+- Google graph generation from HCL
+  ([PR #34](https://github.com/cycloidio/inframap/pull/34))
+
 ## [0.2.0] _2020-07-27_
 
 ### Added

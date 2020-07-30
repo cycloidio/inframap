@@ -4,6 +4,11 @@ import (
 	"github.com/cycloidio/tfdocs/resource"
 )
 
+// HCLCanonicalKey is used to define a specific key to the config, in this case
+// the HCL config, as it does not have an 'id' we'll add this key with the
+// Canonical of the Resource (ex: _im_canonical => aws_lb.front)
+const HCLCanonicalKey = "_im_canonical"
+
 // Provider is an interface to abstract common functions on all the
 // providers
 type Provider interface {
