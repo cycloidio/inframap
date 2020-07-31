@@ -64,18 +64,34 @@ func findEdgeConnections(g *graph.Graph, n *graph.Node, visited map[string]struc
 			})
 		} else {
 
+			// We make a copy of the visited so
+			// each nested edge does not share the
+			// same copy of it and produces a wrong
+			// result
+			aux := make(map[string]struct{})
+			for k, v := range visited {
+				aux[k] = v
+			}
+
 			// We get all the shortest path to a Node and append it
-			cons, err := getShortestNodePath(g, en, visited, opt)
+			cons, err := getShortestNodePath(g, en, aux, opt)
 			if err != nil {
 				return nil, err
 			}
-			con := []*connection{
-				&connection{
-					Node:      en,
-					Direction: direc,
-				},
+			// If there are no connections means it's an end Node,
+			// and as it is not a Node (it'll have entered the previous
+			// condition) it means it has no Node at the end so we do not
+			// return it
+			if len(cons) != 0 {
+				con := []*connection{
+					&connection{
+						Node:      en,
+						Direction: direc,
+					},
+				}
+
+				res = append(res, append(con, cons...))
 			}
-			res = append(res, append(con, cons...))
 		}
 	}
 	return res, nil

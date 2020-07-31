@@ -58,6 +58,105 @@ func TestAddNode(t *testing.T) {
 	})
 }
 
+func TestRemoveNodeByID(t *testing.T) {
+	t.Run("Success", func(t *testing.T) {
+		g := graph.New()
+		n1 := &graph.Node{ID: "1", Canonical: "can1"}
+		n2 := &graph.Node{ID: "2", Canonical: "2"}
+
+		err := g.AddNode(n1)
+		require.NoError(t, err)
+
+		err = g.AddNode(n2)
+		require.NoError(t, err)
+
+		assert.Equal(t, []*graph.Node{n1, n2}, g.Nodes)
+
+		err = g.RemoveNodeByID(n1.ID)
+		require.NoError(t, err)
+
+		assert.Equal(t, []*graph.Node{n2}, g.Nodes)
+
+		err = g.RemoveNodeByID(n2.ID)
+		require.NoError(t, err)
+
+		assert.Equal(t, []*graph.Node{}, g.Nodes)
+	})
+	t.Run("SuccessWithEdges", func(t *testing.T) {
+		g := graph.New()
+		n1 := &graph.Node{ID: "1", Canonical: "can1"}
+		n2 := &graph.Node{ID: "2", Canonical: "can2"}
+		e := &graph.Edge{ID: "1", Source: n1.ID, Target: n2.ID}
+
+		err := g.AddNode(n1)
+		require.NoError(t, err)
+
+		err = g.AddNode(n2)
+		require.NoError(t, err)
+
+		err = g.AddEdge(e)
+		require.NoError(t, err)
+
+		assert.Equal(t, []*graph.Edge{e}, g.Edges)
+
+		err = g.RemoveNodeByID(n1.ID)
+		require.NoError(t, err)
+
+		assert.Equal(t, []*graph.Node{n2}, g.Nodes)
+		assert.Equal(t, []*graph.Edge{}, g.Edges)
+	})
+	t.Run("SuccessWithEdges", func(t *testing.T) {
+		g := graph.New()
+		n1 := &graph.Node{ID: "1", Canonical: "can1"}
+		n2 := &graph.Node{ID: "2", Canonical: "can2"}
+		n3 := &graph.Node{ID: "3", Canonical: "can3"}
+		n4 := &graph.Node{ID: "4", Canonical: "can4"}
+		e1 := &graph.Edge{ID: "1", Source: n1.ID, Target: n2.ID}
+		e2 := &graph.Edge{ID: "2", Source: n2.ID, Target: n3.ID}
+		e3 := &graph.Edge{ID: "3", Source: n1.ID, Target: n4.ID}
+
+		err := g.AddNode(n1)
+		require.NoError(t, err)
+
+		err = g.AddNode(n2)
+		require.NoError(t, err)
+
+		err = g.AddNode(n3)
+		require.NoError(t, err)
+
+		err = g.AddNode(n4)
+		require.NoError(t, err)
+
+		err = g.AddEdge(e1)
+		require.NoError(t, err)
+
+		err = g.AddEdge(e2)
+		require.NoError(t, err)
+
+		err = g.AddEdge(e3)
+		require.NoError(t, err)
+
+		assert.Equal(t, []*graph.Node{n1, n2, n3, n4}, g.Nodes)
+		assert.Equal(t, []*graph.Edge{e1, e2, e3}, g.Edges)
+
+		err = g.RemoveNodeByID(n2.ID)
+		require.NoError(t, err)
+
+		assert.Equal(t, []*graph.Node{n1, n3, n4}, g.Nodes)
+		assert.Equal(t, []*graph.Edge{e3}, g.Edges)
+	})
+	t.Run("ErrGraphNotFoundNode", func(t *testing.T) {
+		g := graph.New()
+		n1 := &graph.Node{ID: "1", Canonical: "can1"}
+
+		err := g.AddNode(n1)
+		require.NoError(t, err)
+
+		err = g.RemoveNodeByID("invalid-id")
+		assert.Error(t, err, errcode.ErrGraphNotFoundNode.Error())
+	})
+}
+
 func TestAddEdge(t *testing.T) {
 	t.Run("Success", func(t *testing.T) {
 		g := graph.New()

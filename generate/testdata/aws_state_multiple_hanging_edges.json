@@ -1,0 +1,314 @@
+{
+    "version": 4,
+    "terraform_version": "0.12.28",
+    "serial": 1,
+    "lineage": "78acec0c-c5f3-6eec-e689-d18221d89128",
+    "outputs": {},
+    "resources": [
+        {
+            "module": "module.tf-8-wordpress-demo",
+            "mode": "managed",
+            "type": "aws_ecs_cluster",
+            "name": "ecs-cluster",
+            "provider": "module.tf-8-wordpress-demo.provider.aws",
+            "instances": [
+                {
+                    "schema_version": 0,
+                    "attributes_flat": {
+                        "id": "c737f2bf-9ef5-46b3-abd1-419539a9501b"
+                    }
+                }
+            ]
+        },
+        {
+            "module": "module.tf-8-wordpress-demo",
+            "mode": "managed",
+            "type": "aws_ecs_service",
+            "name": "wordpress",
+            "provider": "module.tf-8-wordpress-demo.provider.aws",
+            "instances": [
+                {
+                    "schema_version": 0,
+                    "attributes_flat": {
+                        "id": "fc7ed1fc-fd44-4dc6-8dd4-a6b478807ba9"
+                    },
+                    "depends_on": [
+                        "aws_ecs_cluster.ecs-cluster",
+                        "aws_ecs_task_definition.wordpress",
+                        "aws_lb_listener.lb-listener",
+                        "aws_lb_target_group.lb-target-group",
+                        "aws_security_group.ecs_service"
+                    ]
+                }
+            ]
+        },
+        {
+            "module": "module.tf-8-wordpress-demo",
+            "mode": "managed",
+            "type": "aws_lb",
+            "name": "load-balancer",
+            "provider": "module.tf-8-wordpress-demo.provider.aws",
+            "instances": [
+                {
+                    "schema_version": 0,
+                    "attributes_flat": {
+                        "id": "1c827203-82fc-415a-ae40-618de9b57419"
+                    },
+                    "depends_on": [
+                        "aws_security_group.generated_aws_lb_load-balancer",
+                        "aws_security_group.generated_sg_aws_lb_load-balancer"
+                    ]
+                }
+            ]
+        },
+        {
+            "module": "module.tf-8-wordpress-demo",
+            "mode": "managed",
+            "type": "aws_security_group",
+            "name": "ecs_service",
+            "provider": "module.tf-8-wordpress-demo.provider.aws",
+            "instances": [
+                {
+                    "schema_version": 1,
+                    "attributes_flat": {
+                        "egress.#": "0",
+                        "id": "sg-0547bedace3d64924",
+                        "ingress.#": "0"
+                    }
+                }
+            ]
+        },
+        {
+            "module": "module.tf-8-wordpress-demo",
+            "mode": "managed",
+            "type": "aws_security_group",
+            "name": "generated_aws_lb_load-balancer",
+            "provider": "module.tf-8-wordpress-demo.provider.aws",
+            "instances": [
+                {
+                    "schema_version": 1,
+                    "attributes_flat": {
+                        "egress.#": "0",
+                        "id": "sg-0a769840ace64c705",
+                        "ingress.#": "0"
+                    }
+                }
+            ]
+        },
+        {
+            "module": "module.tf-8-wordpress-demo",
+            "mode": "managed",
+            "type": "aws_security_group",
+            "name": "generated_sg_aws_instance_front",
+            "provider": "module.tf-8-wordpress-demo.provider.aws",
+            "instances": [
+                {
+                    "schema_version": 1,
+                    "attributes_flat": {
+                        "egress.#": "0",
+                        "id": "sg-0d165047dfbecf4bb",
+                        "ingress.#": "0"
+                    }
+                }
+            ]
+        },
+        {
+            "module": "module.tf-8-wordpress-demo",
+            "mode": "managed",
+            "type": "aws_security_group",
+            "name": "generated_sg_aws_lb_load-balancer",
+            "provider": "module.tf-8-wordpress-demo.provider.aws",
+            "instances": [
+                {
+                    "schema_version": 1,
+                    "attributes_flat": {
+                        "egress.#": "0",
+                        "id": "sg-0313f3d256f13f50b",
+                        "ingress.#": "0"
+                    }
+                }
+            ]
+        },
+        {
+            "module": "module.tf-8-wordpress-demo",
+            "mode": "managed",
+            "type": "aws_security_group_rule",
+            "name": "allow-alb",
+            "provider": "module.tf-8-wordpress-demo.provider.aws",
+            "instances": [
+                {
+                    "schema_version": 2,
+                    "attributes_flat": {
+                        "id": "sgrule-470343321",
+                        "security_group_id": "sg-0547bedace3d64924",
+                        "source_security_group_id": "sg-0a769840ace64c705"
+                    },
+                    "depends_on": [
+                        "aws_security_group.ecs_service",
+                        "aws_security_group.generated_aws_lb_load-balancer"
+                    ]
+                }
+            ]
+        },
+        {
+            "module": "module.tf-8-wordpress-demo",
+            "mode": "managed",
+            "type": "aws_security_group_rule",
+            "name": "internet-output",
+            "provider": "module.tf-8-wordpress-demo.provider.aws",
+            "instances": [
+                {
+                    "schema_version": 2,
+                    "attributes_flat": {
+                        "id": "sgrule-29718534",
+                        "security_group_id": "sg-0547bedace3d64924"
+                    },
+                    "depends_on": [
+                        "aws_security_group.ecs_service"
+                    ]
+                }
+            ]
+        },
+        {
+            "module": "module.tf-8-wordpress-demo",
+            "mode": "managed",
+            "type": "aws_security_group_rule",
+            "name": "load-balancer_public_from_the_internet_http",
+            "provider": "module.tf-8-wordpress-demo.provider.aws",
+            "instances": [
+                {
+                    "schema_version": 2,
+                    "attributes_flat": {
+                        "id": "sgrule-626462736",
+                        "security_group_id": "sg-0a769840ace64c705"
+                    },
+                    "depends_on": [
+                        "aws_security_group.generated_aws_lb_load-balancer"
+                    ]
+                }
+            ]
+        },
+        {
+            "module": "module.tf-8-wordpress-demo",
+            "mode": "managed",
+            "type": "aws_security_group_rule",
+            "name": "load-balancer_public_from_the_internet_https",
+            "provider": "module.tf-8-wordpress-demo.provider.aws",
+            "instances": [
+                {
+                    "schema_version": 2,
+                    "attributes_flat": {
+                        "id": "sgrule-4048962960",
+                        "security_group_id": "sg-0a769840ace64c705"
+                    },
+                    "depends_on": [
+                        "aws_security_group.generated_aws_lb_load-balancer"
+                    ]
+                }
+            ]
+        },
+        {
+            "module": "module.tf-8-wordpress-demo",
+            "mode": "managed",
+            "type": "aws_security_group_rule",
+            "name": "output",
+            "provider": "module.tf-8-wordpress-demo.provider.aws",
+            "instances": [
+                {
+                    "schema_version": 2,
+                    "attributes_flat": {
+                        "id": "sgrule-3253196881",
+                        "security_group_id": "sg-0a769840ace64c705"
+                    },
+                    "depends_on": [
+                        "aws_security_group.generated_aws_lb_load-balancer"
+                    ]
+                }
+            ]
+        },
+        {
+            "module": "module.tf-8-wordpress-demo",
+            "mode": "managed",
+            "type": "aws_security_group_rule",
+            "name": "rule_egress_generated_nTiRTlKCl",
+            "provider": "module.tf-8-wordpress-demo.provider.aws",
+            "instances": [
+                {
+                    "schema_version": 2,
+                    "attributes_flat": {
+                        "id": "sgrule-2270803082",
+                        "security_group_id": "sg-0d165047dfbecf4bb",
+                        "source_security_group_id": "sg-0313f3d256f13f50b"
+                    },
+                    "depends_on": [
+                        "aws_security_group.generated_sg_aws_instance_front",
+                        "aws_security_group.generated_sg_aws_lb_load-balancer"
+                    ]
+                }
+            ]
+        },
+        {
+            "module": "module.tf-8-wordpress-demo",
+            "mode": "managed",
+            "type": "aws_security_group_rule",
+            "name": "rule_egress_generated_sg_aws_instance_front_to_generated_sg_aws_lb_load-balancer_80_80",
+            "provider": "module.tf-8-wordpress-demo.provider.aws",
+            "instances": [
+                {
+                    "schema_version": 2,
+                    "attributes_flat": {
+                        "id": "sgrule-3178401203",
+                        "security_group_id": "sg-0d165047dfbecf4bb",
+                        "source_security_group_id": "sg-0313f3d256f13f50b"
+                    },
+                    "depends_on": [
+                        "aws_security_group.generated_sg_aws_instance_front",
+                        "aws_security_group.generated_sg_aws_lb_load-balancer"
+                    ]
+                }
+            ]
+        },
+        {
+            "module": "module.tf-8-wordpress-demo",
+            "mode": "managed",
+            "type": "aws_security_group_rule",
+            "name": "rule_ingress_generated_nTiRTlKCl",
+            "provider": "module.tf-8-wordpress-demo.provider.aws",
+            "instances": [
+                {
+                    "schema_version": 2,
+                    "attributes_flat": {
+                        "id": "sgrule-2395627403",
+                        "security_group_id": "sg-0313f3d256f13f50b",
+                        "source_security_group_id": "sg-0d165047dfbecf4bb"
+                    },
+                    "depends_on": [
+                        "aws_security_group.generated_sg_aws_instance_front",
+                        "aws_security_group.generated_sg_aws_lb_load-balancer"
+                    ]
+                }
+            ]
+        },
+        {
+            "module": "module.tf-8-wordpress-demo",
+            "mode": "managed",
+            "type": "aws_security_group_rule",
+            "name": "rule_ingress_generated_sg_aws_instance_front_to_generated_sg_aws_lb_load-balancer_80_80",
+            "provider": "module.tf-8-wordpress-demo.provider.aws",
+            "instances": [
+                {
+                    "schema_version": 2,
+                    "attributes_flat": {
+                        "id": "sgrule-1651011552",
+                        "security_group_id": "sg-0313f3d256f13f50b",
+                        "source_security_group_id": "sg-0d165047dfbecf4bb"
+                    },
+                    "depends_on": [
+                        "aws_security_group.generated_sg_aws_instance_front",
+                        "aws_security_group.generated_sg_aws_lb_load-balancer"
+                    ]
+                }
+            ]
+        }
+    ]
+}
