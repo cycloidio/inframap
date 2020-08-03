@@ -87,6 +87,14 @@ func (d Dot) Print(g *graph.Graph, opt printer.Options, w io.Writer) error {
 			}
 		}
 
+		for _, g := range n.GroupIDs {
+			clusterName := fmt.Sprintf("%q", fmt.Sprintf("cluster_%s", g))
+			graph.AddSubGraph(parentName, clusterName, map[string]string{
+				"label": clusterName,
+			})
+			graph.AddNode(clusterName, fmt.Sprintf("%q", n.Canonical), attr)
+		}
+
 		graph.AddNode(parentName, fmt.Sprintf("%q", n.Canonical), attr)
 	}
 
