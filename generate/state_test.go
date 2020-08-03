@@ -12,7 +12,7 @@ import (
 
 func TestFromState_AWS(t *testing.T) {
 	t.Run("SuccessSG", func(t *testing.T) {
-		src, err := ioutil.ReadFile("./testdata/aws_sg.json")
+		src, err := ioutil.ReadFile("./testdata/aws_state_sg.json")
 		require.NoError(t, err)
 
 		g, cfg, err := generate.FromState(src, generate.Options{Clean: true, Connections: true})
@@ -50,7 +50,7 @@ func TestFromState_AWS(t *testing.T) {
 	})
 
 	t.Run("SuccessSGR", func(t *testing.T) {
-		src, err := ioutil.ReadFile("./testdata/aws_sgr.json")
+		src, err := ioutil.ReadFile("./testdata/aws_state_sgr.json")
 		require.NoError(t, err)
 
 		g, cfg, err := generate.FromState(src, generate.Options{Clean: true, Connections: true})
@@ -138,7 +138,7 @@ func TestFromState_AWS(t *testing.T) {
 	})
 
 	t.Run("WithCount", func(t *testing.T) {
-		src, err := ioutil.ReadFile("./testdata/aws_with_count.json")
+		src, err := ioutil.ReadFile("./testdata/aws_state_with_count.json")
 		require.NoError(t, err)
 
 		g, cfg, err := generate.FromState(src, generate.Options{Clean: true, Connections: true})
@@ -151,7 +151,7 @@ func TestFromState_AWS(t *testing.T) {
 
 func TestFromState_OpenStack(t *testing.T) {
 	t.Run("SuccessLB", func(t *testing.T) {
-		src, err := ioutil.ReadFile("./testdata/openstack_lb.json")
+		src, err := ioutil.ReadFile("./testdata/openstack_state_lb.json")
 		require.NoError(t, err)
 
 		g, cfg, err := generate.FromState(src, generate.Options{Clean: true, Connections: true})
@@ -198,7 +198,7 @@ func TestFromState_OpenStack(t *testing.T) {
 		assertEqualGraph(t, eg, g, cfg)
 	})
 	t.Run("SuccessSG", func(t *testing.T) {
-		src, err := ioutil.ReadFile("./testdata/openstack_sg.json")
+		src, err := ioutil.ReadFile("./testdata/openstack_state_sg.json")
 		require.NoError(t, err)
 
 		g, cfg, err := generate.FromState(src, generate.Options{Clean: true, Connections: true})
@@ -237,7 +237,7 @@ func TestFromState_OpenStack(t *testing.T) {
 
 func TestFromState_FlexibleEngine(t *testing.T) {
 	t.Run("SuccessFlexibleEngine", func(t *testing.T) {
-		src, err := ioutil.ReadFile("./testdata/flexibleengine.json")
+		src, err := ioutil.ReadFile("./testdata/flexibleengine_state.json")
 		require.NoError(t, err)
 
 		g, cfg, err := generate.FromState(src, generate.Options{Clean: true, Connections: true})
@@ -286,7 +286,7 @@ func TestFromState_FlexibleEngine(t *testing.T) {
 	})
 
 	t.Run("SuccessWithFlexibleEngine011", func(t *testing.T) {
-		src, err := ioutil.ReadFile("./testdata/flexibleengine_tf_011.json")
+		src, err := ioutil.ReadFile("./testdata/flexibleengine_state_tf_011.json")
 		require.NoError(t, err)
 
 		g, cfg, err := generate.FromState(src, generate.Options{Clean: true, Connections: true})
@@ -322,7 +322,7 @@ func TestFromState_FlexibleEngine(t *testing.T) {
 	})
 
 	t.Run("SuccessWithComputeInterfaceAttach", func(t *testing.T) {
-		src, err := ioutil.ReadFile("./testdata/flexibleengine_attach.json")
+		src, err := ioutil.ReadFile("./testdata/flexibleengine_state_attach.json")
 		require.NoError(t, err)
 
 		g, cfg, err := generate.FromState(src, generate.Options{Clean: true, Connections: true})
@@ -362,7 +362,7 @@ func TestFromState_FlexibleEngine(t *testing.T) {
 
 func TestFromState_Google(t *testing.T) {
 	t.Run("SuccessGoogle", func(t *testing.T) {
-		src, err := ioutil.ReadFile("./testdata/google.json")
+		src, err := ioutil.ReadFile("./testdata/google_state.json")
 		require.NoError(t, err)
 
 		g, cfg, err := generate.FromState(src, generate.Options{Clean: true, Connections: true})

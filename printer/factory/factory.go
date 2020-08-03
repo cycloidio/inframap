@@ -18,7 +18,7 @@ var (
 func Get(t string) (printer.Printer, error) {
 	ty, err := printer.TypeString(t)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("no printer defined for %s: %w", ty, errcode.ErrPrinterNotFound)
 	}
 
 	p, ok := printers[ty]
