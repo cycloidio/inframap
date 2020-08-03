@@ -153,6 +153,10 @@ func (g *Graph) Replace(srcID, repID string) error {
 		return err
 	}
 
+	// We add the Groups the srcNode has to the
+	// end Node so we'll keep them
+	repNode.AddGroupIDs(srcNode.GroupIDs...)
+
 	// mutualEdge is the edge that connects this 2 Nodes
 	var mutualEdge *Edge
 	for _, e := range srcEdges {
