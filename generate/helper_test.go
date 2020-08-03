@@ -50,11 +50,7 @@ func assertEqualGraph(t *testing.T, expected, actual *graph.Graph, actualCfg map
 
 	for _, en := range expected.Nodes {
 		if an, ok := nodeCans[en.Canonical]; ok {
-			en.ID = an.ID
-			en.TFID = an.TFID
-			en.Resource = an.Resource
-			en.Weight = an.Weight
-			assert.Equal(t, en, an)
+			assert.Equal(t, en.GroupIDs, an.GroupIDs)
 		} else {
 			assert.Failf(t, "Fail", "The Node with Canonical %q is missing", en.Canonical)
 		}

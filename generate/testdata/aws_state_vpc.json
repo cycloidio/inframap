@@ -1,0 +1,300 @@
+{
+  "version": 4,
+  "terraform_version": "0.12.28",
+  "serial": 1,
+  "lineage": "7ad13269-c000-d247-1b1c-3075a222f1df",
+  "resources": [
+    {
+      "module": "module.magento",
+      "mode": "managed",
+      "type": "aws_db_instance",
+      "name": "magento",
+      "provider": "provider.aws",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "sample-magento-rds-prod",
+            "vpc_security_group_ids": [
+              "sg-057cbd30abf1dd923"
+            ]
+          },
+          "depends_on": [
+            "aws_db_subnet_group.rds-subnet[0]",
+            "aws_security_group.rds"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.magento",
+      "mode": "managed",
+      "type": "aws_elasticache_cluster",
+      "name": "redis",
+      "provider": "provider.aws",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "cy323i4p3rf0szblrtmu"
+          },
+          "depends_on": [
+            "aws_elasticache_subnet_group.cache-subnet[0]",
+            "aws_security_group.redis"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.magento",
+      "mode": "managed",
+      "type": "aws_elb",
+      "name": "front",
+      "provider": "provider.aws",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "sample-magento-front-prod",
+            "source_security_group_id": "sg-02831399bd1302ed1"
+          },
+          "depends_on": [
+            "aws_instance.front",
+            "aws_security_group.elb-front"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.magento",
+      "mode": "managed",
+      "type": "aws_instance",
+      "name": "front",
+      "each": "list",
+      "provider": "provider.aws",
+      "instances": [
+        {
+          "index_key": 0,
+          "schema_version": 1,
+          "attributes": {
+            "id": "i-08ffccfdf54168280",
+            "vpc_security_group_ids": [
+              "sg-0d6e0e07fbc6ec626",
+              "sg-ddeee6bb"
+            ]
+          },
+          "depends_on": [
+            "aws_iam_instance_profile.front_profile",
+            "aws_security_group.front",
+            "data.aws_ami.debian"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.magento",
+      "mode": "managed",
+      "type": "aws_security_group",
+      "name": "elb-front",
+      "provider": "provider.aws",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "egress": [
+              {
+                "cidr_blocks": [
+                  "0.0.0.0/0"
+                ],
+                "description": "",
+                "from_port": 0,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "-1",
+                "security_groups": [],
+                "self": false,
+                "to_port": 0
+              }
+            ],
+            "id": "sg-02831399bd1302ed1",
+            "ingress": [
+              {
+                "cidr_blocks": [
+                  "0.0.0.0/0"
+                ],
+                "description": "",
+                "from_port": 443,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [],
+                "self": false,
+                "to_port": 443
+              },
+              {
+                "cidr_blocks": [
+                  "0.0.0.0/0"
+                ],
+                "description": "",
+                "from_port": 80,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [],
+                "self": false,
+                "to_port": 80
+              }
+            ],
+            "vpc_id": "vpc-0d96ad69"
+          }
+        }
+      ]
+    },
+    {
+      "module": "module.magento",
+      "mode": "managed",
+      "type": "aws_security_group",
+      "name": "front",
+      "provider": "provider.aws",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "egress": [
+              {
+                "cidr_blocks": [
+                  "0.0.0.0/0"
+                ],
+                "description": "",
+                "from_port": 0,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "-1",
+                "security_groups": [],
+                "self": false,
+                "to_port": 0
+              }
+            ],
+            "id": "sg-0d6e0e07fbc6ec626",
+            "ingress": [],
+            "vpc_id": "vpc-0d96ad69"
+          }
+        }
+      ]
+    },
+    {
+      "module": "module.magento",
+      "mode": "managed",
+      "type": "aws_security_group",
+      "name": "rds",
+      "provider": "provider.aws",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "egress": [],
+            "id": "sg-057cbd30abf1dd923",
+            "ingress": [
+              {
+                "cidr_blocks": [],
+                "description": "",
+                "from_port": 3306,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [
+                  "sg-0d6e0e07fbc6ec626"
+                ],
+                "self": false,
+                "to_port": 3306
+              }
+            ],
+            "vpc_id": "vpc-0d96ad69"
+          },
+          "depends_on": [
+            "aws_security_group.front"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.magento",
+      "mode": "managed",
+      "type": "aws_security_group",
+      "name": "redis",
+      "provider": "provider.aws",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "egress": [],
+            "id": "sg-078ba1d75bddac084",
+            "ingress": [
+              {
+                "cidr_blocks": [],
+                "description": "",
+                "from_port": 6379,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [
+                  "sg-0d6e0e07fbc6ec626"
+                ],
+                "self": false,
+                "to_port": 6379
+              }
+            ],
+            "vpc_id": "vpc-0d96ad69"
+          },
+          "depends_on": [
+            "aws_security_group.front"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.magento",
+      "mode": "managed",
+      "type": "aws_security_group_rule",
+      "name": "bastion_to_front_ssh",
+      "each": "list",
+      "provider": "provider.aws",
+      "instances": [
+        {
+          "index_key": 0,
+          "schema_version": 2,
+          "attributes": {
+            "id": "sgrule-252974847",
+            "security_group_id": "sg-0d6e0e07fbc6ec626",
+            "source_security_group_id": "sg-ddeee6bb"
+          },
+          "depends_on": [
+            "aws_security_group.front"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.magento",
+      "mode": "managed",
+      "type": "aws_security_group_rule",
+      "name": "elb_to_front_http",
+      "provider": "provider.aws",
+      "instances": [
+        {
+          "schema_version": 2,
+          "attributes": {
+            "id": "sgrule-2124073583",
+            "security_group_id": "sg-0d6e0e07fbc6ec626",
+            "source_security_group_id": "sg-02831399bd1302ed1"
+          },
+          "depends_on": [
+            "aws_security_group.elb-front",
+            "aws_security_group.front"
+          ]
+        }
+      ]
+    }
+  ]
+}
+

@@ -147,6 +147,65 @@ func TestFromState_AWS(t *testing.T) {
 		require.NotNil(t, cfg)
 		assert.Len(t, g.Nodes, 2)
 	})
+	t.Run("SuccessVPC", func(t *testing.T) {
+		src, err := ioutil.ReadFile("./testdata/aws_state_vpc.json")
+		require.NoError(t, err)
+
+		g, cfg, err := generate.FromState(src, generate.Options{Clean: true, Connections: true})
+		require.NoError(t, err)
+		require.NotNil(t, g)
+		require.NotNil(t, cfg)
+
+		eg := &graph.Graph{
+			Nodes: []*graph.Node{
+				&graph.Node{
+					Canonical: "aws_elb.front",
+					GroupIDs:  []string{"vpc-0d96ad69"},
+				},
+				&graph.Node{
+					Canonical: "aws_instance.front",
+					GroupIDs:  []string{"vpc-0d96ad69"},
+				},
+				&graph.Node{
+					Canonical: "aws_db_instance.magento",
+					GroupIDs:  []string{"vpc-0d96ad69"},
+				},
+				&graph.Node{
+					Canonical: "aws_elasticache_cluster.redis",
+					GroupIDs:  []string{"vpc-0d96ad69"},
+				},
+			},
+			Edges: []*graph.Edge{
+				&graph.Edge{
+					Source: "aws_elb.front",
+					Target: "aws_instance.front",
+					Canonicals: []string{
+						"aws_security_group.elb-front",
+						"aws_security_group.front",
+						"aws_security_group_rule.elb_to_front_http",
+					},
+				},
+				&graph.Edge{
+					Source: "aws_instance.front",
+					Target: "aws_db_instance.magento",
+					Canonicals: []string{
+						"aws_security_group.front",
+						"aws_security_group.rds",
+					},
+				},
+				&graph.Edge{
+					Source: "aws_instance.front",
+					Target: "aws_elasticache_cluster.redis",
+					Canonicals: []string{
+						"aws_security_group.front",
+						"aws_security_group.redis",
+					},
+				},
+			},
+		}
+
+		assertEqualGraph(t, eg, g, cfg)
+	})
 }
 
 func TestFromState_OpenStack(t *testing.T) {
