@@ -117,6 +117,15 @@ func FromHCL(fs afero.Fs, path string, opt Options) (*graph.Graph, error) {
 		}
 	}
 
+	// Now that we have the full config we can set the Groups
+	for _, n := range g.Nodes {
+		pv, _, err := getProviderAndResource(n.Canonical, opt)
+		if err != nil {
+			return nil, err
+		}
+		n.AddGroupIDs(pv.Groups(n.ID, resourcesRawConfig)...)
+	}
+
 	for nid, resources := range nodeIDEdges {
 		for _, rkattr := range resources {
 			keys := strings.Split(rkattr, ".")
