@@ -45,4 +45,7 @@ type Provider interface {
 	// [_][0] is the source of the edge
 	// [_][1] is the target of the edge
 	PreProcess(cfg map[string]map[string]interface{}) [][]string
+
+	// Groups returns all the groups for the resource id with the config cfg
+	Groups(id string, cfg map[string]map[string]interface{}) []string
 }
