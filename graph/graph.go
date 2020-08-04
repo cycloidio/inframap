@@ -60,18 +60,16 @@ func (g *Graph) AddEdge(e *Edge) error {
 		return errcode.ErrGraphNotFoundEdgeSource
 	}
 
-	checks := []string{e.Source + e.Target, e.Target + e.Source}
-	for _, c := range checks {
-		if _, ok := g.edgesSourceTarget[c]; ok {
-			return errcode.ErrGraphAlreadyExistsEdge
-		}
+	check := e.Source + e.Target
+	if _, ok := g.edgesSourceTarget[check]; ok {
+		return errcode.ErrGraphAlreadyExistsEdge
 	}
 
 	if _, ok := g.edgesIDs[e.ID]; ok {
 		return errcode.ErrGraphAlreadyExistsEdgeID
 	}
 
-	g.edgesSourceTarget[checks[0]] = e
+	g.edgesSourceTarget[check] = e
 	g.edgesIDs[e.ID] = e
 
 	g.nodesWithEdge[e.Source] = append(g.nodesWithEdge[e.Source], e)
@@ -185,11 +183,10 @@ func (g *Graph) Replace(srcID, repID string) error {
 		e.AddCanonicals(append(mutualEdge.Canonicals, srcNode.Canonical)...)
 
 		_, okstt := g.edgesSourceTarget[e.Source+e.Target]
-		_, oktts := g.edgesSourceTarget[e.Target+e.Source]
 
 		// If the Edge does not exists we register it
 		// If it does then we remove it as we do not want repeated edges
-		if !(okstt || oktts) {
+		if !okstt {
 			g.nodesWithEdge[repID] = append(g.nodesWithEdge[repID], e)
 			g.edgesSourceTarget[e.Source+e.Target] = e
 		} else {
@@ -270,32 +267,24 @@ func (g *Graph) removeEdgeByID(ID string) {
 			// Remove the edge from the list of edges
 			// that each node has
 			sedges := g.nodesWithEdge[e.Source]
-			for _, ee := range sedges {
-				if (e.Target == ee.Target && e.Source == ee.Source) || (e.Target == ee.Source && e.Source == ee.Target) {
-					ee.AddCanonicals(e.Canonicals...)
-				}
-			}
 			for ii, ee := range sedges {
 				if ee.ID == e.ID {
 					lenEdges = len(sedges)
 					copy(sedges[ii:], sedges[ii+1:])
 					sedges = sedges[:lenEdges-1]
+				} else if e.Target == ee.Target && e.Source == ee.Source {
+					ee.AddCanonicals(e.Canonicals...)
 				}
 			}
 			g.nodesWithEdge[e.Source] = sedges
 
 			tedges := g.nodesWithEdge[e.Target]
-			for _, ee := range tedges {
-				if (e.Target == ee.Target && e.Source == ee.Source) || (e.Target == ee.Source && e.Source == ee.Target) {
-					ee.AddCanonicals(e.Canonicals...)
-				}
-			}
 			for ii, ee := range tedges {
 				if ee.ID == e.ID {
 					lenEdges = len(tedges)
 					copy(tedges[ii:], tedges[ii+1:])
 					tedges = tedges[:lenEdges-1]
-				} else if (e.Target == ee.Target && e.Source == ee.Source) || (e.Target == ee.Source && e.Source == ee.Target) {
+				} else if e.Target == ee.Target && e.Source == ee.Source {
 					ee.AddCanonicals(e.Canonicals...)
 				}
 			}

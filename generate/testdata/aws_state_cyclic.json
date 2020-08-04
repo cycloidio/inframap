@@ -1,0 +1,535 @@
+{
+  "version": 4,
+  "terraform_version": "0.12.28",
+  "serial": 0,
+  "lineage": "c6ec2564-96cc-5eae-6bb6-7da365525531",
+  "outputs": {},
+  "resources": [
+    {
+      "mode": "managed",
+      "type": "aws_instance",
+      "name": "bastion0",
+      "provider": "provider.aws",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "id": "i-00eab1355727cfb44"
+          },
+          "dependencies": [
+            "aws_security_group.prometheus-infra-allow-metrics"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_instance",
+      "name": "prometheus-prometheus-eu-we1-infra",
+      "provider": "provider.aws",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "id": "i-04c8b20a499d12182"
+          },
+          "dependencies": [
+            "aws_security_group.prometheus-prometheus-infra"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_security_group",
+      "name": "prometheus-infra-allow-metrics",
+      "provider": "provider.aws",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "egress": [
+              {
+                "cidr_blocks": [
+                  "0.0.0.0/0"
+                ],
+                "description": "",
+                "from_port": 0,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "-1",
+                "security_groups": [],
+                "self": false,
+                "to_port": 0
+              }
+            ],
+            "id": "sg-0bf6977585401273d",
+            "ingress": [
+              {
+                "cidr_blocks": [],
+                "description": "",
+                "from_port": 9100,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [
+                  "sg-093aebd858af57fa8"
+                ],
+                "self": false,
+                "to_port": 9100
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_security_group",
+      "name": "prometheus-preprod-allow-metrics",
+      "provider": "provider.aws",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "egress": [
+              {
+                "cidr_blocks": [
+                  "0.0.0.0/0"
+                ],
+                "description": "",
+                "from_port": 0,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "-1",
+                "security_groups": [],
+                "self": false,
+                "to_port": 0
+              }
+            ],
+            "id": "sg-012afeabb7f063269",
+            "ingress": [
+              {
+                "cidr_blocks": [],
+                "description": "",
+                "from_port": 9100,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [
+                  "sg-093aebd858af57fa8"
+                ],
+                "self": false,
+                "to_port": 9100
+              },
+              {
+                "cidr_blocks": [],
+                "description": "",
+                "from_port": 9216,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [
+                  "sg-093aebd858af57fa8"
+                ],
+                "self": false,
+                "to_port": 9216
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_security_group",
+      "name": "prometheus-prod-allow-metrics",
+      "provider": "provider.aws",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "egress": [
+              {
+                "cidr_blocks": [
+                  "0.0.0.0/0"
+                ],
+                "description": "",
+                "from_port": 0,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "-1",
+                "security_groups": [],
+                "self": false,
+                "to_port": 0
+              }
+            ],
+            "id": "sg-024718a65a57ab65c",
+            "ingress": [
+              {
+                "cidr_blocks": [],
+                "description": "",
+                "from_port": 9100,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [
+                  "sg-093aebd858af57fa8"
+                ],
+                "self": false,
+                "to_port": 9100
+              },
+              {
+                "cidr_blocks": [],
+                "description": "",
+                "from_port": 9216,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [
+                  "sg-093aebd858af57fa8"
+                ],
+                "self": false,
+                "to_port": 9216
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_security_group",
+      "name": "prometheus-prometheus-infra",
+      "provider": "provider.aws",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "egress": [
+              {
+                "cidr_blocks": [
+                  "0.0.0.0/0"
+                ],
+                "description": "",
+                "from_port": 0,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "-1",
+                "security_groups": [],
+                "self": false,
+                "to_port": 0
+              }
+            ],
+            "id": "sg-093aebd858af57fa8",
+            "ingress": [
+              {
+                "cidr_blocks": [
+                  "0.0.0.0/0"
+                ],
+                "description": "",
+                "from_port": 443,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [],
+                "self": false,
+                "to_port": 443
+              },
+              {
+                "cidr_blocks": [
+                  "0.0.0.0/0"
+                ],
+                "description": "",
+                "from_port": 80,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [],
+                "self": false,
+                "to_port": 80
+              },
+              {
+                "cidr_blocks": [],
+                "description": "",
+                "from_port": 22,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [
+                  "sg-060a06fcbcfdd24d3"
+                ],
+                "self": false,
+                "to_port": 22
+              },
+              {
+                "cidr_blocks": [],
+                "description": "",
+                "from_port": 9100,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [],
+                "self": true,
+                "to_port": 9100
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_security_group_rule",
+      "name": "sgrule-1098878579",
+      "provider": "provider.aws",
+      "instances": [
+        {
+          "schema_version": 2,
+          "attributes": {
+            "id": "sgrule-1098878579",
+            "security_group_id": "sg-093aebd858af57fa8",
+            "source_security_group_id": "sg-060a06fcbcfdd24d3"
+          },
+          "dependencies": [
+            "aws_security_group.prometheus-prometheus-infra"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_security_group_rule",
+      "name": "sgrule-1325010361",
+      "provider": "provider.aws",
+      "instances": [
+        {
+          "schema_version": 2,
+          "attributes": {
+            "id": "sgrule-1325010361",
+            "security_group_id": "sg-093aebd858af57fa8",
+            "source_security_group_id": null
+          },
+          "dependencies": [
+            "aws_security_group.prometheus-prometheus-infra"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_security_group_rule",
+      "name": "sgrule-1657157303",
+      "provider": "provider.aws",
+      "instances": [
+        {
+          "schema_version": 2,
+          "attributes": {
+            "id": "sgrule-1657157303",
+            "security_group_id": "sg-012afeabb7f063269",
+            "source_security_group_id": "sg-093aebd858af57fa8"
+          },
+          "dependencies": [
+            "aws_security_group.prometheus-prometheus-infra",
+            "aws_security_group.prometheus-preprod-allow-metrics"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_security_group_rule",
+      "name": "sgrule-2061397085",
+      "provider": "provider.aws",
+      "instances": [
+        {
+          "schema_version": 2,
+          "attributes": {
+            "id": "sgrule-2061397085",
+            "security_group_id": "sg-024718a65a57ab65c",
+            "source_security_group_id": null
+          },
+          "dependencies": [
+            "aws_security_group.prometheus-prod-allow-metrics"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_security_group_rule",
+      "name": "sgrule-2136685937",
+      "provider": "provider.aws",
+      "instances": [
+        {
+          "schema_version": 2,
+          "attributes": {
+            "id": "sgrule-2136685937",
+            "security_group_id": "sg-093aebd858af57fa8",
+            "source_security_group_id": "sg-093aebd858af57fa8"
+          },
+          "dependencies": [
+            "aws_security_group.prometheus-prometheus-infra"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_security_group_rule",
+      "name": "sgrule-2209132232",
+      "provider": "provider.aws",
+      "instances": [
+        {
+          "schema_version": 2,
+          "attributes": {
+            "id": "sgrule-2209132232",
+            "security_group_id": "sg-0bf6977585401273d",
+            "source_security_group_id": null
+          },
+          "dependencies": [
+            "aws_security_group.prometheus-infra-allow-metrics"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_security_group_rule",
+      "name": "sgrule-2424675640",
+      "provider": "provider.aws",
+      "instances": [
+        {
+          "schema_version": 2,
+          "attributes": {
+            "id": "sgrule-2424675640",
+            "security_group_id": "sg-012afeabb7f063269",
+            "source_security_group_id": null
+          },
+          "dependencies": [
+            "aws_security_group.prometheus-preprod-allow-metrics"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_security_group_rule",
+      "name": "sgrule-2589285800",
+      "provider": "provider.aws",
+      "instances": [
+        {
+          "schema_version": 2,
+          "attributes": {
+            "id": "sgrule-2589285800",
+            "security_group_id": "sg-0bf6977585401273d",
+            "source_security_group_id": "sg-093aebd858af57fa8"
+          },
+          "dependencies": [
+            "aws_security_group.prometheus-prometheus-infra",
+            "aws_security_group.prometheus-infra-allow-metrics"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_security_group_rule",
+      "name": "sgrule-2794325590",
+      "provider": "provider.aws",
+      "instances": [
+        {
+          "schema_version": 2,
+          "attributes": {
+            "id": "sgrule-2794325590",
+            "security_group_id": "sg-093aebd858af57fa8",
+            "source_security_group_id": null
+          },
+          "dependencies": [
+            "aws_security_group.prometheus-prometheus-infra"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_security_group_rule",
+      "name": "sgrule-3078331671",
+      "provider": "provider.aws",
+      "instances": [
+        {
+          "schema_version": 2,
+          "attributes": {
+            "id": "sgrule-3078331671",
+            "security_group_id": "sg-024718a65a57ab65c",
+            "source_security_group_id": "sg-093aebd858af57fa8"
+          },
+          "dependencies": [
+            "aws_security_group.prometheus-prometheus-infra",
+            "aws_security_group.prometheus-prod-allow-metrics"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_security_group_rule",
+      "name": "sgrule-3326905205",
+      "provider": "provider.aws",
+      "instances": [
+        {
+          "schema_version": 2,
+          "attributes": {
+            "id": "sgrule-3326905205",
+            "security_group_id": "sg-024718a65a57ab65c",
+            "source_security_group_id": "sg-093aebd858af57fa8"
+          },
+          "dependencies": [
+            "aws_security_group.prometheus-prod-allow-metrics",
+            "aws_security_group.prometheus-prometheus-infra"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_security_group_rule",
+      "name": "sgrule-334569685",
+      "provider": "provider.aws",
+      "instances": [
+        {
+          "schema_version": 2,
+          "attributes": {
+            "id": "sgrule-334569685",
+            "security_group_id": "sg-012afeabb7f063269",
+            "source_security_group_id": "sg-093aebd858af57fa8"
+          },
+          "dependencies": [
+            "aws_security_group.prometheus-prometheus-infra",
+            "aws_security_group.prometheus-preprod-allow-metrics"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_security_group_rule",
+      "name": "sgrule-3498546398",
+      "provider": "provider.aws",
+      "instances": [
+        {
+          "schema_version": 2,
+          "attributes": {
+            "id": "sgrule-3498546398",
+            "security_group_id": "sg-093aebd858af57fa8",
+            "source_security_group_id": null
+          },
+          "dependencies": [
+            "aws_security_group.prometheus-prometheus-infra"
+          ]
+        }
+      ]
+    }
+  ]
+}
+

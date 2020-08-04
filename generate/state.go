@@ -474,7 +474,12 @@ func mutate(g *graph.Graph, opt Options) error {
 				}
 			}
 			if edge == nil {
-				return fmt.Errorf("missing edge with srcID %q and repID %q: %w", n.ID, con.Node.ID, errcode.ErrGraphRequiredEdgeBetweenNodes)
+				// If we are missing cyclic connection (to itself) could be related that the graph is missing
+				// some node and the end result ended with a cyclic that was not cyclic at the end based
+				// on how the 'mutate' works (merging by directions).
+				if n.Canonical != con.Node.Canonical {
+					return fmt.Errorf("missing edge with srcCan %q and repCan %q: %w", n.Canonical, con.Node.Canonical, errcode.ErrGraphRequiredEdgeBetweenNodes)
+				}
 			}
 		} else {
 			direc += int(con.Direction)
