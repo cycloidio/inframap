@@ -120,6 +120,15 @@ func FromState(tfstate json.RawMessage, opt Options) (*graph.Graph, map[string]i
 		}
 	}
 
+	// Now that we have the full config we can set the Groups
+	for _, n := range g.Nodes {
+		pv, _, err := getProviderAndResource(n.Canonical, opt)
+		if err != nil {
+			return nil, nil, err
+		}
+		n.AddGroupIDs(pv.Groups(n.ID, cfg)...)
+	}
+
 	for sourceID, edges := range nodeIDEdges {
 		edgeIDs := make([]string, 0)
 		for _, e := range edges {

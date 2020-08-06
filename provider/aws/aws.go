@@ -23,6 +23,8 @@ var (
 		"ingress",
 		"source_security_group_id",
 		"security_group_id",
+		"vpc_id",
+		"vpc_security_group_ids",
 	}
 )
 
@@ -122,4 +124,22 @@ func (a Provider) ResourceInOut(id, rs string, cfgs map[string]map[string]interf
 // prune we know what to keep
 func (a Provider) UsedAttributes() []string {
 	return usedAttributes
+}
+
+// Groups returns all the groups for the resource id with the config cfg
+func (a Provider) Groups(id string, cfg map[string]map[string]interface{}) []string {
+	groups := make([]string, 0)
+	if v, ok := cfg[id]["vpc_id"]; ok {
+		groups = append(groups, v.(string))
+	}
+
+	// If it has vpc_security_group_ids it means it has IDs
+	// to the config, so we'll recall Groups
+	if v, ok := cfg[id]["vpc_security_group_ids"]; ok {
+		for _, s := range v.([]interface{}) {
+			groups = append(groups, a.Groups(s.(string), cfg)...)
+		}
+	}
+
+	return groups
 }

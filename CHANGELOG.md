@@ -1,5 +1,10 @@
 ## [Unreleased]
 
+### Added
+
+- Add Groups logic for VPCs on AWS
+  ([Issue #6](https://github.com/cycloidio/inframap/issues/6))
+
 ### Fixed
 
 - Google graph generation from HCL

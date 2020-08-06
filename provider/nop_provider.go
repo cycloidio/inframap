@@ -47,3 +47,8 @@ func (n NopProvider) UsedAttributes() []string { return nil }
 func (n NopProvider) PreProcess(cfg map[string]map[string]interface{}) [][]string {
 	return nil
 }
+
+// Groups returns all the groups for the resource id with the config cfg
+func (n NopProvider) Groups(rid string, cfg map[string]map[string]interface{}) []string {
+	return nil
+}
