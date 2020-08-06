@@ -12,4 +12,5 @@ const (
 	FlexibleEngine
 	OpenStack
 	Google
+	Azurerm
 )
