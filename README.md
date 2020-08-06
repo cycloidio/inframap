@@ -62,7 +62,7 @@ The most important subcommands are:
 Visualizing with dot
 
 ```shell
-$ inframap generate --tfstate state.tfstate | dot -Tsvg > graph.svg
+$ inframap generate --tfstate state.tfstate | dot -Tpng > graph.png
 ```
 
 or from the terminal itself
