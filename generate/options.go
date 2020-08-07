@@ -14,4 +14,9 @@ type Options struct {
 	// Connections toggles the Provider logic for
 	// merging Edges between Nodes into one
 	Connections bool
+
+	// ExternalNodes will try to add extra
+	// Nodes detected to make the graph better,
+	// like the 'im_out'
+	ExternalNodes bool
 }

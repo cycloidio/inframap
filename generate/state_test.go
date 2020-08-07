@@ -15,7 +15,7 @@ func TestFromState_AWS(t *testing.T) {
 		src, err := ioutil.ReadFile("./testdata/aws_state_sg.json")
 		require.NoError(t, err)
 
-		g, cfg, err := generate.FromState(src, generate.Options{Clean: true, Connections: true})
+		g, cfg, err := generate.FromState(src, generate.Options{Clean: true, Connections: true, ExternalNodes: true})
 		require.NoError(t, err)
 		require.NotNil(t, g)
 		require.NotNil(t, cfg)
@@ -31,8 +31,24 @@ func TestFromState_AWS(t *testing.T) {
 				&graph.Node{
 					Canonical: "aws_db_instance.Cpbzf",
 				},
+				&graph.Node{
+					Canonical: "im_out.tcp/443->443",
+				},
+				&graph.Node{
+					Canonical: "im_out.tcp/80->80",
+				},
 			},
 			Edges: []*graph.Edge{
+				&graph.Edge{
+					Source:     "im_out.tcp/80->80",
+					Target:     "aws_lb.tQBgz",
+					Canonicals: []string(nil),
+				},
+				&graph.Edge{
+					Source:     "im_out.tcp/443->443",
+					Target:     "aws_lb.tQBgz",
+					Canonicals: []string(nil),
+				},
 				&graph.Edge{
 					Source:     "aws_lb.tQBgz",
 					Target:     "aws_launch_template.vIkyE",
@@ -53,7 +69,7 @@ func TestFromState_AWS(t *testing.T) {
 		src, err := ioutil.ReadFile("./testdata/aws_state_sgr.json")
 		require.NoError(t, err)
 
-		g, cfg, err := generate.FromState(src, generate.Options{Clean: true, Connections: true})
+		g, cfg, err := generate.FromState(src, generate.Options{Clean: true, Connections: true, ExternalNodes: true})
 		require.NoError(t, err)
 		require.NotNil(t, g)
 		require.NotNil(t, cfg)
@@ -72,8 +88,24 @@ func TestFromState_AWS(t *testing.T) {
 				&graph.Node{
 					Canonical: "aws_elasticache_cluster.VUhMF",
 				},
+				&graph.Node{
+					Canonical: "im_out.tcp/443->443",
+				},
+				&graph.Node{
+					Canonical: "im_out.tcp/80->80",
+				},
 			},
 			Edges: []*graph.Edge{
+				&graph.Edge{
+					Source:     "im_out.tcp/80->80",
+					Target:     "aws_elb.tMVdH",
+					Canonicals: []string(nil),
+				},
+				&graph.Edge{
+					Source:     "im_out.tcp/443->443",
+					Target:     "aws_elb.tMVdH",
+					Canonicals: []string(nil),
+				},
 				&graph.Edge{
 					Source:     "aws_elb.tMVdH",
 					Target:     "aws_instance.TObJL",
@@ -99,7 +131,7 @@ func TestFromState_AWS(t *testing.T) {
 		src, err := ioutil.ReadFile("./testdata/aws_state_multiple_hanging_edges.json")
 		require.NoError(t, err)
 
-		g, cfg, err := generate.FromState(src, generate.Options{Clean: true, Connections: true})
+		g, cfg, err := generate.FromState(src, generate.Options{Clean: true, Connections: true, ExternalNodes: true})
 		require.NoError(t, err)
 		require.NotNil(t, g)
 		require.NotNil(t, cfg)
@@ -175,7 +207,7 @@ func TestFromState_AWS(t *testing.T) {
 		src, err := ioutil.ReadFile("./testdata/aws_state_with_count.json")
 		require.NoError(t, err)
 
-		g, cfg, err := generate.FromState(src, generate.Options{Clean: true, Connections: true})
+		g, cfg, err := generate.FromState(src, generate.Options{Clean: true, Connections: true, ExternalNodes: true})
 		require.NoError(t, err)
 		require.NotNil(t, g)
 		require.NotNil(t, cfg)
@@ -188,7 +220,7 @@ func TestFromState_OpenStack(t *testing.T) {
 		src, err := ioutil.ReadFile("./testdata/openstack_state_lb.json")
 		require.NoError(t, err)
 
-		g, cfg, err := generate.FromState(src, generate.Options{Clean: true, Connections: true})
+		g, cfg, err := generate.FromState(src, generate.Options{Clean: true, Connections: true, ExternalNodes: true})
 		require.NoError(t, err)
 		require.NotNil(t, g)
 		require.NotNil(t, cfg)
@@ -235,7 +267,7 @@ func TestFromState_OpenStack(t *testing.T) {
 		src, err := ioutil.ReadFile("./testdata/openstack_state_sg.json")
 		require.NoError(t, err)
 
-		g, cfg, err := generate.FromState(src, generate.Options{Clean: true, Connections: true})
+		g, cfg, err := generate.FromState(src, generate.Options{Clean: true, Connections: true, ExternalNodes: true})
 		require.NoError(t, err)
 		require.NotNil(t, g)
 		require.NotNil(t, cfg)
@@ -274,7 +306,7 @@ func TestFromState_FlexibleEngine(t *testing.T) {
 		src, err := ioutil.ReadFile("./testdata/flexibleengine_state.json")
 		require.NoError(t, err)
 
-		g, cfg, err := generate.FromState(src, generate.Options{Clean: true, Connections: true})
+		g, cfg, err := generate.FromState(src, generate.Options{Clean: true, Connections: true, ExternalNodes: true})
 		require.NoError(t, err)
 		require.NotNil(t, g)
 		require.NotNil(t, cfg)
@@ -323,7 +355,7 @@ func TestFromState_FlexibleEngine(t *testing.T) {
 		src, err := ioutil.ReadFile("./testdata/flexibleengine_state_tf_011.json")
 		require.NoError(t, err)
 
-		g, cfg, err := generate.FromState(src, generate.Options{Clean: true, Connections: true})
+		g, cfg, err := generate.FromState(src, generate.Options{Clean: true, Connections: true, ExternalNodes: true})
 		require.NoError(t, err)
 		require.NotNil(t, g)
 		require.NotNil(t, cfg)
@@ -359,7 +391,7 @@ func TestFromState_FlexibleEngine(t *testing.T) {
 		src, err := ioutil.ReadFile("./testdata/flexibleengine_state_attach.json")
 		require.NoError(t, err)
 
-		g, cfg, err := generate.FromState(src, generate.Options{Clean: true, Connections: true})
+		g, cfg, err := generate.FromState(src, generate.Options{Clean: true, Connections: true, ExternalNodes: true})
 		require.NoError(t, err)
 		require.NotNil(t, g)
 		require.NotNil(t, cfg)
@@ -399,7 +431,7 @@ func TestFromState_Google(t *testing.T) {
 		src, err := ioutil.ReadFile("./testdata/google_state.json")
 		require.NoError(t, err)
 
-		g, cfg, err := generate.FromState(src, generate.Options{Clean: true, Connections: true})
+		g, cfg, err := generate.FromState(src, generate.Options{Clean: true, Connections: true, ExternalNodes: true})
 		require.NoError(t, err)
 		require.NotNil(t, g)
 		require.NotNil(t, cfg)
