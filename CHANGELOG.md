@@ -1,5 +1,10 @@
 ## [Unreleased]
 
+### Added
+
+- Support incoming connection without source node for AWS
+  ([Issue #5](https://github.com/cycloidio/inframap/issues/5))
+
 ## [0.3.3] _2020-10-22_
 
 ### Changed
