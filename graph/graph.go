@@ -90,7 +90,7 @@ func (g *Graph) AddNode(n *Node) error {
 	}
 
 	if _, ok := g.nodesCans[n.Canonical]; ok {
-		return errcode.ErrGraphAlreadyExistsNode
+		return fmt.Errorf("with canonical %q: %w", n.Canonical, errcode.ErrGraphAlreadyExistsNode)
 	}
 
 	if _, ok := g.nodesIDs[n.ID]; ok {
