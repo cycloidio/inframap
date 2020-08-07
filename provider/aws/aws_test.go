@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestResourceInOut(t *testing.T) {
+func TestResourceInOutNodes(t *testing.T) {
 	t.Run("SuccessSG", func(t *testing.T) {
 		aws := aws.Provider{}
 		id := "id"
@@ -31,7 +31,7 @@ func TestResourceInOut(t *testing.T) {
 			},
 		}
 
-		ins, outs := aws.ResourceInOut(id, rs, cfg)
+		ins, outs, _ := aws.ResourceInOutNodes(id, rs, cfg)
 		assert.Equal(t, []string{"in-id"}, ins)
 		assert.Equal(t, []string{"out-id"}, outs)
 	})
@@ -46,7 +46,7 @@ func TestResourceInOut(t *testing.T) {
 			},
 		}
 
-		ins, outs := aws.ResourceInOut(id, rs, cfg)
+		ins, outs, _ := aws.ResourceInOutNodes(id, rs, cfg)
 		assert.Equal(t, []string{"in-id"}, ins)
 		assert.Equal(t, []string{"out-id"}, outs)
 	})
@@ -61,7 +61,7 @@ func TestResourceInOut(t *testing.T) {
 			},
 		}
 
-		ins, outs := aws.ResourceInOut(id, rs, cfg)
+		ins, outs, _ := aws.ResourceInOutNodes(id, rs, cfg)
 		assert.Equal(t, []string{"in-id"}, ins)
 		assert.Equal(t, []string{"out-id"}, outs)
 	})

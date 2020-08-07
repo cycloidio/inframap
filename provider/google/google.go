@@ -58,8 +58,8 @@ func (a Provider) DataSource(resource string) (*resource.Resource, error) {
 	return r, nil
 }
 
-// ResourceInOut returns the In and Out of the rs based on the cfg
-func (a Provider) ResourceInOut(id, rs string, cfgs map[string]map[string]interface{}) ([]string, []string) {
+// ResourceInOutNodes returns the In, Out and Nodes of the rs based on the cfg
+func (a Provider) ResourceInOutNodes(id, rs string, cfgs map[string]map[string]interface{}) ([]string, []string, []string) {
 	var tagins, tagouts []string
 	cfg := cfgs[id]
 	if rs == "google_compute_firewall" {
@@ -134,7 +134,7 @@ func (a Provider) ResourceInOut(id, rs string, cfgs map[string]map[string]interf
 		}
 	}
 
-	return ins, outs
+	return ins, outs, nil
 }
 
 func sliceInterfaceContains(is []interface{}, s interface{}) bool {

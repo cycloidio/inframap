@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestResourceInOut(t *testing.T) {
+func TestResourceInOutNodes(t *testing.T) {
 	t.Run("SuccessGCF_INGRESS", func(t *testing.T) {
 		google := google.Provider{}
 		id := "id"
@@ -42,7 +42,7 @@ func TestResourceInOut(t *testing.T) {
 			},
 		}
 
-		ins, outs := google.ResourceInOut(id, rs, cfg)
+		ins, outs, _ := google.ResourceInOutNodes(id, rs, cfg)
 		assert.Equal(t, []string{inid}, ins)
 		assert.Equal(t, []string{outid}, outs)
 	})
@@ -78,7 +78,7 @@ func TestResourceInOut(t *testing.T) {
 			},
 		}
 
-		ins, outs := google.ResourceInOut(id, rs, cfg)
+		ins, outs, _ := google.ResourceInOutNodes(id, rs, cfg)
 		assert.Equal(t, []string{fmt.Sprintf("${%s.something}", incan)}, ins)
 		assert.Equal(t, []string{fmt.Sprintf("${%s.something}", outcan)}, outs)
 	})
@@ -103,7 +103,7 @@ func TestResourceInOut(t *testing.T) {
 			},
 		}
 
-		ins, outs := google.ResourceInOut(id, rs, cfg)
+		ins, outs, _ := google.ResourceInOutNodes(id, rs, cfg)
 		assert.Equal(t, []string{inid}, ins)
 		assert.Equal(t, []string(nil), outs)
 	})
@@ -128,7 +128,7 @@ func TestResourceInOut(t *testing.T) {
 			},
 		}
 
-		ins, outs := google.ResourceInOut(id, rs, cfg)
+		ins, outs, _ := google.ResourceInOutNodes(id, rs, cfg)
 		assert.Equal(t, []string{fmt.Sprintf("${%s.something}", incan)}, ins)
 		assert.Equal(t, []string(nil), outs)
 	})

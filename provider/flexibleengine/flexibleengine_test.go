@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestResourceInOut(t *testing.T) {
+func TestResourceInOutNodes(t *testing.T) {
 	t.Run("SuccessCIAV2", func(t *testing.T) {
 		fe := flexibleengine.Provider{}
 		id := "id"
@@ -18,7 +18,7 @@ func TestResourceInOut(t *testing.T) {
 			},
 		}
 
-		ins, outs := fe.ResourceInOut(id, rs, cfg)
+		ins, outs, _ := fe.ResourceInOutNodes(id, rs, cfg)
 		assert.Equal(t, []string{"in-id"}, ins)
 		assert.Equal(t, []string(nil), outs)
 	})
@@ -33,7 +33,7 @@ func TestResourceInOut(t *testing.T) {
 			},
 		}
 
-		ins, outs := fe.ResourceInOut(id, rs, cfg)
+		ins, outs, _ := fe.ResourceInOutNodes(id, rs, cfg)
 		assert.Equal(t, []string{"in-id"}, ins)
 		assert.Equal(t, []string(nil), outs)
 	})
@@ -48,7 +48,7 @@ func TestResourceInOut(t *testing.T) {
 			},
 		}
 
-		ins, outs := fe.ResourceInOut(id, rs, cfg)
+		ins, outs, _ := fe.ResourceInOutNodes(id, rs, cfg)
 		assert.Equal(t, []string(nil), ins)
 		assert.Equal(t, []string{"out-id"}, outs)
 	})
@@ -64,7 +64,7 @@ func TestResourceInOut(t *testing.T) {
 			},
 		}
 
-		ins, outs := fe.ResourceInOut(id, rs, cfg)
+		ins, outs, _ := fe.ResourceInOutNodes(id, rs, cfg)
 		assert.Equal(t, []string{"in-id"}, ins)
 		assert.Equal(t, []string(nil), outs)
 	})
@@ -78,7 +78,7 @@ func TestResourceInOut(t *testing.T) {
 			},
 		}
 
-		ins, outs := fe.ResourceInOut(id, rs, cfg)
+		ins, outs, _ := fe.ResourceInOutNodes(id, rs, cfg)
 		assert.Equal(t, []string{"in-id"}, ins)
 		assert.Equal(t, []string(nil), outs)
 	})
@@ -92,7 +92,7 @@ func TestResourceInOut(t *testing.T) {
 			},
 		}
 
-		ins, outs := fe.ResourceInOut(id, rs, cfg)
+		ins, outs, _ := fe.ResourceInOutNodes(id, rs, cfg)
 		assert.Equal(t, []string{"in-id"}, ins)
 		assert.Equal(t, []string(nil), outs)
 	})
@@ -106,7 +106,7 @@ func TestResourceInOut(t *testing.T) {
 			},
 		}
 
-		ins, outs := fe.ResourceInOut(id, rs, cfg)
+		ins, outs, _ := fe.ResourceInOutNodes(id, rs, cfg)
 		assert.Equal(t, []string{"in-id"}, ins)
 		assert.Equal(t, []string(nil), outs)
 	})
