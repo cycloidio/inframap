@@ -59,6 +59,7 @@ func (d Dot) Print(g *graph.Graph, opt printer.Options, w io.Writer) error {
 			attr["shape"] = "plaintext"
 			attr["labelloc"] = "b"
 			attr["height"] = "1.15"
+			attr["imagepos"] = "tc"
 
 			// If the file does not exists on the Cache path, we have to write it,
 			// if not it means it's already correct so nothing to be done
