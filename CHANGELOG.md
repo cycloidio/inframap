@@ -11,6 +11,8 @@
   ([PR #34](https://github.com/cycloidio/inframap/pull/34))
 - Generation error when multiple Edges hanging (not merged)
   ([PR #33](https://github.com/cycloidio/inframap/pull/33))
+- Padding between the image and the label for the `dot` printer
+  ([PR #42](https://github.com/cycloidio/inframap/pull/42))
 
 ## [0.2.0] _2020-07-27_
 
