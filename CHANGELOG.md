@@ -1,5 +1,10 @@
 ## [Unreleased]
 
+### Added
+
+- Capability to have 2 Nodes connected with 2 edges of different directions
+  ([PR #38](https://github.com/cycloidio/inframap/pull/38))
+
 ### Fixed
 
 - Google graph generation from HCL
