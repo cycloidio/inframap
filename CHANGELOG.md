@@ -4,6 +4,8 @@
 
 - Capability to have 2 Nodes connected with 2 edges of different directions
   ([PR #38](https://github.com/cycloidio/inframap/pull/38))
+- Azure support
+  ([Issue #8](https://github.com/cycloidio/inframap/issues/8))
 
 ### Fixed
 

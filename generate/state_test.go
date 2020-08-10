@@ -427,3 +427,41 @@ func TestFromState_Google(t *testing.T) {
 		assertEqualGraph(t, eg, g, cfg)
 	})
 }
+
+func TestFromState_Azure(t *testing.T) {
+	t.Run("Success", func(t *testing.T) {
+		src, err := ioutil.ReadFile("./testdata/azure.tfstate")
+		require.NoError(t, err)
+
+		g, cfg, err := generate.FromState(src, generate.Options{Clean: true, Connections: true})
+		require.NoError(t, err)
+		require.NotNil(t, g)
+		require.NotNil(t, cfg)
+
+		eg := &graph.Graph{
+			Nodes: []*graph.Node{
+				{Canonical: "azurerm_linux_virtual_machine.myterraformvm"},
+				{Canonical: "azurerm_virtual_network.myterraformnetwork"},
+				{Canonical: "azurerm_linux_virtual_machine.myterraformvm2"},
+				{Canonical: "azurerm_virtual_network.myterraformnetwork2"},
+			},
+			Edges: []*graph.Edge{
+				{
+					Source: "azurerm_linux_virtual_machine.myterraformvm",
+					Target: "azurerm_virtual_network.myterraformnetwork",
+				},
+				{
+					Source: "azurerm_linux_virtual_machine.myterraformvm2",
+					Target: "azurerm_virtual_network.myterraformnetwork2",
+				},
+				{
+					Source:     "azurerm_virtual_network.myterraformnetwork",
+					Target:     "azurerm_virtual_network.myterraformnetwork2",
+					Canonicals: []string{"azurerm_virtual_network_peering.example-1"},
+				},
+			},
+		}
+
+		assertEqualGraph(t, eg, g, cfg)
+	})
+}

@@ -5,6 +5,8 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/cycloidio/inframap/provider/azurerm"
+
 	"github.com/cycloidio/inframap/errcode"
 	"github.com/cycloidio/inframap/provider"
 	"github.com/cycloidio/inframap/provider/aws"
@@ -19,6 +21,7 @@ var (
 		provider.FlexibleEngine: flexibleengine.Provider{},
 		provider.OpenStack:      openstack.Provider{},
 		provider.Google:         google.Provider{},
+		provider.Azurerm:        azurerm.Provider{},
 	}
 
 	// reProvider is a regexp to match 'aws' from 'aws' or 'aws_iam_user'

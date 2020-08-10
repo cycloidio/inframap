@@ -6,7 +6,7 @@ require (
 	github.com/adrg/xdg v0.2.1
 	github.com/awalterschulze/gographviz v2.0.2-0.20200810082452-794ba2878b95+incompatible
 	github.com/chr4/pwgen v1.1.0
-	github.com/cycloidio/tfdocs v0.0.0-20200724160511-6cb97df01bd9
+	github.com/cycloidio/tfdocs v0.0.0-20200805131448-32ff4af35250
 	github.com/dmarkham/enumer v1.5.0
 	github.com/hashicorp/hcl/v2 v2.3.0
 	github.com/hashicorp/terraform v0.12.28

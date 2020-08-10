@@ -50,7 +50,7 @@ lint: $(GOLINT) $(GOIMPORTS) ## Runs the linter
 generate: $(ENUMER) ## Generates the needed code
 	@go generate ./...
 
-.PHONY: generate
+.PHONY: generate-icons
 generate-icons: $(PKGER) ## Generates the needed code and Icons, it's separated as the icons generate always a new output
 	@go generate -tags icons ./... 
 
