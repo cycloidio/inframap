@@ -24,7 +24,7 @@ We use Terraform: 0.12.28
 | FlexibleEngine | Yes | Yes |
 | OpenStack | Yes | Yes |
 | Google | Yes | Yes |
-| [AzureRM](https://github.com/cycloidio/inframap/issues/8) | WIP | WIP | 
+| AzureRM | Yes | Yes |
 
 ## Installation
 
