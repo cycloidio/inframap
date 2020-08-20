@@ -19,6 +19,9 @@ import (
 
 // FromState generate a graph.Graph from the tfstate applying the opt
 func FromState(tfstate json.RawMessage, opt Options) (*graph.Graph, map[string]interface{}, error) {
+	// Since TF 0.13 'depends_on' has been dropped, so we do a manual
+	// replace from '"depends_on"' to '"dependencies"'
+	tfstate = bytes.ReplaceAll(tfstate, []byte("\"depends_on\""), []byte("\"dependencies\""))
 	buf := bytes.NewBuffer(tfstate)
 	file, err := statefile.Read(buf)
 	if err != nil {
@@ -50,7 +53,7 @@ func FromState(tfstate json.RawMessage, opt Options) (*graph.Graph, map[string]i
 	for _, v := range file.State.Modules {
 		for rk, rv := range v.Resources {
 			// If it's not a Resource we ignore it
-			if rv.Addr.Mode != addrs.ManagedResourceMode {
+			if rv.Addr.Resource.Mode != addrs.ManagedResourceMode {
 				continue
 			}
 
@@ -76,9 +79,6 @@ func FromState(tfstate json.RawMessage, opt Options) (*graph.Graph, map[string]i
 				deps := make([]string, 0)
 				if len(iv.Current.Dependencies) != 0 {
 					deps = append(deps, instanceCurrentDependenciesToString(iv.Current.Dependencies)...)
-				}
-				if len(iv.Current.DependsOn) != 0 {
-					deps = append(deps, instanceCurrentDependsOnToString(iv.Current.DependsOn)...)
 				}
 
 				aux := make(map[string]interface{})
@@ -505,15 +505,7 @@ func mutate(g *graph.Graph, opt Options) error {
 	return mutate(g, opt)
 }
 
-func instanceCurrentDependenciesToString(deps []addrs.AbsResource) []string {
-	res := make([]string, 0, len(deps))
-	for _, d := range deps {
-		res = append(res, d.String())
-	}
-	return res
-}
-
-func instanceCurrentDependsOnToString(deps []addrs.Referenceable) []string {
+func instanceCurrentDependenciesToString(deps []addrs.ConfigResource) []string {
 	res := make([]string, 0, len(deps))
 	for _, d := range deps {
 		res = append(res, d.String())
@@ -546,7 +538,7 @@ func checkProviders(f *statefile.File, opt Options) (Options, error) {
 	for _, v := range f.State.Modules {
 		for rk, rv := range v.Resources {
 			// If it's not a Resource we ignore it
-			if rv.Addr.Mode != addrs.ManagedResourceMode {
+			if rv.Addr.Resource.Mode != addrs.ManagedResourceMode {
 				continue
 			}
 
