@@ -170,6 +170,15 @@ at it as it could potentially be an issue on InfraMap (open an issue if you want
 
 By default unconnected nodes are removed, you can use `--clean=false` to prevent that.
 
+### Does InfraMap support Terraform backends ?
+
+Terraform allows users to use `backends` (S3, Google Cloud Storage, Swift, etc.) in order to store the `terraform.state`. We currently do not support graph generation from `tfstate` stored in such backends. As mentioned in this [issue](https://github.com/cycloidio/inframap/issues/44), it is possible to play around `stdin/out` to generate graph from Terraform backends.
+
+| backend | command                                                                          |
+|---------|----------------------------------------------------------------------------------|
+| S3      | `aws s3 cp s3://bucket/path/to/your/file.tfstate - \| inframap generate --tfstate` |
+| GCS     | `gsutil cat gs://bucket/path/to/your/file.tfstate \| inframap generate --tfstate`  |
+
 ## License
 
 Please see the [MIT LICENSE](https://github.com/cycloidio/inframap/blob/master/LICENSE) file. 
