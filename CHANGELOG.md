@@ -6,6 +6,8 @@
   ([PR #38](https://github.com/cycloidio/inframap/pull/38))
 - Azure support
   ([Issue #8](https://github.com/cycloidio/inframap/issues/8))
+- Flexible Engine icons
+  ([PR #45](https://github.com/cycloidio/inframap/pull/45))
 
 ### Fixed
 
