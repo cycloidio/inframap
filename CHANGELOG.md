@@ -9,6 +9,11 @@
 - Flexible Engine icons
   ([PR #45](https://github.com/cycloidio/inframap/pull/45))
 
+### Changed
+
+- Terraform version from 0.12.28 to 0.13
+  ([Issue #47](https://github.com/cycloidio/inframap/issues/47))
+
 ### Fixed
 
 - Google graph generation from HCL

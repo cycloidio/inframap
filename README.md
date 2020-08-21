@@ -16,7 +16,7 @@ We support certain providers. This allows us to better represent information tha
 
 If your state file or HCL is from a provider we do not support, the resulting representation will simply be all resources present without any simplification or refinement.
 
-We use Terraform: 0.12.28
+We support Terraform: 0.13 (and previous)
 
 | Provider | State | HCL |
 |--|:--:|:--:|
@@ -127,7 +127,7 @@ With `inframap generate --hcl ./terraform/module-magento/ --raw | dot -Tpng > in
 For each provider, we support specific types of connections; we have a static list of resources that can be
 nodes or edges. Once we identify the edges, we try to create one unique edge from the resources they connect.
 
-For a state file, we rely on the `depends_on` key and, for HCL we rely on interpolation to create the base graph one which we then
+For a state file, we rely on the `dependencies` key (for the <0.13 we replace all `depends_on` for `dependencies` so we support them) and, for HCL we rely on interpolation to create the base graph one which we then
 apply specific provider logic if supported. If not supported, then basic graph is returned.
 
 ### AWS
@@ -179,9 +179,17 @@ Terraform allows users to use `backends` (S3, Google Cloud Storage, Swift, etc.)
 | S3      | `aws s3 cp s3://bucket/path/to/your/file.tfstate - \| inframap generate --tfstate` |
 | GCS     | `gsutil cat gs://bucket/path/to/your/file.tfstate \| inframap generate --tfstate`  |
 
+### What does the error `Error: error while reading TFState: state snapshot was created by Terraform v0.13.0, which is newer than current v0.12.28; upgrade to Terraform v0.13.0 or greater to work with this state` mean?
+
+We use Terraform internally to read the TFStates and it has a built-in validation that checks that the version of Terraform used (specified as `"version": "X.Y.Z",` on the state) is the same or older than the one defined.
+
+In this case it means that Terraform released a new version and InfraMap did not yet update to that version so we have to update to the latest version of Terraform. It'll not take more than a few days but if you update on the same day as the Terraform release then InfraMap will fail due to that.
+
+You can open an issue to notify us just in case we missed it, similar to https://github.com/cycloidio/inframap/issues/47
+
 ## License
 
-Please see the [MIT LICENSE](https://github.com/cycloidio/inframap/blob/master/LICENSE) file. 
+Please see the [MIT LICENSE](https://github.com/cycloidio/inframap/blob/master/LICENSE) file.
 
 ## Changelog
 

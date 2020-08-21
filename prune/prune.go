@@ -36,7 +36,7 @@ func Prune(tfstate json.RawMessage, replaceCanonicals bool) (json.RawMessage, er
 		removeKeys := make([]string, 0)
 		for rk, rv := range m.Resources {
 			// If it's not a Resource we ignore it
-			if rv.Addr.Mode != addrs.ManagedResourceMode {
+			if rv.Addr.Resource.Mode != addrs.ManagedResourceMode {
 				removeKeys = append(removeKeys, rk)
 				continue
 			}
@@ -129,68 +129,37 @@ func Prune(tfstate json.RawMessage, replaceCanonicals bool) (json.RawMessage, er
 	}
 
 	// Now that the actual State is pruned of unneeded data
-	// we iterate again to change the canonicals and 'depends_on'
+	// we iterate again to change the canonicals and 'dependencies'
 	// if needed
 	if replaceCanonicals {
 		for _, m := range file.State.Modules {
 			for _, rv := range m.Resources {
-				if newCan, ok := canonicals[fmt.Sprintf("%s.%s", rv.Addr.Type, rv.Addr.Name)]; ok {
+				if newCan, ok := canonicals[fmt.Sprintf("%s.%s", rv.Addr.Resource.Type, rv.Addr.Resource.Name)]; ok {
 					splitCan := strings.Split(newCan, ".")
-					rv.Addr.Type = splitCan[0]
-					rv.Addr.Name = splitCan[1]
+					rv.Addr.Resource.Type = splitCan[0]
+					rv.Addr.Resource.Name = splitCan[1]
 				}
 				for _, iv := range rv.Instances {
-					if len(iv.Current.DependsOn) != 0 {
-						removeDepends := make([]int, 0)
-						deps := make(map[string]struct{})
-						for i, do := range iv.Current.DependsOn {
-							var addr addrs.Resource
-							switch v := do.(type) {
-							case addrs.ResourceInstance:
-								addr = v.Resource
-							case addrs.Resource:
-								addr = v
-							}
-							if newCan, ok := canonicals[fmt.Sprintf("%s.%s", addr.Type, addr.Name)]; ok {
-								// If the dependency it's already present
-								// do not add repeated ones
-								if _, ok := deps[newCan]; ok {
-									removeDepends = append(removeDepends, i)
-								}
-								splitCan := strings.Split(newCan, ".")
-								addr.Type = splitCan[0]
-								addr.Name = splitCan[1]
-								deps[newCan] = struct{}{}
-							} else {
+					removeDepends := make([]int, 0)
+					deps := make(map[string]struct{})
+					for i, d := range iv.Current.Dependencies {
+						if newCan, ok := canonicals[fmt.Sprintf("%s.%s", d.Resource.Type, d.Resource.Name)]; ok {
+							// If the dependency it's already present
+							// do not add repeated ones
+							if _, ok := deps[newCan]; ok {
 								removeDepends = append(removeDepends, i)
 							}
-							iv.Current.DependsOn[i] = addr
+							splitCan := strings.Split(newCan, ".")
+							d.Resource.Type = splitCan[0]
+							d.Resource.Name = splitCan[1]
+							deps[newCan] = struct{}{}
+						} else {
+							removeDepends = append(removeDepends, i)
 						}
-						for i, idx := range removeDepends {
-							iv.Current.DependsOn = append(iv.Current.DependsOn[:(idx-i)], iv.Current.DependsOn[(idx-i)+1:]...)
-						}
-					} else if len(iv.Current.Dependencies) != 0 {
-						removeDepends := make([]int, 0)
-						deps := make(map[string]struct{})
-						for i, d := range iv.Current.Dependencies {
-							if newCan, ok := canonicals[fmt.Sprintf("%s.%s", d.Resource.Type, d.Resource.Name)]; ok {
-								// If the dependency it's already present
-								// do not add repeated ones
-								if _, ok := deps[newCan]; ok {
-									removeDepends = append(removeDepends, i)
-								}
-								splitCan := strings.Split(newCan, ".")
-								d.Resource.Type = splitCan[0]
-								d.Resource.Name = splitCan[1]
-								deps[newCan] = struct{}{}
-							} else {
-								removeDepends = append(removeDepends, i)
-							}
-							iv.Current.Dependencies[i] = d
-						}
-						for i, idx := range removeDepends {
-							iv.Current.Dependencies = append(iv.Current.Dependencies[:(idx-i)], iv.Current.Dependencies[(idx-i)+1:]...)
-						}
+						iv.Current.Dependencies[i] = d
+					}
+					for i, idx := range removeDepends {
+						iv.Current.Dependencies = append(iv.Current.Dependencies[:(idx-i)], iv.Current.Dependencies[(idx-i)+1:]...)
 					}
 				}
 			}
