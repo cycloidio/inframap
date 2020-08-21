@@ -1,5 +1,7 @@
 ## [Unreleased]
 
+## [0.3.0] _2020-08-21_
+
 ### Added
 
 - Capability to have 2 Nodes connected with 2 edges of different directions
