@@ -18,13 +18,17 @@ If your state file or HCL is from a provider we do not support, the resulting re
 
 We support Terraform: 0.13 (and previous)
 
-| Provider | State | HCL |
-|--|:--:|:--:|
-| AWS | Yes | Yes |
-| FlexibleEngine | Yes | Yes |
-| OpenStack | Yes | Yes |
-| Google | Yes | Yes |
-| AzureRM | Yes | Yes |
+| Provider | State | HCL |  Grouping<sup>1</sup> | External Nodes<sup>2</sup> | IAM<sup>3</sup> |
+|:--:|:--:|:--:|:--:|:--:|:--:|
+| <img alt="AWS" src="docs/aws.png" width="50"> | :heavy_check_mark: | :heavy_check_mark: | [WIP](https://github.com/cycloidio/inframap/issues/6) | [WIP](https://github.com/cycloidio/inframap/pull/41) | :heavy_multiplication_x: (https://github.com/cycloidio/inframap/issues/11)|
+| <img alt="Google" src="docs/google-cloud.svg" width="50"> | :heavy_check_mark: | :heavy_check_mark: | :heavy_multiplication_x: | :heavy_multiplication_x: | :heavy_multiplication_x: |
+| <img alt="Azure" src="docs/azure.svg" width="50"> | :heavy_check_mark: | :heavy_check_mark: | :heavy_multiplication_x: | :heavy_multiplication_x: | :heavy_multiplication_x: |
+| <img alt="OpenStack" src="docs/Openstack-vertical-small.png" width="50"> | :heavy_check_mark: | :heavy_check_mark: | :heavy_multiplication_x: | :heavy_multiplication_x: | :heavy_multiplication_x: |
+| <img alt="FlexibleEngine" src="docs/flexibleengine.png" width="50"> | :heavy_check_mark: | :heavy_check_mark: | :heavy_multiplication_x: | :heavy_multiplication_x: | :heavy_multiplication_x: |
+
+1. **Grouping**: Group elements that belong to the same group like VPCs or regions
+2. **External Nodes**: Show the ingress of the Nodes if any
+3. **IAM**: Connections based on IAM (Identity Access Management)
 
 ## Installation
 
@@ -129,33 +133,6 @@ nodes or edges. Once we identify the edges, we try to create one unique edge fro
 
 For a state file, we rely on the `dependencies` key (for the <0.13 we replace all `depends_on` for `dependencies` so we support them) and, for HCL we rely on interpolation to create the base graph one which we then
 apply specific provider logic if supported. If not supported, then basic graph is returned.
-
-### AWS
-
-**Note:** We are currently investigating/trying to implement the grouping (https://github.com/cycloidio/inframap/issues/6) and connections based on iam resources (https://github.com/cycloidio/inframap/issues/11).
-
-* `aws_security_group`
-* `aws_security_group_rule`
-
-### FlexibleEngine
-
-* `flexibleengine_compute_interface_attach_v2`
-* `flexibleengine_networking_port_v2`
-* `flexibleengine_networking_secgroup_rule_v2`
-* `flexibleengine_networking_secgroup_v2`
-* `flexibleengine_lb_listener_v2`
-* `flexibleengine_lb_pool_v2`
-* `flexibleengine_lb_member_v2`
-
-### OpenStack
-
-* `openstack_compute_interface_attach_v2`
-* `openstack_networking_port_v2`
-* `openstack_networking_secgroup_rule_v2`
-* `openstack_networking_secgroup_v2`
-* `openstack_lb_listener_v2`
-* `openstack_lb_pool_v2`
-* `openstack_lb_member_v2`
 
 ## FAQ
 
