@@ -114,6 +114,15 @@ func (g *Graph) GetNodeByID(nID string) (*Node, error) {
 	return n, nil
 }
 
+// GetNodeByCanonical returns the requested Node with the nCan
+func (g *Graph) GetNodeByCanonical(nCan string) (*Node, error) {
+	n, ok := g.nodesCans[nCan]
+	if !ok {
+		return nil, errcode.ErrGraphNotFoundNode
+	}
+	return n, nil
+}
+
 // Clean removes all the Nodes that do not
 // have any edge
 func (g *Graph) Clean() {
