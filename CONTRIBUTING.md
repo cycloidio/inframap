@@ -58,11 +58,6 @@ $ make build
 
 This basically builds `inframap` with the current sources.
 
-You also need to install other code dependencies not mandatory in the runtime environment:
-  * [enumer](https://github.com/dmarkham/enumer) is used to generate some code.
-  * [goimports](https://godoc.org/golang.org/x/tools/cmd/goimports) is used to format / organize code and imports. CI will perform a check on this, we highly recommend to run `$ goimports -w <your-modified-files>`.
-
-
 #### Add a new Provider
 
 To add a new Provider you need to follow the `provider.Provider` interface and create it on the `provider/{provider_name}`, also add it to the `provider.Type` list and then run `make generate`. Basically you can also check any of the other providers that we already have.
@@ -110,3 +105,66 @@ You need to be in the directory in which the images are defined and have a `resi
 find . -name '*-gray.svg' -type f -exec inkscape {} -w 72 -h 72 --export-filename resize/{}.png \; && find ./resize/ -type f -name '*.svg.png' -exec sh -c 'f="{}"; mv -- "$f" "${f%.svg.png}.png"' \;
 ```
 
+### Code Architecture
+
+In this section we'll explain the main packages if you want to contribute/read/understand how InfraMap works.
+
+#### Providers
+
+The main idea behind InfraMap is to abstract each specific Terraform provider logic into a different implementation using a common interface: `provider.Provider`.
+All this implementations are inside the `provider/` package.
+
+Not all the methods are needed to be implemented and that's why we have the `provider/nop_provider.go` which has an empty implementation
+of the `provider.Provider` interface.
+
+All the providers that we have implemented are defined on `provider/{provider-name}` (`{provider-name}` is the name it has on Terraform) for example `provider/aws/` which holds
+the implementation of the AWS provider.
+
+For more information on the provider interface we recommend to read the interface itself.
+
+#### Generate and Prune
+
+The main entry point starts with the `main.go` which actually calls the `cmd/`. The logic of each subcommand: `generate` and `prune`
+is separated on it's own packages
+
+**Prune**
+
+For the Prune what we do is to use the `Provider.UsedAttributes` as a white list of the attributes that are actually needed,
+drop the rest and output the pruned version of the input.
+
+**Generate**
+
+For the Generate it's a bit more complex. We want to have a common structure to operate in order to be independent of the input type (HCL or TFState),
+this structure is a `graph.Graph`.
+
+To get the Graph from TFState we use the `dependencies` (or `depends_on` if it is older than Terraform 0.13) to generate the edges between resources so then
+we can have the first Graph in which each resource is a node and we have edges between them.
+
+To get the Graph from HCL we use the interpolations, which is basically the references between resources on HCL
+
+```hcl
+resource "aws_db_instance" "application" {
+  identifier = "rds"
+
+  vpc_security_group_ids = [aws_security_group.rds.id]
+
+  tags = {
+    Name = "name"
+    type = "master"
+    role = "rds"
+  }
+}
+```
+
+This means that `aws_db_instance.application -> aws_db_instance.rds.id` will have an edge between them.
+
+This is not always enough so we have also have a `Provider.PreProcess` which from the JSON config (common JSON representation of the HCL or TFState configuration)
+can return specific edges to create between nodes. An example can be found for the Google provider https://github.com/cycloidio/inframap/blob/074e1f9bc98fb99ede7d55404b16b4d9ff9cb1e1/provider/google/google.go#L167
+
+Once we have the common Graph, we start doing the operations:
+* Using the `ResourceInOut` we fix the direction of the edges, some of the first edges are wrong in terms of direction, so we fix them first. We do that by checking the config and asking the provider which are the right directions and fix them.
+* Remove the nodes that are edges on the specific provider (ex: `aws_security_group` is an edge on AWS). We do that by checking which is the shortest connections between two nodes (provider nodes) on the Graph and then merge all the nodes in between. The merging works by merging each node one by one and reassigning all the edges to the new node with the right direction. To keep the right direction at the end of the merge, and successive merges, we keep a weigh that is used to know how many merges have been done and in which direction (read the code for more information).
+
+After all this we clean the end graph by removing not connected/merged edges because they are just hanging on the Graph.
+
+When all this operations are done, we finally print the Graph using the `printer/` package.
