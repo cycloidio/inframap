@@ -2,7 +2,7 @@
 
 ### Changed
 
-- Terraform version from 0.13.0 to 0.13.1
+- Terraform version from 0.13.0 to 0.13.3
   ([PR #55](https://github.com/cycloidio/inframap/pull/55))
 - CONTRIBUTING to include Architecture description
   ([Issue #52](https://github.com/cycloidio/inframap/issues/52))
