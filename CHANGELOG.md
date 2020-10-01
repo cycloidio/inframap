@@ -1,5 +1,7 @@
 ## [Unreleased]
 
+## [0.3.2] _2020-10-01_
+
 ### Changed
 
 - Terraform version from 0.13.3 to 0.13.4
