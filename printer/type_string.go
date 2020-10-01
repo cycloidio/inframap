@@ -4,6 +4,7 @@ package printer
 
 import (
 	"fmt"
+	"strings"
 )
 
 const _TypeName = "dot"
@@ -40,6 +41,10 @@ var _TypeNames = []string{
 // TypeString retrieves an enum value from the enum constants string name.
 // Throws an error if the param is not part of the enum.
 func TypeString(s string) (Type, error) {
+	if val, ok := _TypeNameToValueMap[s]; ok {
+		return val, nil
+	}
+	s = strings.ToLower(s)
 	if val, ok := _TypeNameToValueMap[s]; ok {
 		return val, nil
 	}
