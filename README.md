@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="docs/inframap-logo_color-RGB.png" width="150">
+</p>
+
 # InfraMap
 
 [![PkgGoDev](https://pkg.go.dev/badge/github.com/cycloidio/inframap)](https://pkg.go.dev/github.com/cycloidio/inframap)
