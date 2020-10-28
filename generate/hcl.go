@@ -3,23 +3,39 @@ package generate
 import (
 	"errors"
 	"fmt"
+	"os"
+	"path"
+	"path/filepath"
 	"strings"
 
+	"github.com/adrg/xdg"
 	"github.com/cycloidio/inframap/errcode"
 	"github.com/cycloidio/inframap/graph"
 	"github.com/cycloidio/inframap/provider"
+	"github.com/hashicorp/go-getter"
+	"github.com/hashicorp/go-version"
 	"github.com/hashicorp/hcl/v2"
 	"github.com/hashicorp/hcl/v2/hclsyntax"
 	"github.com/hashicorp/hcl/v2/hclwrite"
 	"github.com/hashicorp/terraform/configs"
 	"github.com/hashicorp/terraform/configs/hcl2shim"
+	"github.com/hashicorp/terraform/registry"
+	"github.com/hashicorp/terraform/registry/regsrc"
 	uuid "github.com/satori/go.uuid"
 	"github.com/spf13/afero"
 )
 
+var (
+	localSourcePrefixes = []string{
+		"./",
+		"../",
+	}
+	cachePath = path.Join(xdg.CacheHome, "inframap", "modules")
+)
+
 // FromHCL generates a new graph from the HCL on the path,
 // it can be a file or a Module/Dir
-func FromHCL(fs afero.Fs, path string, opt Options) (*graph.Graph, error) {
+func FromHCL(fs afero.Fs, p string, opt Options) (*graph.Graph, error) {
 	parser := configs.NewParser(fs)
 
 	g := graph.New()
@@ -30,10 +46,10 @@ func FromHCL(fs afero.Fs, path string, opt Options) (*graph.Graph, error) {
 		err   error
 	)
 
-	if parser.IsConfigDir(path) {
-		mod, diags = parser.LoadConfigDir(path)
+	if parser.IsConfigDir(p) {
+		mod, diags = parser.LoadConfigDir(p)
 	} else {
-		f, dgs := parser.LoadConfigFile(path)
+		f, dgs := parser.LoadConfigFile(p)
 		if dgs.HasErrors() {
 			return nil, errors.New(dgs.Error())
 		}
@@ -42,6 +58,21 @@ func FromHCL(fs afero.Fs, path string, opt Options) (*graph.Graph, error) {
 
 	if diags.HasErrors() {
 		return nil, errors.New(diags.Error())
+	}
+
+	managedResources := make(map[string]*configs.Resource)
+	for rk, rv := range mod.ManagedResources {
+		managedResources[rk] = rv
+	}
+
+	installedModules := make(map[string]struct{})
+	calls := make([]*configs.ModuleCall, 0)
+	for _, call := range mod.ModuleCalls {
+		calls = append(calls, call)
+	}
+	p, _ = filepath.Abs(p)
+	if err := moduleInstall(calls, &managedResources, p, installedModules); err != nil {
+		return nil, fmt.Errorf("unable to fetch all modules: %w", err)
 	}
 
 	// nodeCanID holds as key the `aws_alb.front` (graph.Node.Canonical)
@@ -64,7 +95,7 @@ func FromHCL(fs afero.Fs, path string, opt Options) (*graph.Graph, error) {
 		}
 	}
 
-	for rk, rv := range mod.ManagedResources {
+	for rk, rv := range managedResources {
 		pv, rs, err := getProviderAndResource(rk, opt)
 		if err != nil {
 			if errors.Is(err, errcode.ErrProviderNotFound) {
@@ -276,4 +307,135 @@ func checkHCLProviders(mod *configs.Module, opt Options) (Options, error) {
 	opt.Raw = true
 
 	return opt, nil
+}
+
+// moduleInstall will recursively walk through the module calls required by the Terraform config, it will store the downloaded module
+// in $XDG_CACHE directory and stop once all the required modules have been downloaded.
+func moduleInstall(calls []*configs.ModuleCall, mRes *map[string]*configs.Resource, pwd string, installedModules map[string]struct{}) error {
+	// stop condition, if there is no module to
+	// fetch we stop
+	if len(calls) == 0 {
+		return nil
+	}
+
+	call := calls[0]
+	name := call.Name
+
+	// we check if the module is already installed
+	// or not
+	if _, ok := installedModules[name]; ok {
+		return nil
+	}
+
+	var src string = call.SourceAddr
+
+	// we check if the module is a Terraform registry module
+	// in order to get its source address from Terraform registry
+	if regMod, err := regsrc.ParseModuleSource(src); err == nil {
+		client := registry.NewClient(nil, nil)
+		// we get the list of available module versions
+		resp, err := client.ModuleVersions(regMod)
+		if err != nil {
+			return fmt.Errorf("unable to get module versions: %w", err)
+		}
+
+		if len(resp.Modules) < 1 {
+			return fmt.Errorf("unable to find suitable versions")
+		}
+		meta := resp.Modules[0]
+
+		var (
+			latest *version.Version
+			// match holds the version matching the
+			// source constraints set in the module call
+			match *version.Version
+		)
+		for _, vers := range meta.Versions {
+			v, err := version.NewVersion(vers.Version)
+			if err != nil {
+				return fmt.Errorf("unable to create version from string: %w", err)
+			}
+
+			if latest == nil || v.GreaterThan(latest) {
+				latest = v
+			}
+
+			if call.Version.Required.Check(v) {
+				if match == nil || v.GreaterThan(match) {
+					match = v
+				}
+			}
+		}
+		// we finally get the module location, it will return
+		// a string `go-getter` compliant
+		src, err = client.ModuleLocation(regMod, match.String())
+		if err != nil {
+			return fmt.Errorf("unable to fetch module location: %w", err)
+		}
+	}
+
+	// since go-getter does not support yet in-memory fs,
+	// we need to initialize the parser using actual fs
+	// https://github.com/hashicorp/go-getter/issues/83
+	pars := configs.NewParser(nil)
+
+	// we check if the module is a local one by checking
+	// its prefix "./", "../", etc.
+	var isLocal bool
+	for _, prefix := range localSourcePrefixes {
+		if strings.HasPrefix(src, prefix) {
+			isLocal = true
+		}
+	}
+
+	var (
+		m     *configs.Module
+		diags hcl.Diagnostics
+	)
+
+	// the module is not a local one or a Terraform registry one
+	// it should be handle by `go-getter`
+	if !isLocal {
+		dst := path.Join(cachePath, name)
+		// TODO: we should add a logic to invalidate
+		// the cache
+		if _, err := os.Stat(dst); os.IsNotExist(err) {
+			client := &getter.Client{
+				Src:  src,
+				Dst:  dst,
+				Pwd:  pwd,
+				Mode: getter.ClientModeDir,
+			}
+			if err := client.Get(); err != nil {
+				return fmt.Errorf("unable to get remote module: %w", err)
+			}
+		}
+		m, diags = pars.LoadConfigDir(dst)
+	} else {
+		m, diags = pars.LoadConfigDir(path.Join(pwd, src))
+	}
+	if diags.HasErrors() {
+		return fmt.Errorf("unable to load config directory: %s", diags.Error())
+	}
+
+	// fill the final map of managed resources
+	// using the config freshly loaded
+	for rk, rv := range m.ManagedResources {
+		(*mRes)[rk] = rv
+	}
+
+	// keep a trace of the imported / loaded module
+	// to avoid infinite recursion
+	installedModules[name] = struct{}{}
+
+	// create the next slice of module calls to
+	// check before merging it with the current we
+	// still have
+	next := make([]*configs.ModuleCall, 0)
+	for _, call := range m.ModuleCalls {
+		next = append(next, call)
+	}
+	calls = append(calls[1:len(calls)], next...)
+
+	return moduleInstall(calls, mRes, pwd, installedModules)
 }
