@@ -8,6 +8,7 @@ require (
 	github.com/apparentlymart/go-versions v1.0.1 // indirect
 	github.com/awalterschulze/gographviz v2.0.2-0.20200810082452-794ba2878b95+incompatible
 	github.com/chr4/pwgen v1.1.0
+	github.com/cycloidio/terracognita v0.5.1
 	github.com/cycloidio/tfdocs v0.0.0-20200805131448-32ff4af35250
 	github.com/dmarkham/enumer v1.5.1
 	github.com/fatih/color v1.9.0 // indirect
