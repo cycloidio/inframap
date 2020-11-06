@@ -510,4 +510,4 @@ healthchecksdb
 # End of https://www.gitignore.io/api/go,vim,linux,emacs,windows,visualstudio,visualstudiocode,osx
 
 # binary provided by `make build`
-inframap
+/inframap

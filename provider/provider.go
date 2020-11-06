@@ -29,10 +29,13 @@ type Provider interface {
 	// DataSource returns the resource information
 	DataSource(rsc string) (*resource.Resource, error)
 
-	// ResourceInOut returns the resource In Out from a
+	// ResourceInOutNodes returns the resource In Out and Nodes from a
 	// state config. As an example in AWS this would be
 	// an "aws_security_group" "ingress" and "egress"
-	ResourceInOut(id, rs string, cfg map[string]map[string]interface{}) (in, out []string)
+	// In are the incoming connections, Out are the exiting connections
+	// and Nodes are fictional Nodes that need to be added, it's basically
+	// to represent the internet access
+	ResourceInOutNodes(id, rs string, cfg map[string]map[string]interface{}) (in, out, nodes []string)
 
 	// UsedAttributes returns all the attributes that are
 	// required/used/needed on the providers, so when we have to

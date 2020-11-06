@@ -90,7 +90,7 @@ func (g *Graph) AddNode(n *Node) error {
 	}
 
 	if _, ok := g.nodesCans[n.Canonical]; ok {
-		return errcode.ErrGraphAlreadyExistsNode
+		return fmt.Errorf("with canonical %q: %w", n.Canonical, errcode.ErrGraphAlreadyExistsNode)
 	}
 
 	if _, ok := g.nodesIDs[n.ID]; ok {
@@ -108,6 +108,15 @@ func (g *Graph) AddNode(n *Node) error {
 // GetNodeByID returns the requested Node with the nID
 func (g *Graph) GetNodeByID(nID string) (*Node, error) {
 	n, ok := g.nodesIDs[nID]
+	if !ok {
+		return nil, errcode.ErrGraphNotFoundNode
+	}
+	return n, nil
+}
+
+// GetNodeByCanonical returns the requested Node with the nCan
+func (g *Graph) GetNodeByCanonical(nCan string) (*Node, error) {
+	n, ok := g.nodesCans[nCan]
 	if !ok {
 		return nil, errcode.ErrGraphNotFoundNode
 	}

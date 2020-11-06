@@ -13,12 +13,18 @@ func TestFromHCL_AWS(t *testing.T) {
 	t.Run("SuccessSG", func(t *testing.T) {
 		fs := afero.NewOsFs()
 
-		g, err := generate.FromHCL(fs, "./testdata/aws_hcl_sg.tf", generate.Options{Clean: true, Connections: true})
+		g, err := generate.FromHCL(fs, "./testdata/aws_hcl_sg.tf", generate.Options{Clean: true, Connections: true, ExternalNodes: true})
 		require.NoError(t, err)
 		require.NotNil(t, g)
 
 		eg := &graph.Graph{
 			Nodes: []*graph.Node{
+				&graph.Node{
+					Canonical: "im_out.tcp/443->443",
+				},
+				&graph.Node{
+					Canonical: "im_out.tcp/80->80",
+				},
 				&graph.Node{
 					Canonical: "aws_lb.front",
 				},
@@ -33,6 +39,16 @@ func TestFromHCL_AWS(t *testing.T) {
 				},
 			},
 			Edges: []*graph.Edge{
+				&graph.Edge{
+					Source:     "im_out.tcp/443->443",
+					Target:     "aws_lb.front",
+					Canonicals: []string(nil),
+				},
+				&graph.Edge{
+					Source:     "im_out.tcp/80->80",
+					Target:     "aws_lb.front",
+					Canonicals: []string(nil),
+				},
 				&graph.Edge{
 					Source:     "aws_lb.front",
 					Target:     "aws_launch_template.front",
@@ -59,7 +75,7 @@ func TestFromHCL_FlexibleEngine(t *testing.T) {
 	t.Run("SuccessSG", func(t *testing.T) {
 		fs := afero.NewOsFs()
 
-		g, err := generate.FromHCL(fs, "./testdata/flexibleengine_hcl.tf", generate.Options{Clean: true, Connections: true})
+		g, err := generate.FromHCL(fs, "./testdata/flexibleengine_hcl.tf", generate.Options{Clean: true, Connections: true, ExternalNodes: true})
 		require.NoError(t, err)
 		require.NotNil(t, g)
 
@@ -95,7 +111,7 @@ func TestFromHCL_Google(t *testing.T) {
 	t.Run("Success", func(t *testing.T) {
 		fs := afero.NewOsFs()
 
-		g, err := generate.FromHCL(fs, "./testdata/google_hcl.tf", generate.Options{Clean: true, Connections: true})
+		g, err := generate.FromHCL(fs, "./testdata/google_hcl.tf", generate.Options{Clean: true, Connections: true, ExternalNodes: true})
 		require.NoError(t, err)
 		require.NotNil(t, g)
 
@@ -127,12 +143,18 @@ func TestFromHCL_Module(t *testing.T) {
 	t.Run("SuccessSG", func(t *testing.T) {
 		fs := afero.NewOsFs()
 
-		g, err := generate.FromHCL(fs, "./testdata/tf-module/", generate.Options{Clean: true, Connections: true})
+		g, err := generate.FromHCL(fs, "./testdata/tf-module/", generate.Options{Clean: true, Connections: true, ExternalNodes: true})
 		require.NoError(t, err)
 		require.NotNil(t, g)
 
 		eg := &graph.Graph{
 			Nodes: []*graph.Node{
+				&graph.Node{
+					Canonical: "im_out.tcp/443->443",
+				},
+				&graph.Node{
+					Canonical: "im_out.tcp/80->80",
+				},
 				&graph.Node{
 					Canonical: "aws_lb.front",
 				},
@@ -147,6 +169,16 @@ func TestFromHCL_Module(t *testing.T) {
 				},
 			},
 			Edges: []*graph.Edge{
+				&graph.Edge{
+					Source:     "im_out.tcp/443->443",
+					Target:     "aws_lb.front",
+					Canonicals: []string(nil),
+				},
+				&graph.Edge{
+					Source:     "im_out.tcp/80->80",
+					Target:     "aws_lb.front",
+					Canonicals: []string(nil),
+				},
 				&graph.Edge{
 					Source:     "aws_lb.front",
 					Target:     "aws_launch_template.front",

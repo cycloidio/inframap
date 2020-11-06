@@ -61,8 +61,8 @@ func (a Provider) DataSource(resource string) (*resource.Resource, error) {
 	return r, nil
 }
 
-// ResourceInOut returns the In and Out of the rs based on the cfg
-func (a Provider) ResourceInOut(id, rs string, cfgs map[string]map[string]interface{}) ([]string, []string) {
+// ResourceInOutNodes returns the In, Out and Nodes of the rs based on the cfg
+func (a Provider) ResourceInOutNodes(id, rs string, cfgs map[string]map[string]interface{}) ([]string, []string, []string) {
 	var ins, outs []string
 	cfg := cfgs[id]
 	switch rs {
@@ -101,7 +101,7 @@ func (a Provider) ResourceInOut(id, rs string, cfgs map[string]map[string]interf
 			ins = append(ins, pid.(string))
 		}
 	}
-	return ins, outs
+	return ins, outs, nil
 }
 
 // UsedAttributes returns all the attributes that are

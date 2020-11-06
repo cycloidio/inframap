@@ -7,11 +7,11 @@ import (
 	"strings"
 )
 
-const _TypeName = "rawawsflexibleengineopenstackgoogleazurerm"
+const _TypeName = "rawimawsflexibleengineopenstackgoogleazurerm"
 
-var _TypeIndex = [...]uint8{0, 3, 6, 20, 29, 35, 42}
+var _TypeIndex = [...]uint8{0, 3, 5, 8, 22, 31, 37, 44}
 
-const _TypeLowerName = "rawawsflexibleengineopenstackgoogleazurerm"
+const _TypeLowerName = "rawimawsflexibleengineopenstackgoogleazurerm"
 
 func (i Type) String() string {
 	if i < 0 || i >= Type(len(_TypeIndex)-1) {
@@ -25,37 +25,41 @@ func (i Type) String() string {
 func _TypeNoOp() {
 	var x [1]struct{}
 	_ = x[Raw-(0)]
-	_ = x[AWS-(1)]
-	_ = x[FlexibleEngine-(2)]
-	_ = x[OpenStack-(3)]
-	_ = x[Google-(4)]
-	_ = x[Azurerm-(5)]
+	_ = x[IM-(1)]
+	_ = x[AWS-(2)]
+	_ = x[FlexibleEngine-(3)]
+	_ = x[OpenStack-(4)]
+	_ = x[Google-(5)]
+	_ = x[Azurerm-(6)]
 }
 
-var _TypeValues = []Type{Raw, AWS, FlexibleEngine, OpenStack, Google, Azurerm}
+var _TypeValues = []Type{Raw, IM, AWS, FlexibleEngine, OpenStack, Google, Azurerm}
 
 var _TypeNameToValueMap = map[string]Type{
 	_TypeName[0:3]:        Raw,
 	_TypeLowerName[0:3]:   Raw,
-	_TypeName[3:6]:        AWS,
-	_TypeLowerName[3:6]:   AWS,
-	_TypeName[6:20]:       FlexibleEngine,
-	_TypeLowerName[6:20]:  FlexibleEngine,
-	_TypeName[20:29]:      OpenStack,
-	_TypeLowerName[20:29]: OpenStack,
-	_TypeName[29:35]:      Google,
-	_TypeLowerName[29:35]: Google,
-	_TypeName[35:42]:      Azurerm,
-	_TypeLowerName[35:42]: Azurerm,
+	_TypeName[3:5]:        IM,
+	_TypeLowerName[3:5]:   IM,
+	_TypeName[5:8]:        AWS,
+	_TypeLowerName[5:8]:   AWS,
+	_TypeName[8:22]:       FlexibleEngine,
+	_TypeLowerName[8:22]:  FlexibleEngine,
+	_TypeName[22:31]:      OpenStack,
+	_TypeLowerName[22:31]: OpenStack,
+	_TypeName[31:37]:      Google,
+	_TypeLowerName[31:37]: Google,
+	_TypeName[37:44]:      Azurerm,
+	_TypeLowerName[37:44]: Azurerm,
 }
 
 var _TypeNames = []string{
 	_TypeName[0:3],
-	_TypeName[3:6],
-	_TypeName[6:20],
-	_TypeName[20:29],
-	_TypeName[29:35],
-	_TypeName[35:42],
+	_TypeName[3:5],
+	_TypeName[5:8],
+	_TypeName[8:22],
+	_TypeName[22:31],
+	_TypeName[31:37],
+	_TypeName[37:44],
 }
 
 // TypeString retrieves an enum value from the enum constants string name.

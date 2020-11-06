@@ -64,17 +64,26 @@ func (a Provider) DataSource(resource string) (*resource.Resource, error) {
 var reSGEgress = regexp.MustCompile(`^egress\.\d+\.security_groups\.\d+$`)
 var reSGIngress = regexp.MustCompile(`^ingress\.\d+\.security_groups\.\d+$`)
 
-// ResourceInOut returns the In and Out of the rs based on the cfg
-func (a Provider) ResourceInOut(id, rs string, cfgs map[string]map[string]interface{}) ([]string, []string) {
-	var ins, outs []string
+// ResourceInOutNodes returns the In, Out and Nodes of the rs based on the cfg
+func (a Provider) ResourceInOutNodes(id, rs string, cfgs map[string]map[string]interface{}) ([]string, []string, []string) {
+	var ins, outs, nodes []string
 	cfg := cfgs[id]
 	if rs == "aws_security_group" {
 		ingress, inok := cfg["ingress"]
 		if inok {
 			for _, in := range ingress.([]interface{}) {
-				if sgs, ok := in.(map[string]interface{})["security_groups"].([]interface{}); ok {
+				min := in.(map[string]interface{})
+				if sgs, ok := min["security_groups"].([]interface{}); ok {
 					for _, sg := range sgs {
 						ins = append(ins, sg.(string))
+					}
+				}
+				if cidrs, ok := min["cidr_blocks"].([]interface{}); ok {
+					for _, ci := range cidrs {
+						sci := ci.(string)
+						if sci == "0.0.0.0/0" {
+							nodes = append(nodes, fmt.Sprintf("im_out.%v/%v->%v", min["protocol"], min["from_port"], min["to_port"]))
+						}
 					}
 				}
 			}
@@ -114,7 +123,7 @@ func (a Provider) ResourceInOut(id, rs string, cfgs map[string]map[string]interf
 		}
 	}
 
-	return ins, outs
+	return ins, outs, nodes
 }
 
 // UsedAttributes returns all the attributes that are

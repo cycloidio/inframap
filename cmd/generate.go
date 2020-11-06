@@ -14,11 +14,12 @@ import (
 )
 
 var (
-	printerType string
-	raw         bool
-	clean       bool
-	connections bool
-	showIcons   bool
+	printerType   string
+	raw           bool
+	clean         bool
+	connections   bool
+	showIcons     bool
+	externalNodes bool
 
 	generateCmd = &cobra.Command{
 		Use:     "generate [FILE]",
@@ -29,9 +30,10 @@ var (
 		PreRunE: preRunFile,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			opt := generate.Options{
-				Raw:         raw,
-				Clean:       clean,
-				Connections: connections,
+				Raw:           raw,
+				Clean:         clean,
+				Connections:   connections,
+				ExternalNodes: externalNodes,
 			}
 
 			var (
@@ -95,4 +97,5 @@ func init() {
 	generateCmd.Flags().BoolVar(&clean, "clean", true, "Clean will the generated graph will not have any Node that does not have a connection/edge")
 	generateCmd.Flags().BoolVar(&connections, "connections", true, "Connections will apply the logic of the provider to remove resources that are not nodes")
 	generateCmd.Flags().BoolVar(&showIcons, "show-icons", true, "Toggle the icons on the printed graph")
+	generateCmd.Flags().BoolVar(&externalNodes, "external-nodes", true, "Toggle the addition of external nodes like 'im_out' (used to show ingress connections)")
 }

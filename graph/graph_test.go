@@ -546,6 +546,43 @@ func TestGetNodeByID(t *testing.T) {
 	})
 }
 
+func TestGetNodeByCanonical(t *testing.T) {
+	t.Run("Success", func(t *testing.T) {
+		g := graph.New()
+		n1 := &graph.Node{ID: "1", Canonical: "can1"}
+		n2 := &graph.Node{ID: "2", Canonical: "can2"}
+
+		err := g.AddNode(n1)
+		require.NoError(t, err)
+
+		err = g.AddNode(n2)
+		require.NoError(t, err)
+
+		n, err := g.GetNodeByCanonical("can1")
+		require.NoError(t, err)
+		assert.Equal(t, n1, n)
+
+		n, err = g.GetNodeByCanonical("can2")
+		require.NoError(t, err)
+		assert.Equal(t, n2, n)
+	})
+	t.Run("InvalidFormatNodeNotFound", func(t *testing.T) {
+		g := graph.New()
+
+		n1 := &graph.Node{ID: "1", Canonical: "can1"}
+		n2 := &graph.Node{ID: "2", Canonical: "can2"}
+
+		err := g.AddNode(n1)
+		require.NoError(t, err)
+
+		err = g.AddNode(n2)
+		require.NoError(t, err)
+
+		_, err = g.GetNodeByCanonical("can3")
+		assert.Error(t, err, errcode.ErrGraphNotFoundNode.Error())
+	})
+}
+
 func TestInvertEdge(t *testing.T) {
 	t.Run("Success", func(t *testing.T) {
 		g := graph.New()

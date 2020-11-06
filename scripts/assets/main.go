@@ -26,7 +26,7 @@ func init() {
 func main() {
 	flag.Parse()
 	for _, pr := range provider.TypeValues() {
-		if pr == provider.Raw {
+		if pr == provider.Raw || pr == provider.IM {
 			continue
 		}
 		url := fmt.Sprintf("https://raw.githubusercontent.com/cycloidio/tfdocs/%s/assets/%s/icons.json", branch, pr)
@@ -56,6 +56,11 @@ func main() {
 		}
 
 		rootDir := fmt.Sprintf("assets/icons/%s/", pr)
+		_, err = os.Stat(rootDir)
+		if os.IsNotExist(err) {
+			fmt.Printf("missing icons for %s\n", pr)
+			continue
+		}
 		err = filepath.Walk(rootDir, func(p string, fi os.FileInfo, err error) error {
 			if err != nil {
 				return err
