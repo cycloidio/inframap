@@ -10,6 +10,11 @@
 - `tfdocs` version upgraded
   ([PR #69](https://github.com/cycloidio/inframap/pull/69))
 
+### Fixed
+
+- Azure not generating a correct tfstate due to renamed method
+  ([PR #71](https://github.com/cycloidio/inframap/pull/71))
+
 ## [0.3.3] _2020-10-22_
 
 ### Changed

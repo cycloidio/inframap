@@ -48,8 +48,8 @@ func (a Provider) DataSource(resource string) (*resource.Resource, error) {
 	return r, nil
 }
 
-// ResourceInOut returns the Ins and Outs of the rs based on the cfg
-func (a Provider) ResourceInOut(id, rs string, cfgs map[string]map[string]interface{}) ([]string, []string) {
+// ResourceInOutNodes returns the In, Out and Nodes of the rs based on the cfg
+func (a Provider) ResourceInOutNodes(id, rs string, cfgs map[string]map[string]interface{}) ([]string, []string, []string) {
 	var ins, outs []string
 	cfg := cfgs[id]
 	switch rs {
@@ -64,7 +64,7 @@ func (a Provider) ResourceInOut(id, rs string, cfgs map[string]map[string]interf
 		rvni := cfg["remote_virtual_network_id"]
 		outs = append(outs, rvni.(string))
 	}
-	return ins, outs
+	return ins, outs, nil
 }
 
 // getRsIDByName ranges over all resources, looking for a same name as provided.
