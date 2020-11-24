@@ -23,7 +23,7 @@ func TestResourceInOut(t *testing.T) {
 			},
 		}
 
-		ins, outs := aws.ResourceInOut(id, rs, cfg)
+		ins, outs, _ := aws.ResourceInOutNodes(id, rs, cfg)
 		assert.Equal(t, []string{"src_v_network"}, ins)
 		assert.Equal(t, []string{"remote_v_network"}, outs)
 	})
