@@ -22,7 +22,13 @@ func FromState(tfstate json.RawMessage, opt Options) (*graph.Graph, map[string]i
 	// Since TF 0.13 'depends_on' has been dropped, so we do a manual
 	// replace from '"depends_on"' to '"dependencies"'
 	tfstate = bytes.ReplaceAll(tfstate, []byte("\"depends_on\""), []byte("\"dependencies\""))
+	err := validateTFStateVersion(tfstate)
+	if err != nil {
+		return nil, nil, fmt.Errorf("error while validating TFStateVersion: %w", err)
+	}
+
 	buf := bytes.NewBuffer(tfstate)
+
 	file, err := statefile.Read(buf)
 	if err != nil {
 		return nil, nil, fmt.Errorf("error while reading TFState: %w", err)
@@ -175,6 +181,25 @@ func FromState(tfstate json.RawMessage, opt Options) (*graph.Graph, map[string]i
 		return nil, nil, err
 	}
 	return g, endCfg, nil
+}
+
+// validateTFStateVersion validates that the verion is the
+// one we support which is only 4
+func validateTFStateVersion(b []byte) error {
+	var v struct {
+		Version uint64 `json:"version"`
+	}
+
+	err := json.Unmarshal(b, &v)
+	if err != nil {
+		return fmt.Errorf("error while reading TFState version: %w", err)
+	}
+
+	if v.Version != 4 {
+		return fmt.Errorf("could not read version %d: %w", v.Version, errcode.ErrInvalidTFStateVersion)
+	}
+
+	return nil
 }
 
 // cleanHangingEdges will Replace all the hanging Edges (that are Nodes now)

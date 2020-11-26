@@ -23,7 +23,8 @@ var (
 	ErrProviderNotFoundDataSource = errors.New("provider data source not found")
 	ErrProviderNotFound           = errors.New("provider not found")
 
-	ErrInvalidTFStateFile = errors.New("invalid Terraform State file")
+	ErrInvalidTFStateFile    = errors.New("invalid Terraform State file")
+	ErrInvalidTFStateVersion = errors.New("invalid Terraform State version, we only support version 4")
 
 	ErrPrinterNotFound = errors.New("printer not found")
 

@@ -6,6 +6,8 @@
 
 - Support incoming connection without source node for AWS
   ([Issue #5](https://github.com/cycloidio/inframap/issues/5))
+- Validation for Terraform State version, we only support 4
+  ([Issue #72](https://github.com/cycloidio/inframap/issues/72))
 
 ### Changed
 
