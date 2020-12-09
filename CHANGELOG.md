@@ -9,6 +9,9 @@
 
 - `tfdocs` version upgraded
   ([PR #69](https://github.com/cycloidio/inframap/pull/69))
+- Terraform version from 0.13.5 to 0.14.2
+  ([PR #75](https://github.com/cycloidio/inframap/pull/75))
+
 
 ### Fixed
 
@@ -20,14 +23,14 @@
 ### Changed
 
 - Terraform version from 0.13.4 to 0.13.5
-  ([Issue #58](https://github.com/cycloidio/inframap/pull/65))
+  ([PR #65](https://github.com/cycloidio/inframap/pull/65))
 
 ## [0.3.2] _2020-10-01_
 
 ### Changed
 
 - Terraform version from 0.13.3 to 0.13.4
-  ([Issue #58](https://github.com/cycloidio/inframap/pull/61))
+  ([PR #61](https://github.com/cycloidio/inframap/pull/61))
 
 ## [0.3.1] _2020-09-21_
 
