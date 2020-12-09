@@ -1,5 +1,7 @@
 ## [Unreleased]
 
+## [0.4.0] _2020-12-09_
+
 ### Added
 
 - Support incoming connection without source node for AWS
