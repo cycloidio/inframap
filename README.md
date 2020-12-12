@@ -36,6 +36,14 @@ We support Terraform: 0.13 (and previous)
 
 ## Installation
 
+### Install via brew
+
+If you're macOS user and using [Homebrew](https://brew.sh/), you can install via brew command:
+
+```sh
+$ brew install inframap
+```
+
 ### Stable
 
 To install the latest release of Inframap, you can pick one of this methods:
