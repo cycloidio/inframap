@@ -54,6 +54,14 @@ $ go mod download
 $ make build
 ```
 
+### Install via brew
+
+If you're macOS user and using [Homebrew](https://brew.sh/), you can install via brew command:
+
+```sh
+$ brew install inframap
+```
+
 ## Usage
 
 The `inframap --help` will show you the basics.
