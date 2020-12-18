@@ -1,14 +1,26 @@
 package generate_test
 
 import (
+	"errors"
 	"io/ioutil"
 	"testing"
 
+	"github.com/cycloidio/inframap/errcode"
 	"github.com/cycloidio/inframap/generate"
 	"github.com/cycloidio/inframap/graph"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
+
+func TestFromState(t *testing.T) {
+	t.Run("ErrInvalidTFStateVersion", func(t *testing.T) {
+		src, err := ioutil.ReadFile("./testdata/invalid_version_state.json")
+		require.NoError(t, err)
+
+		_, _, err = generate.FromState(src, generate.Options{Clean: true, Connections: true, ExternalNodes: true})
+		assert.True(t, errors.Is(err, errcode.ErrInvalidTFStateVersion))
+	})
+}
 
 func TestFromState_AWS(t *testing.T) {
 	t.Run("SuccessSG", func(t *testing.T) {
