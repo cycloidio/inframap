@@ -1,13 +1,21 @@
 ## [Unreleased]
 
+### Added
+
+- Validation for Terraform State version, we only support 4
+  ([Issue #72](https://github.com/cycloidio/inframap/issues/72))
+
+### Changed
+
+- Terraform version from 0.14.2 to 0.14.3
+  ([PR #80](https://github.com/cycloidio/inframap/pull/80))
+
 ## [0.4.0] _2020-12-09_
 
 ### Added
 
 - Support incoming connection without source node for AWS
   ([Issue #5](https://github.com/cycloidio/inframap/issues/5))
-- Validation for Terraform State version, we only support 4
-  ([Issue #72](https://github.com/cycloidio/inframap/issues/72))
 
 ### Changed
 
@@ -15,7 +23,6 @@
   ([PR #69](https://github.com/cycloidio/inframap/pull/69))
 - Terraform version from 0.13.5 to 0.14.2
   ([PR #75](https://github.com/cycloidio/inframap/pull/75))
-
 
 ### Fixed
 
