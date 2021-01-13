@@ -1,5 +1,7 @@
 ## [Unreleased]
 
+## [0.5.0] _2021-01-13_
+
 ### Added
 
 - Validation for Terraform State version, we only support 4
