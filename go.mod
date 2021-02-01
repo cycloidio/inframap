@@ -8,7 +8,7 @@ require (
 	github.com/awalterschulze/gographviz v2.0.3+incompatible
 	github.com/chr4/pwgen v1.1.0
 	github.com/cycloidio/tfdocs v0.0.0-20201106154358-49ea9e6f45e4
-	github.com/dmarkham/enumer v1.5.1
+	github.com/dmarkham/enumer v1.5.2
 	github.com/fatih/color v1.9.0 // indirect
 	github.com/gobuffalo/here v0.6.2 // indirect
 	github.com/golang/protobuf v1.4.3 // indirect
