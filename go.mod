@@ -1,6 +1,6 @@
 module github.com/cycloidio/inframap
 
-go 1.15
+go 1.16
 
 require (
 	github.com/adrg/xdg v0.3.0
