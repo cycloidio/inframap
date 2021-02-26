@@ -24,7 +24,7 @@ var (
 	ErrProviderNotFound           = errors.New("provider not found")
 
 	ErrInvalidTFStateFile    = errors.New("invalid Terraform State file")
-	ErrInvalidTFStateVersion = errors.New("invalid Terraform State version, we only support version 4")
+	ErrInvalidTFStateVersion = errors.New("invalid Terraform State version, we only support version 3 and 4")
 
 	ErrPrinterNotFound = errors.New("printer not found")
 

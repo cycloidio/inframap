@@ -14,8 +14,8 @@ import (
 // and only using the canonicals of the Node, same with the Edges
 func assertEqualGraph(t *testing.T, expected, actual *graph.Graph, actualCfg map[string]interface{}) {
 
-	assert.Len(t, actual.Nodes, len(expected.Nodes))
-	assert.Len(t, actual.Edges, len(expected.Edges))
+	assert.Len(t, actual.Nodes, len(expected.Nodes), "Nodes")
+	assert.Len(t, actual.Edges, len(expected.Edges), "Edges")
 
 	// nodeCans holds canonical -> graph.Node
 	nodeCans := make(map[string]*graph.Node)
@@ -70,7 +70,7 @@ func assertEqualGraph(t *testing.T, expected, actual *graph.Graph, actualCfg map
 		} else {
 			sort.Strings(e.Canonicals)
 			sort.Strings(ee.Canonicals)
-			assert.Equal(t, ee.Canonicals, e.Canonicals)
+			assert.Equal(t, ee.Canonicals, e.Canonicals, fmt.Sprintf("Source: %s Target: %s", ee.Source, ee.Target))
 		}
 	}
 
