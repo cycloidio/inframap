@@ -1,9 +1,19 @@
 ## [Unreleased]
 
+### Added
+
+- Support for TF State V3 (which is TF 0.11)
+  ([Issue #74](https://github.com/cycloidio/inframap/issues/74))
+
 ### Changed
 
 - Terraform version from 0.14.6 to 0.14.7
   ([PR #107](https://github.com/cycloidio/inframap/pull/107))
+
+### Fixed
+
+- Improved the mutate logic to consider more data before removing the edges
+  ([PR #106](https://github.com/cycloidio/inframap/pull/106))
 
 ## [0.5.2] _2021-02-09_
 
