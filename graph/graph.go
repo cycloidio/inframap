@@ -163,6 +163,8 @@ func (g *Graph) Replace(srcID, repID string) error {
 	// mutualEdge is the edge that connects this 2 Nodes
 	var mutualEdge *Edge
 	for _, e := range srcEdges {
+		// Depending on the direction of the connection
+		// we increase or decrease the Node.Weight
 		if e.Source == srcID && e.Target == repID {
 			repNode.Weight--
 			mutualEdge = e
@@ -191,7 +193,7 @@ func (g *Graph) Replace(srcID, repID string) error {
 
 		e.AddCanonicals(append(mutualEdge.Canonicals, srcNode.Canonical)...)
 
-		_, okstt := g.edgesSourceTarget[e.Source+e.Target]
+		ee, okstt := g.edgesSourceTarget[e.Source+e.Target]
 
 		// If the Edge does not exists we register it
 		// If it does then we remove it as we do not want repeated edges
@@ -199,6 +201,9 @@ func (g *Graph) Replace(srcID, repID string) error {
 			g.nodesWithEdge[repID] = append(g.nodesWithEdge[repID], e)
 			g.edgesSourceTarget[e.Source+e.Target] = e
 		} else {
+			// Before removing repeated edges we add the
+			// canonicals from the edge we want to delete
+			ee.AddCanonicals(e.Canonicals...)
 			g.removeEdgeByID(e.ID)
 		}
 	}
