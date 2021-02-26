@@ -59,6 +59,5 @@ var (
 	edgeTypes = map[string]struct{}{
 		"aws_security_group":      struct{}{},
 		"aws_security_group_rule": struct{}{},
-		//"aws_cloudfront_distribution": struct{}{},
 	}
 )

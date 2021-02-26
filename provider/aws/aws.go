@@ -2,7 +2,6 @@ package aws
 
 import (
 	"fmt"
-	"regexp"
 
 	"github.com/cycloidio/inframap/errcode"
 	"github.com/cycloidio/inframap/provider"
@@ -59,11 +58,6 @@ func (a Provider) DataSource(resource string) (*resource.Resource, error) {
 	return r, nil
 }
 
-// These 2 regexp match keys like 'ingress.2988878453.security_groups.2496918042' and
-// are used for TF 0.11 as the State is flat
-var reSGEgress = regexp.MustCompile(`^egress\.\d+\.security_groups\.\d+$`)
-var reSGIngress = regexp.MustCompile(`^ingress\.\d+\.security_groups\.\d+$`)
-
 // ResourceInOutNodes returns the In, Out and Nodes of the rs based on the cfg
 func (a Provider) ResourceInOutNodes(id, rs string, cfgs map[string]map[string]interface{}) ([]string, []string, []string) {
 	var ins, outs, nodes []string
@@ -100,17 +94,6 @@ func (a Provider) ResourceInOutNodes(id, rs string, cfgs map[string]map[string]i
 			}
 		}
 
-		// This means the security group config is flat, so it
-		// needs to be iterated and the keys parsed with regex
-		if !inok && !egok {
-			for k, v := range cfg {
-				if reSGIngress.MatchString(k) {
-					ins = append(ins, v.(string))
-				} else if reSGEgress.MatchString(k) {
-					outs = append(outs, v.(string))
-				}
-			}
-		}
 	} else if rs == "aws_security_group_rule" {
 		in, ok := cfg["source_security_group_id"]
 		if ok && in != nil {

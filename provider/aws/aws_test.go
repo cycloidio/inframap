@@ -35,21 +35,6 @@ func TestResourceInOutNodes(t *testing.T) {
 		assert.Equal(t, []string{"in-id"}, ins)
 		assert.Equal(t, []string{"out-id"}, outs)
 	})
-	t.Run("SuccessSG0.11", func(t *testing.T) {
-		aws := aws.Provider{}
-		id := "id"
-		rs := "aws_security_group"
-		cfg := map[string]map[string]interface{}{
-			id: map[string]interface{}{
-				"ingress.1.security_groups.1": "in-id",
-				"egress.1.security_groups.1":  "out-id",
-			},
-		}
-
-		ins, outs, _ := aws.ResourceInOutNodes(id, rs, cfg)
-		assert.Equal(t, []string{"in-id"}, ins)
-		assert.Equal(t, []string{"out-id"}, outs)
-	})
 	t.Run("SuccessSGR", func(t *testing.T) {
 		aws := aws.Provider{}
 		id := "id"
