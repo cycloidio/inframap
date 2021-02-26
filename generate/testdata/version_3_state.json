@@ -1,0 +1,406 @@
+{
+	"version": 3,
+	"terraform_version": "0.11.14",
+	"serial": 83,
+	"lineage": "3fd5eb87-d6b9-8b47-6c2d-7209f7f884ee",
+	"modules": [
+		{
+			"path": [
+				"root",
+				"cycloid"
+			],
+			"resources": {
+				"aws_alb.front": {
+					"type": "aws_alb",
+					"depends_on": [
+						"aws_security_group.alb-front"
+					],
+					"primary": {
+						"id": "123",
+						"attributes": {
+							"id": "123",
+							"idle_timeout": "600",
+							"internal": "false",
+							"ip_address_type": "ipv4",
+							"load_balancer_type": "application",
+							"security_groups.#": "1",
+							"security_groups.3982542233": "sg-815549fb",
+							"subnet_mapping.#": "3",
+							"subnet_mapping.1243641484.allocation_id": "",
+							"subnet_mapping.1243641484.subnet_id": "subnet-e8f5368e",
+							"subnet_mapping.1617803526.allocation_id": "",
+							"subnet_mapping.1617803526.subnet_id": "subnet-4caca117",
+							"subnet_mapping.707871693.allocation_id": "",
+							"subnet_mapping.707871693.subnet_id": "subnet-08c11040",
+							"subnets.#": "3",
+							"subnets.1359096304": "subnet-08c11040",
+							"subnets.3529352084": "subnet-4caca117",
+							"subnets.4038704495": "subnet-e8f5368e",
+							"vpc_id": "vpc-5972c43f",
+							"zone_id": "Z32O12XQLNTSW2"
+						},
+						"meta": {
+							"e2bfb730-ecaa-11e6-8f88-34363bc7c4c0": {
+								"create": 600000000000,
+								"delete": 600000000000,
+								"update": 600000000000
+							}
+						},
+						"tainted": false
+					},
+					"deposed": [],
+					"provider": "provider.aws"
+				},
+				"aws_cloudfront_distribution.cdn": {
+					"type": "aws_cloudfront_distribution",
+					"depends_on": [
+						"aws_alb.front",
+						"aws_s3_bucket.medias"
+					],
+					"primary": {
+						"id": "E1263EB7GE2JS2",
+						"attributes": {
+							"id": "E1263EB7GE2JS2"
+						},
+						"meta": {
+							"schema_version": "1"
+						},
+						"tainted": false
+					},
+					"deposed": [],
+					"provider": "provider.aws"
+				},
+				"aws_db_instance.website": {
+					"type": "aws_db_instance",
+					"depends_on": [
+						"aws_security_group.rds-website"
+					],
+					"primary": {
+						"id": "cycloid-rds-website-prod",
+						"attributes": {
+							"db_subnet_group_name": "cycloid-prod",
+							"id": "cycloid-rds-website-prod",
+							"vpc_security_group_ids.#": "1",
+							"vpc_security_group_ids.3466824126": "sg-cd564ab7"
+						},
+						"meta": {
+							"e2bfb730-ecaa-11e6-8f88-34363bc7c4c0": {
+								"create": 2400000000000,
+								"delete": 2400000000000,
+								"update": 4800000000000
+							},
+							"schema_version": "1"
+						},
+						"tainted": false
+					},
+					"deposed": [],
+					"provider": "provider.aws"
+				},
+				"aws_ebs_volume.flux": {
+					"type": "aws_ebs_volume",
+					"depends_on": [
+						"aws_instance.batch"
+					],
+					"primary": {
+						"id": "vol-080719c992853ff01",
+						"attributes": {
+							"availability_zone": "eu-west-1a",
+							"id": "vol-080719c992853ff01",
+							"type": "gp2"
+						},
+						"meta": {},
+						"tainted": false
+					},
+					"deposed": [],
+					"provider": "provider.aws"
+				},
+				"aws_elasticache_cluster.redis": {
+					"type": "aws_elasticache_cluster",
+					"depends_on": [
+						"aws_security_group.redis"
+					],
+					"primary": {
+						"id": "cycloid0-prod",
+						"attributes": {
+							"availability_zone": "eu-west-1b",
+							"az_mode": "single-az",
+							"cluster_id": "cycloid0-prod",
+							"id": "cycloid0-prod",
+							"security_group_ids.#": "1",
+							"security_group_ids.1511636990": "sg-045d417e",
+							"security_group_names.#": "0",
+							"subnet_group_name": "cycloid-prod"
+						},
+						"meta": {},
+						"tainted": false
+					},
+					"deposed": [],
+					"provider": "provider.aws"
+				},
+				"aws_instance.batch": {
+					"type": "aws_instance",
+					"depends_on": [
+						"aws_security_group.batch"
+					],
+					"primary": {
+						"id": "i-0c53df6c1e4dc1f89",
+						"attributes": {
+							"id": "i-0c53df6c1e4dc1f89",
+							"security_groups.#": "0",
+							"subnet_id": "subnet-4caca117",
+							"vpc_security_group_ids.#": "3",
+							"vpc_security_group_ids.2496918042": "sg-e755499d",
+							"vpc_security_group_ids.3438190552": "sg-5a702a20",
+							"vpc_security_group_ids.3964973621": "sg-95691cef"
+						},
+						"meta": {
+							"e2bfb730-ecaa-11e6-8f88-34363bc7c4c0": {
+								"create": 600000000000,
+								"delete": 1200000000000,
+								"update": 600000000000
+							},
+							"schema_version": "1"
+						},
+						"tainted": false
+					},
+					"deposed": [],
+					"provider": "provider.aws"
+				},
+				"aws_s3_bucket.medias": {
+					"type": "aws_s3_bucket",
+					"depends_on": [
+					],
+					"primary": {
+						"id": "cycloid-website-prod-medias",
+						"attributes": {
+							"id": "cycloid-website-prod-medias"
+						},
+						"meta": {},
+						"tainted": false
+					},
+					"deposed": [],
+					"provider": "provider.aws"
+				},
+				"aws_security_group.alb-front": {
+					"type": "aws_security_group",
+					"depends_on": [],
+					"primary": {
+						"id": "sg-815549fb",
+						"attributes": {
+							"egress.#": "1",
+							"egress.482069346.cidr_blocks.#": "1",
+							"egress.482069346.cidr_blocks.0": "0.0.0.0/0",
+							"egress.482069346.from_port": "0",
+							"egress.482069346.ipv6_cidr_blocks.#": "0",
+							"egress.482069346.prefix_list_ids.#": "0",
+							"egress.482069346.protocol": "-1",
+							"egress.482069346.security_groups.#": "0",
+							"egress.482069346.self": "false",
+							"egress.482069346.to_port": "0",
+							"id": "sg-815549fb",
+							"ingress.#": "2",
+							"ingress.2214680975.cidr_blocks.#": "1",
+							"ingress.2214680975.cidr_blocks.0": "0.0.0.0/0",
+							"ingress.2214680975.from_port": "80",
+							"ingress.2214680975.ipv6_cidr_blocks.#": "0",
+							"ingress.2214680975.prefix_list_ids.#": "0",
+							"ingress.2214680975.protocol": "tcp",
+							"ingress.2214680975.security_groups.#": "0",
+							"ingress.2214680975.self": "false",
+							"ingress.2214680975.to_port": "80",
+							"ingress.2617001939.cidr_blocks.#": "1",
+							"ingress.2617001939.cidr_blocks.0": "0.0.0.0/0",
+							"ingress.2617001939.from_port": "443",
+							"ingress.2617001939.ipv6_cidr_blocks.#": "0",
+							"ingress.2617001939.prefix_list_ids.#": "0",
+							"ingress.2617001939.protocol": "tcp",
+							"ingress.2617001939.security_groups.#": "0",
+							"ingress.2617001939.self": "false",
+							"ingress.2617001939.to_port": "443",
+							"vpc_id": "vpc-5972c43f"
+						},
+						"meta": {
+							"e2bfb730-ecaa-11e6-8f88-34363bc7c4c0": {
+								"create": 600000000000,
+								"delete": 600000000000
+							},
+							"schema_version": "1"
+						},
+						"tainted": false
+					},
+					"deposed": [],
+					"provider": "provider.aws"
+				},
+				"aws_security_group.batch": {
+					"type": "aws_security_group",
+					"depends_on": [
+						"aws_security_group.alb-front"
+					],
+					"primary": {
+						"id": "sg-e755499d",
+						"attributes": {
+							"egress.#": "1",
+							"egress.482069346.cidr_blocks.#": "1",
+							"egress.482069346.cidr_blocks.0": "0.0.0.0/0",
+							"egress.482069346.from_port": "0",
+							"egress.482069346.ipv6_cidr_blocks.#": "0",
+							"egress.482069346.prefix_list_ids.#": "0",
+							"egress.482069346.protocol": "-1",
+							"egress.482069346.security_groups.#": "0",
+							"egress.482069346.self": "false",
+							"egress.482069346.to_port": "0",
+							"id": "sg-e755499d",
+							"ingress.#": "2",
+							"ingress.3985202168.cidr_blocks.#": "1",
+							"ingress.3985202168.cidr_blocks.0": "0.0.0.0/0",
+							"ingress.3985202168.from_port": "2222",
+							"ingress.3985202168.ipv6_cidr_blocks.#": "0",
+							"ingress.3985202168.prefix_list_ids.#": "0",
+							"ingress.3985202168.protocol": "tcp",
+							"ingress.3985202168.security_groups.#": "0",
+							"ingress.3985202168.self": "false",
+							"ingress.3985202168.to_port": "2222",
+							"ingress.4116320146.cidr_blocks.#": "0",
+							"ingress.4116320146.from_port": "80",
+							"ingress.4116320146.ipv6_cidr_blocks.#": "0",
+							"ingress.4116320146.prefix_list_ids.#": "0",
+							"ingress.4116320146.protocol": "tcp",
+							"ingress.4116320146.security_groups.#": "1",
+							"ingress.4116320146.security_groups.3982542233": "sg-815549fb",
+							"ingress.4116320146.self": "false",
+							"ingress.4116320146.to_port": "80",
+							"vpc_id": "vpc-5972c43f"
+						},
+						"meta": {
+							"e2bfb730-ecaa-11e6-8f88-34363bc7c4c0": {
+								"create": 600000000000,
+								"delete": 600000000000
+							},
+							"schema_version": "1"
+						},
+						"tainted": false
+					},
+					"deposed": [],
+					"provider": "provider.aws"
+				},
+				"aws_security_group.front": {
+					"type": "aws_security_group",
+					"depends_on": [
+						"aws_security_group.alb-front"
+					],
+					"primary": {
+						"id": "sg-f7574b8d",
+						"attributes": {
+							"egress.#": "1",
+							"egress.482069346.cidr_blocks.#": "1",
+							"egress.482069346.cidr_blocks.0": "0.0.0.0/0",
+							"egress.482069346.from_port": "0",
+							"egress.482069346.ipv6_cidr_blocks.#": "0",
+							"egress.482069346.prefix_list_ids.#": "0",
+							"egress.482069346.protocol": "-1",
+							"egress.482069346.security_groups.#": "0",
+							"egress.482069346.self": "false",
+							"egress.482069346.to_port": "0",
+							"id": "sg-f7574b8d",
+							"ingress.#": "1",
+							"ingress.4116320146.cidr_blocks.#": "0",
+							"ingress.4116320146.from_port": "80",
+							"ingress.4116320146.ipv6_cidr_blocks.#": "0",
+							"ingress.4116320146.prefix_list_ids.#": "0",
+							"ingress.4116320146.protocol": "tcp",
+							"ingress.4116320146.security_groups.#": "1",
+							"ingress.4116320146.security_groups.3982542233": "sg-815549fb",
+							"ingress.4116320146.self": "false",
+							"ingress.4116320146.to_port": "80",
+							"vpc_id": "vpc-5972c43f"
+						},
+						"meta": {
+							"e2bfb730-ecaa-11e6-8f88-34363bc7c4c0": {
+								"create": 600000000000,
+								"delete": 600000000000
+							},
+							"schema_version": "1"
+						},
+						"tainted": false
+					},
+					"deposed": [],
+					"provider": "provider.aws"
+				},
+				"aws_security_group.rds-website": {
+					"type": "aws_security_group",
+					"depends_on": [
+						"aws_security_group.batch",
+						"aws_security_group.front"
+					],
+					"primary": {
+						"id": "sg-cd564ab7",
+						"attributes": {
+							"egress.#": "0",
+							"id": "sg-cd564ab7",
+							"ingress.#": "1",
+							"ingress.2988878453.cidr_blocks.#": "0",
+							"ingress.2988878453.from_port": "3306",
+							"ingress.2988878453.ipv6_cidr_blocks.#": "0",
+							"ingress.2988878453.prefix_list_ids.#": "0",
+							"ingress.2988878453.protocol": "tcp",
+							"ingress.2988878453.security_groups.#": "2",
+							"ingress.2988878453.security_groups.2496918042": "sg-e755499d",
+							"ingress.2988878453.security_groups.426661513": "sg-f7574b8d",
+							"ingress.2988878453.self": "false",
+							"ingress.2988878453.to_port": "3306",
+							"vpc_id": "vpc-5972c43f"
+						},
+						"meta": {
+							"e2bfb730-ecaa-11e6-8f88-34363bc7c4c0": {
+								"create": 600000000000,
+								"delete": 600000000000
+							},
+							"schema_version": "1"
+						},
+						"tainted": false
+					},
+					"deposed": [],
+					"provider": "provider.aws"
+				},
+				"aws_security_group.redis": {
+					"type": "aws_security_group",
+					"depends_on": [
+						"aws_security_group.batch",
+						"aws_security_group.front"
+					],
+					"primary": {
+						"id": "sg-045d417e",
+						"attributes": {
+							"egress.#": "0",
+							"id": "sg-045d417e",
+							"ingress.#": "1",
+							"ingress.2392022251.cidr_blocks.#": "0",
+							"ingress.2392022251.from_port": "6379",
+							"ingress.2392022251.ipv6_cidr_blocks.#": "0",
+							"ingress.2392022251.prefix_list_ids.#": "0",
+							"ingress.2392022251.protocol": "tcp",
+							"ingress.2392022251.security_groups.#": "2",
+							"ingress.2392022251.security_groups.2496918042": "sg-e755499d",
+							"ingress.2392022251.security_groups.426661513": "sg-f7574b8d",
+							"ingress.2392022251.self": "false",
+							"ingress.2392022251.to_port": "6379",
+							"vpc_id": "vpc-5972c43f"
+						},
+						"meta": {
+							"e2bfb730-ecaa-11e6-8f88-34363bc7c4c0": {
+								"create": 600000000000,
+								"delete": 600000000000
+							},
+							"schema_version": "1"
+						},
+						"tainted": false
+					},
+					"deposed": [],
+					"provider": "provider.aws"
+				}
+			},
+			"depends_on": []
+		}
+	]
+}
+

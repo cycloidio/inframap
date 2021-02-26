@@ -2,6 +2,7 @@ package generate
 
 import (
 	"github.com/cycloidio/inframap/graph"
+	"github.com/cycloidio/inframap/provider"
 )
 
 type direction int
@@ -24,10 +25,15 @@ type connection struct {
 	Direction direction
 }
 
-// findEdgeConnections for each edge on n returns the closest connection to a Node.
-// The last 'connection' on the []*connection will be a valid provider Node
-func findEdgeConnections(g *graph.Graph, n *graph.Node, visited map[string]struct{}, opt Options) ([][]*connection, error) {
-	res := make([][]*connection, 0)
+// findEdgeConnections for each edge on n returns the closests connections to a Node.
+// The last 'connection' on the []*connection will be a valid provider Node.
+// If there are more than one short path they will also be returend
+// The [][][]*connection is:
+// * First [] is for each edge of the n
+// * Second [] is for the shortest connections
+// * Third [] is for the connections building a shortest path to another Node
+func findEdgeConnections(g *graph.Graph, n *graph.Node, visited map[string]struct{}, opt Options) ([][][]*connection, error) {
+	res := make([][][]*connection, 0)
 	edges := g.GetEdgesForNode(n.ID)
 	for _, e := range edges {
 		// If we have already visited that Edge
@@ -53,13 +59,21 @@ func findEdgeConnections(g *graph.Graph, n *graph.Node, visited map[string]struc
 			return nil, err
 		}
 
+		// If it's IM we do not want to try to merge or anything
+		// so we just continue to the next edge
+		if pv.Type() == provider.IM {
+			continue
+		}
+
 		visited[e.ID] = struct{}{}
 		// If it's a Node we just add it
 		if pv.IsNode(rs) {
-			res = append(res, []*connection{
-				&connection{
-					Node:      en,
-					Direction: direc,
+			res = append(res, [][]*connection{
+				{
+					&connection{
+						Node:      en,
+						Direction: direc,
+					},
 				},
 			})
 		} else {
@@ -83,14 +97,20 @@ func findEdgeConnections(g *graph.Graph, n *graph.Node, visited map[string]struc
 			// condition) it means it has no Node at the end so we do not
 			// return it
 			if len(cons) != 0 {
-				con := []*connection{
-					&connection{
-						Node:      en,
-						Direction: direc,
-					},
+				for i, cs := range cons {
+					// Append the first edge node
+					// to the first position of the
+					// connections
+					con := []*connection{
+						&connection{
+							Node:      en,
+							Direction: direc,
+						},
+					}
+					cons[i] = append(con, cs...)
 				}
 
-				res = append(res, append(con, cons...))
+				res = append(res, cons)
 			}
 		}
 	}
@@ -98,7 +118,7 @@ func findEdgeConnections(g *graph.Graph, n *graph.Node, visited map[string]struc
 }
 
 // getShortestNodePath get the shortest path to a Node starting from n
-func getShortestNodePath(g *graph.Graph, n *graph.Node, visited map[string]struct{}, opt Options) ([]*connection, error) {
+func getShortestNodePath(g *graph.Graph, n *graph.Node, visited map[string]struct{}, opt Options) ([][]*connection, error) {
 	edges, err := findEdgeConnections(g, n, visited, opt)
 	if err != nil {
 		return nil, err
@@ -106,15 +126,23 @@ func getShortestNodePath(g *graph.Graph, n *graph.Node, visited map[string]struc
 
 	// From all the possible Edges we take the
 	// shortest path
-	shortestCon := make([]*connection, 0, 0)
+	shortestCons := make([][]*connection, 0, 0)
 	if len(edges) > 0 {
-		shortestCon = edges[0]
-		for _, cons := range edges {
-			// Compare for the shortest path
-			if len(shortestCon) > len(cons) {
-				shortestCon = cons
+		shortestCons = [][]*connection{
+			edges[0][0],
+		}
+		for _, cs := range edges {
+			for _, cons := range cs {
+				// Compare for the shortest path
+				if len(shortestCons[0]) > len(cons) {
+					shortestCons = [][]*connection{
+						cons,
+					}
+				} else if len(shortestCons[0]) == len(cons) {
+					shortestCons = append(shortestCons, cons)
+				}
 			}
 		}
 	}
-	return shortestCon, nil
+	return shortestCons, nil
 }

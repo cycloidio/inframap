@@ -13,6 +13,7 @@ import (
 	"github.com/cycloidio/inframap/provider"
 	"github.com/cycloidio/inframap/provider/factory"
 	"github.com/hashicorp/terraform/addrs"
+	"github.com/hashicorp/terraform/flatmap"
 	"github.com/hashicorp/terraform/states/statefile"
 	uuid "github.com/satori/go.uuid"
 )
@@ -33,6 +34,8 @@ func FromState(tfstate json.RawMessage, opt Options) (*graph.Graph, map[string]i
 	if err != nil {
 		return nil, nil, fmt.Errorf("error while reading TFState: %w", err)
 	}
+
+	migrateVersions(tfstate, file)
 
 	g := graph.New()
 
@@ -89,17 +92,24 @@ func FromState(tfstate json.RawMessage, opt Options) (*graph.Graph, map[string]i
 
 				aux := make(map[string]interface{})
 				if iv.Current.AttrsJSON != nil {
-					// For TF 0.12
+					// For TF +0.12
 					err = json.Unmarshal(iv.Current.AttrsJSON, &aux)
 					if err != nil {
 						return nil, nil, fmt.Errorf("invalid fomrat JSON for resource %q with AttrsJSON %s: %w", string(iv.Current.AttrsJSON), rk, err)
 					}
 				} else {
 					// For TF 0.11
-					// AttrsFlat it's a map[string]string so it has to be converted
-					// to map[string]interface{} to fit on the aux definition
-					for k, v := range iv.Current.AttrsFlat {
-						aux[k] = v
+					// AttrsFlat it's flatmap, so we'll use the flatmap.Expand
+					// to abstract the content, we'll first get the list of all
+					// the unique keys so then we can Expand each key
+					keys := make(map[string]struct{})
+					for k := range iv.Current.AttrsFlat {
+						kk := strings.Split(k, ".")
+						keys[kk[0]] = struct{}{}
+					}
+
+					for k := range keys {
+						aux[k] = flatmap.Expand(iv.Current.AttrsFlat, k)
 					}
 				}
 
@@ -183,23 +193,92 @@ func FromState(tfstate json.RawMessage, opt Options) (*graph.Graph, map[string]i
 	return g, endCfg, nil
 }
 
-// validateTFStateVersion validates that the verion is the
-// one we support which is only 4
+// migrateVersions will try to apply migrations of old
+// statefile:
+// * For version 3 will try to populate the Dependencies as they are
+//   removed by TF as they cannot be migrated from v3->v4
+func migrateVersions(src []byte, f *statefile.File) error {
+	version, err := tfStateVersion(src)
+	if err != nil {
+		return fmt.Errorf("could not read version: %w", err)
+	}
+
+	deps := make(map[string][]addrs.ConfigResource)
+
+	var state map[string]interface{}
+
+	if version == 3 {
+		err := json.Unmarshal(src, &state)
+		if err != nil {
+			return fmt.Errorf("error while reading TFState: %w", err)
+		}
+
+		for _, m := range state["modules"].([]interface{}) {
+			rs, ok := m.(map[string]interface{})["resources"]
+			if !ok {
+				continue
+			}
+			for rn, rv := range rs.(map[string]interface{}) {
+				// As we have replaced from 'depends_on' to 'dependencies'
+				// we have to access it with 'dependencies'
+				dps, ok := rv.(map[string]interface{})["dependencies"]
+				if !ok && dps == nil {
+					continue
+				}
+				for _, d := range dps.([]interface{}) {
+					ds := strings.Split(d.(string), ".")
+					deps[rn] = append(deps[rn], addrs.ConfigResource{
+						Resource: addrs.Resource{
+							Mode: addrs.ManagedResourceMode,
+							Type: ds[0],
+							Name: ds[1],
+						},
+					})
+				}
+			}
+		}
+
+		for _, v := range f.State.Modules {
+			for rk, rv := range v.Resources {
+				for _, iv := range rv.Instances {
+					if d, ok := deps[rk]; ok {
+						iv.Current.Dependencies = d
+					}
+				}
+			}
+		}
+
+	}
+
+	return nil
+}
+
+// validateTFStateVersion validates that the version is the
+// one we support which is only 3 and 4
 func validateTFStateVersion(b []byte) error {
+	v, err := tfStateVersion(b)
+	if err != nil {
+		return fmt.Errorf("could not read version: %w", err)
+	}
+
+	if v != 4 && v != 3 {
+		return fmt.Errorf("could not read version %d: %w", v, errcode.ErrInvalidTFStateVersion)
+	}
+
+	return nil
+}
+
+func tfStateVersion(b []byte) (uint64, error) {
 	var v struct {
 		Version uint64 `json:"version"`
 	}
 
 	err := json.Unmarshal(b, &v)
 	if err != nil {
-		return fmt.Errorf("error while reading TFState version: %w", err)
+		return 0, fmt.Errorf("error while reading TFState version: %w", err)
 	}
 
-	if v.Version != 4 {
-		return fmt.Errorf("could not read version %d: %w", v.Version, errcode.ErrInvalidTFStateVersion)
-	}
-
-	return nil
+	return v.Version, nil
 }
 
 // cleanHangingEdges will Replace all the hanging Edges (that are Nodes now)
@@ -284,6 +363,14 @@ func buildConfig(g *graph.Graph, cfg map[string]map[string]interface{}, nodeCanI
 
 	for _, e := range g.Edges {
 		for _, can := range e.Canonicals {
+			pv, _, err := factory.GetProviderAndResource(can)
+			if err != nil {
+				return nil, fmt.Errorf("could not get provider from %s: %w", can, err)
+			}
+			// The IM resources do not have any config
+			if pv.Type() == provider.IM {
+				continue
+			}
 			ids, ok := nodeCanIDs[can]
 			if !ok {
 				return nil, fmt.Errorf("could not find the ID of the canonical %q: %w", can, errcode.ErrInvalidTFStateFile)
@@ -328,6 +415,7 @@ var reVariable = regexp.MustCompile(`\$\{(?P<type>[^\.][a-z0-9-_]+)\.(?P<name>[^
 // read the actual direction of it and apply it and potentially changing the Edges
 // directions
 func fixEdges(g *graph.Graph, cfg map[string]map[string]interface{}, opt Options) error {
+	// imNodes holds Node.ID => []string{NodeCan}
 	imNodes := make(map[string][]string)
 	for _, n := range g.Nodes {
 		pv, rs, err := getProviderAndResource(n.Canonical, opt)
@@ -411,6 +499,20 @@ func fixEdges(g *graph.Graph, cfg map[string]map[string]interface{}, opt Options
 			// We only want edges that have the
 			// current Node (that is Edge) as Target
 			if e.Target != id {
+				continue
+			}
+
+			es, err := g.GetNodeByID(e.Source)
+			if err != nil {
+				return err
+			}
+			pv, _, err := getProviderAndResource(es.Canonical, opt)
+			if err != nil {
+				return err
+			}
+			// If the source (which will be the target on the edge creation)
+			// is of type IM we will not create the edge
+			if pv.Type() == provider.IM {
 				continue
 			}
 			for _, no := range nodes {
@@ -499,17 +601,60 @@ func mutate(g *graph.Graph, opt Options) error {
 			return fmt.Errorf("could not findEdgeConnections: %w", err)
 		}
 
+		directConnections := make(map[string]struct{})
+		for _, e := range g.GetEdgesForNode(n.ID) {
+			// Get the Node on the other
+			// part of the Edge
+			en, err := g.GetNodeByID(e.Source)
+			if e.Source == n.ID {
+				en, err = g.GetNodeByID(e.Target)
+			}
+			if err != nil {
+				return err
+			}
+
+			pv, rs, err := getProviderAndResource(en.Canonical, opt)
+			if err != nil {
+				return err
+			}
+
+			if pv.IsNode(rs) {
+				directConnections[en.ID] = struct{}{}
+			}
+		}
 		// calculate the best Node to start with
 		// the mutation
 		conns[n.ID] = make([]*connection, 0, 0)
-		for _, connections := range nodes {
-			// We prioritize the most positive ones
-			if len(connections) > 1 && ((sumConnsDirection(conns[n.ID]) <= sumConnsDirection(connections)) || len(conns[n.ID]) == 0) {
-				conns[n.ID] = connections
+		for _, cs := range nodes {
+			for i, connections := range cs {
+				// We prioritize the most positive ones
+				if len(connections) > 1 && ((sumConnsDirection(conns[n.ID]) <= sumConnsDirection(connections)) || len(conns[n.ID]) == 0) {
+					// If the Edge that we are selecting has the end node be already a
+					// direct connection to the main n, we do not want to select it
+					isLastAndEmpty := (i == len(cs)-1) && bestNode == nil
+					if _, ok := directConnections[connections[len(connections)-1].Node.ID]; ok && !isLastAndEmpty {
+						continue
+					}
 
-				if bestNode == nil || ((sumConnsDirection(bestNodeConns) <= sumConnsDirection(connections)) && bestNode.Weight <= n.Weight) {
-					bestNode = n
-					bestNodeConns = connections
+					var (
+						nedges, bedges int
+					)
+
+					if len(bestNodeConns) != 0 {
+						// Get the number of edges that the fist Node we are trying to merge have on them
+						// this will tell us "how relevant" they are, a higher value means that it's more
+						// important so it is another tie breaker in favor of more important nodes first
+						nedges = len(g.GetEdgesForNode(n.ID))
+						bedges = len(g.GetEdgesForNode(bestNode.ID))
+
+					}
+
+					conns[n.ID] = connections
+
+					if bestNode == nil || ((sumConnsDirection(bestNodeConns) <= sumConnsDirection(connections)) && bestNode.Weight <= n.Weight && bedges <= nedges) {
+						bestNode = n
+						bestNodeConns = connections
+					}
 				}
 			}
 		}

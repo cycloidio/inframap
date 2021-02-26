@@ -225,6 +225,113 @@ func TestFromState_AWS(t *testing.T) {
 		require.NotNil(t, cfg)
 		assert.Len(t, g.Nodes, 2)
 	})
+	t.Run("Version3", func(t *testing.T) {
+		src, err := ioutil.ReadFile("./testdata/version_3_state.json")
+		require.NoError(t, err)
+
+		g, cfg, err := generate.FromState(src, generate.Options{Clean: true, Connections: true, ExternalNodes: true})
+		require.NoError(t, err)
+		require.NotNil(t, g)
+		require.NotNil(t, cfg)
+
+		eg := &graph.Graph{
+			Nodes: []*graph.Node{
+				&graph.Node{
+					Canonical: "aws_alb.front",
+				},
+				&graph.Node{
+					Canonical: "aws_cloudfront_distribution.cdn",
+				},
+				&graph.Node{
+					Canonical: "aws_s3_bucket.medias",
+				},
+				&graph.Node{
+					Canonical: "aws_instance.batch",
+				},
+				&graph.Node{
+					Canonical: "aws_ebs_volume.flux",
+				},
+				&graph.Node{
+					Canonical: "aws_db_instance.website",
+				},
+				&graph.Node{
+					Canonical: "aws_elasticache_cluster.redis",
+				},
+				&graph.Node{
+					Canonical: "im_out.tcp/443->443",
+				},
+				&graph.Node{
+					Canonical: "im_out.tcp/80->80",
+				},
+				&graph.Node{
+					Canonical: "im_out.tcp/2222->2222",
+				},
+			},
+			Edges: []*graph.Edge{
+				&graph.Edge{
+					Source:     "im_out.tcp/80->80",
+					Target:     "aws_alb.front",
+					Canonicals: []string(nil),
+				},
+				&graph.Edge{
+					Source:     "im_out.tcp/443->443",
+					Target:     "aws_alb.front",
+					Canonicals: []string(nil),
+				},
+				&graph.Edge{
+					Source:     "im_out.tcp/2222->2222",
+					Target:     "aws_alb.front",
+					Canonicals: []string{"aws_security_group.alb-front"},
+				},
+				&graph.Edge{
+					Source:     "im_out.tcp/2222->2222",
+					Target:     "aws_instance.batch",
+					Canonicals: []string(nil),
+				},
+				&graph.Edge{
+					Source:     "aws_cloudfront_distribution.cdn",
+					Target:     "aws_alb.front",
+					Canonicals: []string(nil),
+				},
+				&graph.Edge{
+					Source:     "aws_cloudfront_distribution.cdn",
+					Target:     "aws_s3_bucket.medias",
+					Canonicals: []string(nil),
+				},
+				&graph.Edge{
+					Source:     "aws_alb.front",
+					Target:     "aws_instance.batch",
+					Canonicals: []string{"aws_security_group.batch", "aws_security_group.alb-front"},
+				},
+				&graph.Edge{
+					Source:     "aws_ebs_volume.flux",
+					Target:     "aws_instance.batch",
+					Canonicals: []string(nil),
+				},
+				&graph.Edge{
+					Source:     "aws_instance.batch",
+					Target:     "aws_db_instance.website",
+					Canonicals: []string{"aws_security_group.rds-website", "aws_security_group.batch"},
+				},
+				&graph.Edge{
+					Source:     "aws_alb.front",
+					Target:     "aws_db_instance.website",
+					Canonicals: []string{"aws_security_group.rds-website", "aws_security_group.front", "aws_security_group.alb-front"},
+				},
+				&graph.Edge{
+					Source:     "aws_instance.batch",
+					Target:     "aws_elasticache_cluster.redis",
+					Canonicals: []string{"aws_security_group.redis", "aws_security_group.batch"},
+				},
+				&graph.Edge{
+					Source:     "aws_alb.front",
+					Target:     "aws_elasticache_cluster.redis",
+					Canonicals: []string{"aws_security_group.redis", "aws_security_group.front", "aws_security_group.alb-front"},
+				},
+			},
+		}
+		assertEqualGraph(t, eg, g, cfg)
+	})
 }
 
 func TestFromState_OpenStack(t *testing.T) {
