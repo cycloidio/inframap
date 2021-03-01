@@ -3,7 +3,7 @@ module github.com/cycloidio/inframap
 go 1.15
 
 require (
-	github.com/adrg/xdg v0.3.0
+	github.com/adrg/xdg v0.3.1
 	github.com/agext/levenshtein v1.2.3 // indirect
 	github.com/awalterschulze/gographviz v2.0.3+incompatible
 	github.com/chr4/pwgen v1.1.0
@@ -19,8 +19,8 @@ require (
 	github.com/hashicorp/go-multierror v1.1.0 // indirect
 	github.com/hashicorp/go-retryablehttp v0.6.8 // indirect
 	github.com/hashicorp/go-version v1.2.1 // indirect
-	github.com/hashicorp/hcl/v2 v2.8.2
-	github.com/hashicorp/terraform v0.14.6
+	github.com/hashicorp/hcl/v2 v2.9.0
+	github.com/hashicorp/terraform v0.14.7
 	github.com/markbates/pkger v0.17.1
 	github.com/mattn/go-colorable v0.1.7 // indirect
 	github.com/mitchellh/copystructure v1.1.1 // indirect
@@ -30,12 +30,12 @@ require (
 	github.com/spf13/afero v1.5.1
 	github.com/spf13/cobra v1.1.3
 	github.com/stretchr/testify v1.7.0
-	golang.org/x/crypto v0.0.0-20201221181555-eec23a3978ad // indirect
+	golang.org/x/crypto v0.0.0-20210220033148-5ea612d1eb83 // indirect
 	golang.org/x/lint v0.0.0-20201208152925-83fdc39ff7b5
 	golang.org/x/mod v0.4.1 // indirect
-	golang.org/x/net v0.0.0-20210119194325-5f4716e94777 // indirect
-	golang.org/x/oauth2 v0.0.0-20210201163806-010130855d6c // indirect
-	golang.org/x/sys v0.0.0-20210124154548-22da62e12c0c // indirect
+	golang.org/x/net v0.0.0-20210226101413-39120d07d75e // indirect
+	golang.org/x/oauth2 v0.0.0-20210220000619-9bb904979d93 // indirect
+	golang.org/x/sys v0.0.0-20210225134936-a50acf3fe073 // indirect
 	golang.org/x/text v0.3.5 // indirect
 	golang.org/x/tools v0.1.0
 	google.golang.org/appengine v1.6.7 // indirect
