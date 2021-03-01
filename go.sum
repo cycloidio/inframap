@@ -59,8 +59,8 @@ github.com/PuerkitoBio/purell v1.0.0/go.mod h1:c11w/QuzBsJSee3cPx9rAFu61PvFxuPbt
 github.com/PuerkitoBio/urlesc v0.0.0-20160726150825-5bd2802263f2/go.mod h1:uGdkoq3SwY9Y+13GIhn11/XLaGBb4BfwItxLd5jeuXE=
 github.com/QcloudApi/qcloud_sign_golang v0.0.0-20141224014652-e4130a326409/go.mod h1:1pk82RBxDY/JZnPQrtqHlUFfCctgdorsd9M06fMynOM=
 github.com/abdullin/seq v0.0.0-20160510034733-d5467c17e7af/go.mod h1:5Jv4cbFiHJMsVxt52+i0Ha45fjshj6wxYr1r19tB9bw=
-github.com/adrg/xdg v0.3.0 h1:BO+k4wFj0IoTolBF1Apn8oZrX3LQrEbBA8+/9vyW9J4=
-github.com/adrg/xdg v0.3.0/go.mod h1:7I2hH/IT30IsupOpKZ5ue7/qNi3CoKzD6tL3HwpaRMQ=
+github.com/adrg/xdg v0.3.1 h1:uIyL9BYfXaFgDyVRKE8wjtm6ETQULweQqTofphEFJYY=
+github.com/adrg/xdg v0.3.1/go.mod h1:7I2hH/IT30IsupOpKZ5ue7/qNi3CoKzD6tL3HwpaRMQ=
 github.com/agext/levenshtein v1.2.1/go.mod h1:JEDfjyjHDjOF/1e4FlBE/PkbqA9OfWu2ki2W0IB5558=
 github.com/agext/levenshtein v1.2.2 h1:0S/Yg6LYmFJ5stwQeRp6EeOcCbj7xiqQSdNelsXvaqE=
 github.com/agext/levenshtein v1.2.2/go.mod h1:JEDfjyjHDjOF/1e4FlBE/PkbqA9OfWu2ki2W0IB5558=
