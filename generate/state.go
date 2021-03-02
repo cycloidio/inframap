@@ -59,8 +59,28 @@ func FromState(tfstate json.RawMessage, opt Options) (*graph.Graph, map[string]i
 		}
 	}
 
-	for _, v := range file.State.Modules {
-		for rk, rv := range v.Resources {
+	// moduleMode means that there are more than 1 module on the TFState
+	// so that we have to prefix resources with the module name
+	// or repetition of canonicals would be possible.
+	// firstModule is a holder to see if we have more than 1 module with
+	// resources inside
+	// We have to do it this way because there is always a "" module so if
+	// there is 1 it'll actually be 2, this way we check if they have something
+	// inside before setting the moduleMode
+	moduleMode := false
+	firstModule := false
+	for _, m := range file.State.Modules {
+		if len(m.Resources) > 0 {
+			if firstModule {
+				moduleMode = true
+				break
+			}
+			firstModule = true
+		}
+	}
+
+	for _, m := range file.State.Modules {
+		for rk, rv := range m.Resources {
 			// If it's not a Resource we ignore it
 			if rv.Addr.Resource.Mode != addrs.ManagedResourceMode {
 				continue
@@ -88,6 +108,12 @@ func FromState(tfstate json.RawMessage, opt Options) (*graph.Graph, map[string]i
 				deps := make([]string, 0)
 				if len(iv.Current.Dependencies) != 0 {
 					deps = append(deps, instanceCurrentDependenciesToString(iv.Current.Dependencies)...)
+				}
+
+				// Dependencies will have reference to inside the module
+				// so we need to prefix them if needed to find the right node
+				for i, d := range deps {
+					deps[i] = prefixWithModule(moduleMode, m.Addr.Module().String(), d)
 				}
 
 				aux := make(map[string]interface{})
@@ -119,7 +145,7 @@ func FromState(tfstate json.RawMessage, opt Options) (*graph.Graph, map[string]i
 				}
 				n := &graph.Node{
 					ID:        uuid.NewV4().String(),
-					Canonical: rk,
+					Canonical: prefixWithModule(moduleMode, m.Addr.Module().String(), rk),
 					TFID:      aux["id"].(string),
 					Resource:  *res,
 				}
@@ -345,20 +371,23 @@ func buildConfig(g *graph.Graph, cfg map[string]map[string]interface{}, nodeCanI
 			return nil, fmt.Errorf("could not find config of node %q: %w", n.Canonical, errcode.ErrInvalidTFStateFile)
 		}
 
-		// path[0] == resource Type ex: aws_security_group
-		// path[1] == resource Name ex: front-port80
+		// Canonical = module.name.aws_security_group.front-port80
+		// rt == path[-2] == resource Type ex: module.name.aws_security_group
+		// rn == path[-1] == resource Name ex: front-port80
 		path := strings.Split(n.Canonical, ".")
+		rn := path[len(path)-1]
+		rt := strings.Join(path[:len(path)-1], ".")
 
-		if _, ok := endCfg[path[0]]; !ok {
-			endCfg[path[0]] = make(map[string]interface{})
+		if _, ok := endCfg[rt]; !ok {
+			endCfg[rt] = make(map[string]interface{})
 		}
 
-		if _, ok := endCfg[path[0]].(map[string]interface{})[path[1]]; ok {
+		if _, ok := endCfg[rt].(map[string]interface{})[rn]; ok {
 			// If we have it already set, then it's not a valid config
 			return nil, fmt.Errorf("repeated config node for %q: %w", n.Canonical, errcode.ErrInvalidTFStateFile)
 		}
 
-		endCfg[path[0]].(map[string]interface{})[path[1]] = c
+		endCfg[rt].(map[string]interface{})[rn] = c
 	}
 
 	for _, e := range g.Edges {
@@ -381,21 +410,24 @@ func buildConfig(g *graph.Graph, cfg map[string]map[string]interface{}, nodeCanI
 				return nil, fmt.Errorf("could not find config of the Node %q: %w", can, errcode.ErrInvalidTFStateFile)
 			}
 
-			// path[0] == resource Type ex: aws_security_group
-			// path[1] == resource Name ex: front-port80
+			// Canonical = module.name.aws_security_group.front-port80
+			// rt == path[-2] == resource Type ex: module.name.aws_security_group
+			// rn == path[-1] == resource Name ex: front-port80
 			path := strings.Split(can, ".")
+			rn := path[len(path)-1]
+			rt := strings.Join(path[:len(path)-1], ".")
 
-			if _, ok := endCfg[path[0]]; !ok {
-				endCfg[path[0]] = make(map[string]interface{})
+			if _, ok := endCfg[rt]; !ok {
+				endCfg[rt] = make(map[string]interface{})
 			}
 
-			if _, ok := endCfg[path[0]].(map[string]interface{})[path[1]]; ok {
+			if _, ok := endCfg[rt].(map[string]interface{})[rn]; ok {
 				// As a connection canonical can be shared between different
 				// connections this will happen so we ignore it
 				continue
 			}
 
-			endCfg[path[0]].(map[string]interface{})[path[1]] = c
+			endCfg[rt].(map[string]interface{})[rn] = c
 		}
 	}
 
@@ -751,7 +783,13 @@ func getProviderAndResource(rk string, opt Options) (provider.Provider, string, 
 
 	if opt.Raw {
 		pv = provider.RawProvider{}
-		rs = strings.Split(rk, ".")[0]
+
+		rss := strings.Split(rk, ".")
+		if len(rss) > 1 {
+			rs = rss[len(rss)-2]
+		} else {
+			rs = rk
+		}
 	} else {
 		pv, rs, err = factory.GetProviderAndResource(rk)
 	}
@@ -825,4 +863,12 @@ func preprocess(g *graph.Graph, cfg map[string]map[string]interface{}, opt Optio
 		visitedProviders[pv.Type()] = struct{}{}
 	}
 	return nil
+}
+
+// prefixWithModule will check if it has to prefix and do so if needed
+func prefixWithModule(moduleMode bool, moduleName, resource string) string {
+	if moduleMode && moduleName != "" {
+		resource = fmt.Sprintf("%s.%s", moduleName, resource)
+	}
+	return resource
 }

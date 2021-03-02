@@ -1,5 +1,10 @@
 ## [Unreleased]
 
+### Fixed
+
+- Multiple modules with same resource name now work correctly using full module name `module.NAME.aws_instance.NAME2`
+  ([Issue #103](https://github.com/cycloidio/inframap/issues/103))
+
 ## [0.6.0] _2021-03-09_
 
 ### Added
