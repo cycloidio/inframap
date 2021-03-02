@@ -33,7 +33,15 @@ var (
 // GetProviderAndResource returns the Interface
 // and the resource name "aws_alb.front" -> "aws_alb"
 func GetProviderAndResource(can string) (provider.Provider, string, error) {
-	rs := strings.Split(can, ".")[0]
+	// Due to modules, we'll check it from the back not from
+	// the front as it may have modules prefix
+	rss := strings.Split(can, ".")
+	var rs string
+	if len(rss) > 1 {
+		rs = rss[len(rss)-2]
+	} else {
+		rs = can
+	}
 	match := reProvider.FindStringSubmatch(rs)
 
 	if match == nil {

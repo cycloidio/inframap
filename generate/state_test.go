@@ -35,13 +35,13 @@ func TestFromState_AWS(t *testing.T) {
 		eg := &graph.Graph{
 			Nodes: []*graph.Node{
 				&graph.Node{
-					Canonical: "aws_lb.tQBgz",
+					Canonical: "module.lemp.aws_lb.tQBgz",
 				},
 				&graph.Node{
-					Canonical: "aws_launch_template.vIkyE",
+					Canonical: "module.lemp.aws_launch_template.vIkyE",
 				},
 				&graph.Node{
-					Canonical: "aws_db_instance.Cpbzf",
+					Canonical: "module.lemp.aws_db_instance.Cpbzf",
 				},
 				&graph.Node{
 					Canonical: "im_out.tcp/443->443",
@@ -53,23 +53,23 @@ func TestFromState_AWS(t *testing.T) {
 			Edges: []*graph.Edge{
 				&graph.Edge{
 					Source:     "im_out.tcp/80->80",
-					Target:     "aws_lb.tQBgz",
+					Target:     "module.lemp.aws_lb.tQBgz",
 					Canonicals: []string(nil),
 				},
 				&graph.Edge{
 					Source:     "im_out.tcp/443->443",
-					Target:     "aws_lb.tQBgz",
+					Target:     "module.lemp.aws_lb.tQBgz",
 					Canonicals: []string(nil),
 				},
 				&graph.Edge{
-					Source:     "aws_lb.tQBgz",
-					Target:     "aws_launch_template.vIkyE",
-					Canonicals: []string{"aws_security_group.rZnGI", "aws_security_group.YPHPR"},
+					Source:     "module.lemp.aws_lb.tQBgz",
+					Target:     "module.lemp.aws_launch_template.vIkyE",
+					Canonicals: []string{"module.lemp.aws_security_group.rZnGI", "module.lemp.aws_security_group.YPHPR"},
 				},
 				&graph.Edge{
-					Source:     "aws_launch_template.vIkyE",
-					Target:     "aws_db_instance.Cpbzf",
-					Canonicals: []string{"aws_security_group.YPHPR", "aws_security_group.LHwFh"},
+					Source:     "module.lemp.aws_launch_template.vIkyE",
+					Target:     "module.lemp.aws_db_instance.Cpbzf",
+					Canonicals: []string{"module.lemp.aws_security_group.YPHPR", "module.lemp.aws_security_group.LHwFh"},
 				},
 			},
 		}
