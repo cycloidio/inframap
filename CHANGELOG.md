@@ -1,5 +1,7 @@
 ## [Unreleased]
 
+## [0.6.0] _2021-03-09_
+
 ### Added
 
 - Support for TF State V3 (which is TF 0.11)
