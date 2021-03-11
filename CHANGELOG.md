@@ -1,5 +1,10 @@
 ## [Unreleased]
 
+### Changed
+
+- Terraform version from 0.14.6 to 0.14.8
+  ([PR #114](https://github.com/cycloidio/inframap/pull/114))
+
 ### Fixed
 
 - Multiple modules with same resource name now work correctly using full module name `module.NAME.aws_instance.NAME2`
