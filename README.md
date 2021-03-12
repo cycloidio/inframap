@@ -79,32 +79,36 @@ The most important subcommands are:
 Visualizing with dot
 
 ```shell
-$ inframap generate --tfstate state.tfstate | dot -Tpng > graph.png
+$ inframap generate state.tfstate | dot -Tpng > graph.png
 ```
 
 or from the terminal itself
 
 ```shell
-$ inframap generate --tfstate state.tfstate | graph-easy
+$ inframap generate state.tfstate | graph-easy
 ```
 
 or from HCL
 
 ```shell
-$ inframap generate --hcl config.tf | graph-easy
+$ inframap generate config.tf | graph-easy
 ```
 
 or HCL module
 
 ```shell
-$ inframap generate --hcl ./my-module/ | graph-easy
+$ inframap generate ./my-module/ | graph-easy
 ```
 
 using docker image (assuming that your Terraform files are in the working directory)
 
 ```shell
-$ docker run --rm -v ${PWD}:/opt cycloid/inframap generate --tfstate /opt/terraform.tfstate
+$ docker run --rm -v ${PWD}:/opt cycloid/inframap generate /opt/terraform.tfstate
 ```
+
+
+**Note:** InfraMap will guess the type of the input (HCL or TFState) by validating if it's a JSON and if it fails then we fallback
+to HCL (except if you send a directory on args, the it'll use HCL directly), to force one specific type you can use `--hcl` or `--tfstate` flags.
 
 ## How is it different to `terraform graph`
 
@@ -121,19 +125,19 @@ With `terraform graph`:
   <img src="docs/terraformgraph.svg" width="400">
 </p>
 
-With `inframap generate --hcl ./terraform/module-magento/ | dot -Tpng > inframap.png`:
+With `inframap generate ./terraform/module-magento/ | dot -Tpng > inframap.png`:
 
 <p align="center">
   <img src="docs/inframap.png" width="400">
 </p>
 
-With `inframap generate --hcl --connections=false ./terraform/module-magento/ | dot -Tpng > inframapconnections.png`:
+With `inframap generate --connections=false ./terraform/module-magento/ | dot -Tpng > inframapconnections.png`:
 
 <p align="center">
   <img src="docs/inframapconnections.png" width="400">
 </p>
 
-With `inframap generate --hcl ./terraform/module-magento/ --raw | dot -Tpng > inframapraw.png`:
+With `inframap generate ./terraform/module-magento/ --raw | dot -Tpng > inframapraw.png`:
 
 <p align="center">
   <img src="docs/inframapraw.png" width="400">
@@ -166,8 +170,8 @@ Terraform allows users to use `backends` (S3, Google Cloud Storage, Swift, etc.)
 
 | backend | command                                                                          |
 |---------|----------------------------------------------------------------------------------|
-| S3      | `aws s3 cp s3://bucket/path/to/your/file.tfstate - \| inframap generate --tfstate` |
-| GCS     | `gsutil cat gs://bucket/path/to/your/file.tfstate \| inframap generate --tfstate`  |
+| S3      | `aws s3 cp s3://bucket/path/to/your/file.tfstate - \| inframap generate` |
+| GCS     | `gsutil cat gs://bucket/path/to/your/file.tfstate \| inframap generate`  |
 
 ### What does the error `Error: error while reading TFState: state snapshot was created by Terraform v0.13.0, which is newer than current v0.12.28; upgrade to Terraform v0.13.0 or greater to work with this state` mean?
 

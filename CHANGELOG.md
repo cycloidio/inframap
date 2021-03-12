@@ -4,6 +4,8 @@
 
 - Terraform version from 0.14.6 to 0.14.8
   ([PR #114](https://github.com/cycloidio/inframap/pull/114))
+- The flags `--hcl` and `--tfstate` are no longer required, the type will be guessed now
+  ([Issue #101](https://github.com/cycloidio/inframap/issues/101))
 
 ### Fixed
 

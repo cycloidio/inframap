@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"encoding/json"
 	"errors"
 	"io/ioutil"
 	"os"
@@ -31,9 +32,7 @@ func Execute() error {
 // them is required
 func preRunFile(cmd *cobra.Command, args []string) error {
 	var err error
-	if !hcl && !tfstate {
-		return errors.New("either --hcl or --tfstate have to be defined")
-	}
+
 	if len(args) == 1 {
 		path = args[0]
 
@@ -44,6 +43,13 @@ func preRunFile(cmd *cobra.Command, args []string) error {
 
 		if !fi.IsDir() {
 			file, err = ioutil.ReadFile(path)
+			if err != nil {
+				return err
+			}
+		} else {
+			// Only HCL can used with dirs
+			hcl = true
+			tfstate = false
 		}
 	} else {
 		fi, err := os.Stdin.Stat()
@@ -52,12 +58,38 @@ func preRunFile(cmd *cobra.Command, args []string) error {
 		}
 
 		if fi.Mode()&os.ModeNamedPipe == 0 {
-			return errors.New("empty STDIN")
+			return errors.New("STDIN is empty")
 		}
+
 		file, err = ioutil.ReadAll(os.Stdin)
+		if err != nil {
+			return err
+		}
+
 	}
 
+	setGenerateType(file)
+
 	return err
+}
+
+// setGenerateType will try to guess the file content by first parsing it in JSON
+// and if it fails fallback to HCL.
+// If any of the flags --hcl or --tfstate are set it'll do nothing and use those
+// directly as they are setted by the user
+func setGenerateType(b []byte) {
+	if hcl || tfstate {
+		return
+	}
+
+	var aux map[string]interface{}
+	if err := json.Unmarshal(b, &aux); err != nil {
+		hcl = true
+		tfstate = false
+	} else {
+		hcl = false
+		tfstate = true
+	}
 }
 
 func init() {
@@ -67,6 +99,6 @@ func init() {
 		versionCmd,
 	)
 
-	rootCmd.PersistentFlags().BoolVar(&hcl, "hcl", false, "HCL file/dir to read from")
-	rootCmd.PersistentFlags().BoolVar(&tfstate, "tfstate", false, "Terraform State to read from")
+	rootCmd.PersistentFlags().BoolVar(&hcl, "hcl", false, "Forces to use HCL parser")
+	rootCmd.PersistentFlags().BoolVar(&tfstate, "tfstate", false, "Forces to use TFState parser")
 }
