@@ -62,7 +62,7 @@ This basically builds `inframap` with the current sources.
 
 To add a new Provider you need to follow the `provider.Provider` interface and create it on the `provider/{provider_name}`, also add it to the `provider.Type` list and then run `make generate`. Basically you can also check any of the other providers that we already have.
 
-To add a new test we recommend to run the `inframap prune --canonicals --tfstate [FILE]` and add the test to the `generate/testdata/` and add a new test to the `generate/graph_test.go`
+To add a new test we recommend to run the `inframap prune --canonicals [FILE]` and add the test to the `generate/testdata/` and add a new test to the `generate/graph_test.go`
 
 #### Add a new Printer
 
