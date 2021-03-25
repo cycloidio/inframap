@@ -1,5 +1,10 @@
 ## [Unreleased]
 
+### Changed
+
+- Terraform version from 0.14.8 to 0.14.9
+  ([PR #114](https://github.com/cycloidio/inframap/pull/122))
+
 ## [0.6.1] _2021-03-12_
 
 ### Changed
