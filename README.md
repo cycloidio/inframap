@@ -7,6 +7,7 @@
 [![PkgGoDev](https://pkg.go.dev/badge/github.com/cycloidio/inframap)](https://pkg.go.dev/github.com/cycloidio/inframap)
 [![AUR package](https://repology.org/badge/version-for-repo/aur/inframap.svg)](https://repology.org/project/inframap/versions)
 [![Homebrew](https://img.shields.io/badge/dynamic/json.svg?url=https://formulae.brew.sh/api/formula/inframap.json&query=$.versions.stable&label=homebrew)](https://formulae.brew.sh/formula/inframap)
+[![Join the chat at https://gitter.im/cycloidio/inframap](https://badges.gitter.im/cycloidio/inframap.svg)](https://gitter.im/cycloidio/inframap)
 
 Read your tfstate or HCL to generate a graph specific for each provider, showing only the
 resources that are most important/relevant.

@@ -1,5 +1,10 @@
 ## [Unreleased]
 
+### Added
+
+- Gitter chat
+  ([PR #124](https://github.com/cycloidio/inframap/pull/124))
+
 ### Changed
 
 - Terraform version from 0.14.8 to 0.14.9
