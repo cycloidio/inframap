@@ -67,7 +67,7 @@ $ brew install inframap
 
 The `inframap --help` will show you the basics.
 
-[![asciicast](https://asciinema.org/a/347600.svg)](https://asciinema.org/a/347600)
+[![asciicast](https://asciinema.org/a/347600.svg)](https://asciinema.org/a/347600) [![Join the chat at https://gitter.im/cycloidio/inframap](https://badges.gitter.im/cycloidio/inframap.svg)](https://gitter.im/cycloidio/inframap?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 The most important subcommands are:
 
