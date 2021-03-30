@@ -1,5 +1,7 @@
 ## [Unreleased]
 
+## [0.6.2] _2021-03-30_
+
 ### Added
 
 - Gitter chat
