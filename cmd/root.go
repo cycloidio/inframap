@@ -3,9 +3,11 @@ package cmd
 import (
 	"encoding/json"
 	"errors"
+	"io"
 	"io/ioutil"
 	"os"
 
+	"github.com/cycloidio/terracognita/log"
 	"github.com/spf13/cobra"
 )
 
@@ -14,11 +16,19 @@ var (
 	tfstate bool
 	file    []byte
 	path    string
+	debug   bool
+	logsOut io.Writer = ioutil.Discard
 
 	rootCmd = &cobra.Command{
 		Use:   "inframap",
 		Short: "Reads the TFState or HCL to generate a Graphical view",
 		Long:  "Reads the TFState or HCL to generate a Graphical view with Nodes and Edges.",
+		PersistentPreRun: func(cmd *cobra.Command, args []string) {
+			if debug {
+				logsOut = os.Stdout
+			}
+			log.Init(logsOut, debug)
+		},
 	}
 )
 
@@ -101,4 +111,5 @@ func init() {
 
 	rootCmd.PersistentFlags().BoolVar(&hcl, "hcl", false, "Forces to use HCL parser")
 	rootCmd.PersistentFlags().BoolVar(&tfstate, "tfstate", false, "Forces to use TFState parser")
+	rootCmd.PersistentFlags().BoolVar(&debug, "debug", false, "Activate the debug mode wich includes TF logs via TF_LOG=TRACE|DEBUG|INFO|WARN|ERROR configuration https://www.terraform.io/docs/internals/debugging.html")
 }
