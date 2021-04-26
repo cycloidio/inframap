@@ -18,7 +18,7 @@ require (
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
 	github.com/hashicorp/go-retryablehttp v0.6.8 // indirect
 	github.com/hashicorp/go-version v1.3.0 // indirect
-	github.com/hashicorp/hcl/v2 v2.9.1
+	github.com/hashicorp/hcl/v2 v2.10.0
 	github.com/hashicorp/terraform v0.14.10
 	github.com/markbates/pkger v0.17.1
 	github.com/mattn/go-colorable v0.1.7 // indirect
