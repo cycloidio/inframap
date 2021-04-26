@@ -8,12 +8,12 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/cycloidio/flatmap"
 	"github.com/cycloidio/inframap/errcode"
 	"github.com/cycloidio/inframap/graph"
 	"github.com/cycloidio/inframap/provider"
 	"github.com/cycloidio/inframap/provider/factory"
 	"github.com/hashicorp/terraform/addrs"
-	"github.com/hashicorp/terraform/flatmap"
 	"github.com/hashicorp/terraform/states/statefile"
 	uuid "github.com/satori/go.uuid"
 )
