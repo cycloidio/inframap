@@ -239,27 +239,29 @@ func migrateVersions(src []byte, f *statefile.File) error {
 			return fmt.Errorf("error while reading TFState: %w", err)
 		}
 
-		for _, m := range state["modules"].([]interface{}) {
-			rs, ok := m.(map[string]interface{})["resources"]
-			if !ok {
-				continue
-			}
-			for rn, rv := range rs.(map[string]interface{}) {
-				// As we have replaced from 'depends_on' to 'dependencies'
-				// we have to access it with 'dependencies'
-				dps, ok := rv.(map[string]interface{})["dependencies"]
-				if !ok && dps == nil {
+		if _, ok := state["modules"]; ok {
+			for _, m := range state["modules"].([]interface{}) {
+				rs, ok := m.(map[string]interface{})["resources"]
+				if !ok {
 					continue
 				}
-				for _, d := range dps.([]interface{}) {
-					ds := strings.Split(d.(string), ".")
-					deps[rn] = append(deps[rn], addrs.ConfigResource{
-						Resource: addrs.Resource{
-							Mode: addrs.ManagedResourceMode,
-							Type: ds[0],
-							Name: ds[1],
-						},
-					})
+				for rn, rv := range rs.(map[string]interface{}) {
+					// As we have replaced from 'depends_on' to 'dependencies'
+					// we have to access it with 'dependencies'
+					dps, ok := rv.(map[string]interface{})["dependencies"]
+					if !ok && dps == nil {
+						continue
+					}
+					for _, d := range dps.([]interface{}) {
+						ds := strings.Split(d.(string), ".")
+						deps[rn] = append(deps[rn], addrs.ConfigResource{
+							Resource: addrs.Resource{
+								Mode: addrs.ManagedResourceMode,
+								Type: ds[0],
+								Name: ds[1],
+							},
+						})
+					}
 				}
 			}
 		}

@@ -20,6 +20,15 @@ func TestFromState(t *testing.T) {
 		_, _, err = generate.FromState(src, generate.Options{Clean: true, Connections: true, ExternalNodes: true})
 		assert.True(t, errors.Is(err, errcode.ErrInvalidTFStateVersion))
 	})
+	t.Run("Empty", func(t *testing.T) {
+		src, err := ioutil.ReadFile("./testdata/empty.json")
+		require.NoError(t, err)
+
+		g, cfg, err := generate.FromState(src, generate.Options{Clean: true, Connections: true, ExternalNodes: true})
+		require.NoError(t, err)
+		require.NotNil(t, g)
+		require.NotNil(t, cfg)
+	})
 }
 
 func TestFromState_AWS(t *testing.T) {
