@@ -29,8 +29,7 @@ cache-path: go/pkg/mod
 
 # Notifications
 slack-deployment-url: ((custom_slack-webhook-inframap.url))
-event-login: ((cycloid_bot_account.login))
-event-password: ((cycloid_bot_account.password))
+event-key: ((custom_api-key-admin.key))
 
 # aur publishing
 ssh-private-key: ((ssh_aur.ssh_key))
