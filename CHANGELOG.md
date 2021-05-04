@@ -7,6 +7,11 @@
 - Terraform version from 0.14.9 to 0.14.10
   ([PR #128](https://github.com/cycloidio/inframap/pull/128))
 
+### Fixed
+
+- When generating code from HCL errors are now displayed properly
+  ([Issue #120](https://github.com/cycloidio/inframap/pull/120))
+
 ## [0.6.2] _2021-03-30_
 
 ### Added
