@@ -2,6 +2,7 @@ package generate_test
 
 import (
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"testing"
 
@@ -28,6 +29,14 @@ func TestFromState(t *testing.T) {
 		require.NoError(t, err)
 		require.NotNil(t, g)
 		require.NotNil(t, cfg)
+	})
+	t.Run("NoID", func(t *testing.T) {
+		src, err := ioutil.ReadFile("./testdata/error_missing_id.json")
+		require.NoError(t, err)
+
+		_, _, err = generate.FromState(src, generate.Options{Clean: true, Connections: true, ExternalNodes: true})
+		fmt.Println(err)
+		assert.True(t, errors.Is(err, errcode.ErrInvalidTFStateFileMissingResourceID))
 	})
 }
 
