@@ -143,10 +143,14 @@ func FromState(tfstate json.RawMessage, opt Options) (*graph.Graph, map[string]i
 				if err != nil {
 					return nil, nil, err
 				}
+				tfid, ok := aux["id"]
+				if !ok {
+					return nil, nil, fmt.Errorf("resource %q: %w", rk, errcode.ErrInvalidTFStateFileMissingResourceID)
+				}
 				n := &graph.Node{
 					ID:        uuid.NewV4().String(),
 					Canonical: prefixWithModule(moduleMode, m.Addr.Module().String(), rk),
-					TFID:      aux["id"].(string),
+					TFID:      tfid.(string),
 					Resource:  *res,
 				}
 
