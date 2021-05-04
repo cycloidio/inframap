@@ -50,7 +50,8 @@ var (
 					fs := afero.NewMemMapFs()
 					path = "module.tf"
 
-					f, err := fs.Create(path)
+					var f afero.File
+					f, err = fs.Create(path)
 					if err != nil {
 						return err
 					}
