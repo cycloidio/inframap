@@ -1,5 +1,7 @@
 ## [Unreleased]
 
+## [0.6.4] _2021-05-05_
+
 ### Changed
 
 - Terraform version from 0.14.10 to 0.15.1
