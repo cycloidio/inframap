@@ -22,7 +22,7 @@ We support certain providers. This allows us to better represent information tha
 
 If your state file or HCL is from a provider we do not support, the resulting representation will simply be all resources present without any simplification or refinement.
 
-We support Terraform 0.13 (and previous) and Terraform State version 4.
+We support Terraform 0.15.3 (and previous) and Terraform State version 3 and 4.
 
 | Provider | State | HCL |  Grouping<sup>1</sup> | External Nodes<sup>2</sup> | IAM<sup>3</sup> |
 |:--:|:--:|:--:|:--:|:--:|:--:|
