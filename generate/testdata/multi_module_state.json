@@ -1,0 +1,59 @@
+{
+  "version": 4,
+  "terraform_version": "0.13.3",
+  "serial": 13,
+  "lineage": "d5c08c3d-3474-2dd8-8a36-7f9b776cc756",
+  "resources": [
+    {
+      "mode": "managed",
+      "type": "scaleway_instance_placement_group",
+      "name": "infra",
+      "provider": "provider[\"registry.terraform.io/scaleway/scaleway\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "1",
+            "name": "kubernetes-infra"
+          }
+        }
+      ]
+    },
+    {
+      "module": "module.kapsule",
+      "mode": "managed",
+      "type": "scaleway_k8s_cluster_beta",
+      "name": "cluster",
+      "provider": "provider[\"registry.terraform.io/scaleway/scaleway\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "2",
+            "name": "kubernetes"
+          }
+        }
+      ]
+    },
+    {
+      "module": "module.node_pool",
+      "mode": "managed",
+      "type": "scaleway_k8s_pool_beta",
+      "name": "nodes",
+      "provider": "provider[\"registry.terraform.io/scaleway/scaleway\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "3",
+            "name": "kubernetes-infra"
+          },
+          "dependencies": [
+            "module.kapsule.scaleway_k8s_cluster_beta.cluster",
+            "scaleway_instance_placement_group.infra"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -20,7 +20,7 @@
             "id": "sample-lemp-rds-prod"
           },
           "depends_on": [
-            "aws_security_group.LHwFh"
+            "module.lemp.aws_security_group.LHwFh"
           ]
         }
       ]
@@ -38,7 +38,7 @@
             "id": "lt-08e7a3cd65dc2457c"
           },
           "depends_on": [
-            "aws_security_group.YPHPR"
+            "module.lemp.aws_security_group.YPHPR"
           ]
         }
       ]
@@ -56,7 +56,7 @@
             "id": "5d7daaa0-68a7-4ca5-a491-3f78c102d562"
           },
           "depends_on": [
-            "aws_security_group.rZnGI"
+            "module.lemp.aws_security_group.rZnGI"
           ]
         }
       ]
@@ -92,7 +92,7 @@
             ]
           },
           "depends_on": [
-            "aws_security_group.YPHPR"
+            "module.lemp.aws_security_group.YPHPR"
           ]
         }
       ]
@@ -140,7 +140,7 @@
             ]
           },
           "depends_on": [
-            "aws_security_group.rZnGI"
+            "module.lemp.aws_security_group.rZnGI"
           ]
         }
       ]

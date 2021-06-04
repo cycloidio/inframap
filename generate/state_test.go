@@ -2,7 +2,6 @@ package generate_test
 
 import (
 	"errors"
-	"fmt"
 	"io/ioutil"
 	"testing"
 
@@ -35,8 +34,44 @@ func TestFromState(t *testing.T) {
 		require.NoError(t, err)
 
 		_, _, err = generate.FromState(src, generate.Options{Clean: true, Connections: true, ExternalNodes: true})
-		fmt.Println(err)
 		assert.True(t, errors.Is(err, errcode.ErrInvalidTFStateFileMissingResourceID))
+	})
+	t.Run("MultiModule", func(t *testing.T) {
+		src, err := ioutil.ReadFile("./testdata/multi_module_state.json")
+		require.NoError(t, err)
+
+		g, cfg, err := generate.FromState(src, generate.Options{Clean: true, Connections: true, ExternalNodes: true})
+		require.NoError(t, err)
+		require.NotNil(t, g)
+		require.NotNil(t, cfg)
+
+		eg := &graph.Graph{
+			Nodes: []*graph.Node{
+				&graph.Node{
+					Canonical: "module.node_pool.scaleway_k8s_pool_beta.nodes",
+				},
+				&graph.Node{
+					Canonical: "module.kapsule.scaleway_k8s_cluster_beta.cluster",
+				},
+				&graph.Node{
+					Canonical: "scaleway_instance_placement_group.infra",
+				},
+			},
+			Edges: []*graph.Edge{
+				&graph.Edge{
+					Source:     "module.node_pool.scaleway_k8s_pool_beta.nodes",
+					Target:     "module.kapsule.scaleway_k8s_cluster_beta.cluster",
+					Canonicals: []string(nil),
+				},
+				&graph.Edge{
+					Source:     "module.node_pool.scaleway_k8s_pool_beta.nodes",
+					Target:     "scaleway_instance_placement_group.infra",
+					Canonicals: []string(nil),
+				},
+			},
+		}
+
+		assertEqualGraph(t, eg, g, cfg)
 	})
 }
 

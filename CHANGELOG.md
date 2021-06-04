@@ -5,6 +5,11 @@
 - Reduced the number of Nodes on Azurerm
   ([PR #143](https://github.com/cycloidio/inframap/pull/143))
 
+### Fixed
+
+- Multiple modules connecting between them now works correctly
+  ([Issue #141](https://github.com/cycloidio/inframap/pull/141))
+
 ## [0.6.5] _2021-05-28_
 
 ### Changed
@@ -22,7 +27,7 @@
 ### Fixed
 
 - When generating code from HCL errors are now displayed properly
-  ([Issue #120](https://github.com/cycloidio/inframap/pull/120))
+  ([Issue #120](https://github.com/cycloidio/inframap/issues/120))
 
 
 ## [0.6.3] _2021-04-19_
