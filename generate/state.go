@@ -113,7 +113,7 @@ func FromState(tfstate json.RawMessage, opt Options) (*graph.Graph, map[string]i
 				// Dependencies will have reference to inside the module
 				// so we need to prefix them if needed to find the right node
 				for i, d := range deps {
-					deps[i] = prefixWithModule(moduleMode, m.Addr.Module().String(), d)
+					deps[i] = d
 				}
 
 				aux := make(map[string]interface{})
