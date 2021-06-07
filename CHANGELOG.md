@@ -1,5 +1,10 @@
 ## [Unreleased]
 
+### Changed
+
+- Reduced the number of Nodes on Azurerm
+  ([PR #143](https://github.com/cycloidio/inframap/pull/143))
+
 ## [0.6.5] _2021-05-28_
 
 ### Changed
