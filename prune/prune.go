@@ -10,6 +10,7 @@ import (
 
 	"github.com/chr4/pwgen"
 	"github.com/cycloidio/inframap/errcode"
+	"github.com/cycloidio/inframap/generate"
 	"github.com/cycloidio/inframap/provider/factory"
 	"github.com/hashicorp/terraform/addrs"
 	"github.com/hashicorp/terraform/states/statefile"
@@ -23,7 +24,16 @@ var reARN = regexp.MustCompile("^arn:*")
 // the resource canonicals will also be changed, for exmple 'aws_lb.front' will be changed to
 // a random name like 'aws_lb.XptaK'
 func Prune(tfstate json.RawMessage, replaceCanonicals bool) (json.RawMessage, error) {
+	// Since TF 0.13 'depends_on' has been dropped, so we do a manual
+	// replace from '"depends_on"' to '"dependencies"'
+	tfstate = bytes.ReplaceAll(tfstate, []byte("\"depends_on\""), []byte("\"dependencies\""))
+	err := generate.ValidateTFStateVersion(tfstate)
+	if err != nil {
+		return nil, fmt.Errorf("error while validating TFStateVersion: %w", err)
+	}
+
 	buf := bytes.NewBuffer(tfstate)
+
 	file, err := statefile.Read(buf)
 	if err != nil {
 		return nil, fmt.Errorf("error while reading TFState: %w", err)
