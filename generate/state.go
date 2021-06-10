@@ -22,6 +22,7 @@ import (
 func FromState(tfstate json.RawMessage, opt Options) (*graph.Graph, map[string]interface{}, error) {
 	// Since TF 0.13 'depends_on' has been dropped, so we do a manual
 	// replace from '"depends_on"' to '"dependencies"'
+	hasDependsOn := bytes.Contains(tfstate, []byte("\"depends_on\""))
 	tfstate = bytes.ReplaceAll(tfstate, []byte("\"depends_on\""), []byte("\"dependencies\""))
 	err := validateTFStateVersion(tfstate)
 	if err != nil {
@@ -59,26 +60,6 @@ func FromState(tfstate json.RawMessage, opt Options) (*graph.Graph, map[string]i
 		}
 	}
 
-	// moduleMode means that there are more than 1 module on the TFState
-	// so that we have to prefix resources with the module name
-	// or repetition of canonicals would be possible.
-	// firstModule is a holder to see if we have more than 1 module with
-	// resources inside
-	// We have to do it this way because there is always a "" module so if
-	// there is 1 it'll actually be 2, this way we check if they have something
-	// inside before setting the moduleMode
-	moduleMode := false
-	firstModule := false
-	for _, m := range file.State.Modules {
-		if len(m.Resources) > 0 {
-			if firstModule {
-				moduleMode = true
-				break
-			}
-			firstModule = true
-		}
-	}
-
 	for _, m := range file.State.Modules {
 		for rk, rv := range m.Resources {
 			// If it's not a Resource we ignore it
@@ -111,9 +92,16 @@ func FromState(tfstate json.RawMessage, opt Options) (*graph.Graph, map[string]i
 				}
 
 				// Dependencies will have reference to inside the module
-				// so we need to prefix them if needed to find the right node
-				for i, d := range deps {
-					deps[i] = d
+				// so we need to prefix them if needed to find the right node.
+				// This is only needed on the versions using `depends_on`
+				// for what we have found. The ones with `dependencies` have
+				// the right reference always.
+				if hasDependsOn {
+					for i, d := range deps {
+						if !strings.HasPrefix(d, "module.") {
+							deps[i] = prefixWithModule(m.Addr.Module().String(), d)
+						}
+					}
 				}
 
 				aux := make(map[string]interface{})
@@ -149,7 +137,7 @@ func FromState(tfstate json.RawMessage, opt Options) (*graph.Graph, map[string]i
 				}
 				n := &graph.Node{
 					ID:        uuid.NewV4().String(),
-					Canonical: prefixWithModule(moduleMode, m.Addr.Module().String(), rk),
+					Canonical: prefixWithModule(m.Addr.Module().String(), rk),
 					TFID:      tfid.(string),
 					Resource:  *res,
 				}
@@ -872,8 +860,8 @@ func preprocess(g *graph.Graph, cfg map[string]map[string]interface{}, opt Optio
 }
 
 // prefixWithModule will check if it has to prefix and do so if needed
-func prefixWithModule(moduleMode bool, moduleName, resource string) string {
-	if moduleMode && moduleName != "" {
+func prefixWithModule(moduleName, resource string) string {
+	if moduleName != "" {
 		resource = fmt.Sprintf("%s.%s", moduleName, resource)
 	}
 	return resource
