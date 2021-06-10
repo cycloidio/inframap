@@ -142,16 +142,16 @@ func TestFromState_AWS(t *testing.T) {
 		eg := &graph.Graph{
 			Nodes: []*graph.Node{
 				&graph.Node{
-					Canonical: "aws_elb.tMVdH",
+					Canonical: "module.magento.aws_elb.tMVdH",
 				},
 				&graph.Node{
-					Canonical: "aws_instance.TObJL",
+					Canonical: "module.magento.aws_instance.TObJL",
 				},
 				&graph.Node{
-					Canonical: "aws_db_instance.qktIK",
+					Canonical: "module.magento.aws_db_instance.qktIK",
 				},
 				&graph.Node{
-					Canonical: "aws_elasticache_cluster.VUhMF",
+					Canonical: "module.magento.aws_elasticache_cluster.VUhMF",
 				},
 				&graph.Node{
 					Canonical: "im_out.tcp/443->443",
@@ -163,28 +163,28 @@ func TestFromState_AWS(t *testing.T) {
 			Edges: []*graph.Edge{
 				&graph.Edge{
 					Source:     "im_out.tcp/80->80",
-					Target:     "aws_elb.tMVdH",
+					Target:     "module.magento.aws_elb.tMVdH",
 					Canonicals: []string(nil),
 				},
 				&graph.Edge{
 					Source:     "im_out.tcp/443->443",
-					Target:     "aws_elb.tMVdH",
+					Target:     "module.magento.aws_elb.tMVdH",
 					Canonicals: []string(nil),
 				},
 				&graph.Edge{
-					Source:     "aws_elb.tMVdH",
-					Target:     "aws_instance.TObJL",
-					Canonicals: []string{"aws_security_group.kuDkz", "aws_security_group_rule.pMOSN", "aws_security_group.UKblk"},
+					Source:     "module.magento.aws_elb.tMVdH",
+					Target:     "module.magento.aws_instance.TObJL",
+					Canonicals: []string{"module.magento.aws_security_group.kuDkz", "module.magento.aws_security_group_rule.pMOSN", "module.magento.aws_security_group.UKblk"},
 				},
 				&graph.Edge{
-					Source:     "aws_instance.TObJL",
-					Target:     "aws_db_instance.qktIK",
-					Canonicals: []string{"aws_security_group.mzSGd", "aws_security_group.kuDkz"},
+					Source:     "module.magento.aws_instance.TObJL",
+					Target:     "module.magento.aws_db_instance.qktIK",
+					Canonicals: []string{"module.magento.aws_security_group.mzSGd", "module.magento.aws_security_group.kuDkz"},
 				},
 				&graph.Edge{
-					Source:     "aws_instance.TObJL",
-					Target:     "aws_elasticache_cluster.VUhMF",
-					Canonicals: []string{"aws_security_group.KaWAd", "aws_security_group.kuDkz"},
+					Source:     "module.magento.aws_instance.TObJL",
+					Target:     "module.magento.aws_elasticache_cluster.VUhMF",
+					Canonicals: []string{"module.magento.aws_security_group.KaWAd", "module.magento.aws_security_group.kuDkz"},
 				},
 			},
 		}
@@ -204,28 +204,28 @@ func TestFromState_AWS(t *testing.T) {
 		eg := &graph.Graph{
 			Nodes: []*graph.Node{
 				&graph.Node{
-					Canonical: "aws_lb.load-balancer",
+					Canonical: "module.tf-8-wordpress-demo.aws_lb.load-balancer",
 				},
 				&graph.Node{
-					Canonical: "aws_ecs_service.wordpress",
+					Canonical: "module.tf-8-wordpress-demo.aws_ecs_service.wordpress",
 				},
 				&graph.Node{
-					Canonical: "aws_ecs_cluster.ecs-cluster",
+					Canonical: "module.tf-8-wordpress-demo.aws_ecs_cluster.ecs-cluster",
 				},
 			},
 			Edges: []*graph.Edge{
 				&graph.Edge{
-					Source: "aws_lb.load-balancer",
-					Target: "aws_ecs_service.wordpress",
+					Source: "module.tf-8-wordpress-demo.aws_lb.load-balancer",
+					Target: "module.tf-8-wordpress-demo.aws_ecs_service.wordpress",
 					Canonicals: []string{
-						"aws_security_group.ecs_service",
-						"aws_security_group.generated_aws_lb_load-balancer",
-						"aws_security_group_rule.allow-alb",
+						"module.tf-8-wordpress-demo.aws_security_group.ecs_service",
+						"module.tf-8-wordpress-demo.aws_security_group.generated_aws_lb_load-balancer",
+						"module.tf-8-wordpress-demo.aws_security_group_rule.allow-alb",
 					},
 				},
 				&graph.Edge{
-					Source:     "aws_ecs_service.wordpress",
-					Target:     "aws_ecs_cluster.ecs-cluster",
+					Source:     "module.tf-8-wordpress-demo.aws_ecs_service.wordpress",
+					Target:     "module.tf-8-wordpress-demo.aws_ecs_cluster.ecs-cluster",
 					Canonicals: []string(nil),
 				},
 			},
@@ -290,25 +290,25 @@ func TestFromState_AWS(t *testing.T) {
 		eg := &graph.Graph{
 			Nodes: []*graph.Node{
 				&graph.Node{
-					Canonical: "aws_alb.front",
+					Canonical: "module.cycloid.aws_alb.front",
 				},
 				&graph.Node{
-					Canonical: "aws_cloudfront_distribution.cdn",
+					Canonical: "module.cycloid.aws_cloudfront_distribution.cdn",
 				},
 				&graph.Node{
-					Canonical: "aws_s3_bucket.medias",
+					Canonical: "module.cycloid.aws_s3_bucket.medias",
 				},
 				&graph.Node{
-					Canonical: "aws_instance.batch",
+					Canonical: "module.cycloid.aws_instance.batch",
 				},
 				&graph.Node{
-					Canonical: "aws_ebs_volume.flux",
+					Canonical: "module.cycloid.aws_ebs_volume.flux",
 				},
 				&graph.Node{
-					Canonical: "aws_db_instance.website",
+					Canonical: "module.cycloid.aws_db_instance.website",
 				},
 				&graph.Node{
-					Canonical: "aws_elasticache_cluster.redis",
+					Canonical: "module.cycloid.aws_elasticache_cluster.redis",
 				},
 				&graph.Node{
 					Canonical: "im_out.tcp/443->443",
@@ -323,63 +323,63 @@ func TestFromState_AWS(t *testing.T) {
 			Edges: []*graph.Edge{
 				&graph.Edge{
 					Source:     "im_out.tcp/80->80",
-					Target:     "aws_alb.front",
+					Target:     "module.cycloid.aws_alb.front",
 					Canonicals: []string(nil),
 				},
 				&graph.Edge{
 					Source:     "im_out.tcp/443->443",
-					Target:     "aws_alb.front",
+					Target:     "module.cycloid.aws_alb.front",
 					Canonicals: []string(nil),
 				},
 				&graph.Edge{
 					Source:     "im_out.tcp/2222->2222",
-					Target:     "aws_alb.front",
-					Canonicals: []string{"aws_security_group.alb-front"},
+					Target:     "module.cycloid.aws_alb.front",
+					Canonicals: []string{"module.cycloid.aws_security_group.alb-front"},
 				},
 				&graph.Edge{
 					Source:     "im_out.tcp/2222->2222",
-					Target:     "aws_instance.batch",
+					Target:     "module.cycloid.aws_instance.batch",
 					Canonicals: []string(nil),
 				},
 				&graph.Edge{
-					Source:     "aws_cloudfront_distribution.cdn",
-					Target:     "aws_alb.front",
+					Source:     "module.cycloid.aws_cloudfront_distribution.cdn",
+					Target:     "module.cycloid.aws_alb.front",
 					Canonicals: []string(nil),
 				},
 				&graph.Edge{
-					Source:     "aws_cloudfront_distribution.cdn",
-					Target:     "aws_s3_bucket.medias",
+					Source:     "module.cycloid.aws_cloudfront_distribution.cdn",
+					Target:     "module.cycloid.aws_s3_bucket.medias",
 					Canonicals: []string(nil),
 				},
 				&graph.Edge{
-					Source:     "aws_alb.front",
-					Target:     "aws_instance.batch",
-					Canonicals: []string{"aws_security_group.batch", "aws_security_group.alb-front"},
+					Source:     "module.cycloid.aws_alb.front",
+					Target:     "module.cycloid.aws_instance.batch",
+					Canonicals: []string{"module.cycloid.aws_security_group.batch", "module.cycloid.aws_security_group.alb-front"},
 				},
 				&graph.Edge{
-					Source:     "aws_ebs_volume.flux",
-					Target:     "aws_instance.batch",
+					Source:     "module.cycloid.aws_ebs_volume.flux",
+					Target:     "module.cycloid.aws_instance.batch",
 					Canonicals: []string(nil),
 				},
 				&graph.Edge{
-					Source:     "aws_instance.batch",
-					Target:     "aws_db_instance.website",
-					Canonicals: []string{"aws_security_group.rds-website", "aws_security_group.batch"},
+					Source:     "module.cycloid.aws_instance.batch",
+					Target:     "module.cycloid.aws_db_instance.website",
+					Canonicals: []string{"module.cycloid.aws_security_group.rds-website", "module.cycloid.aws_security_group.batch"},
 				},
 				&graph.Edge{
-					Source:     "aws_alb.front",
-					Target:     "aws_db_instance.website",
-					Canonicals: []string{"aws_security_group.rds-website", "aws_security_group.front", "aws_security_group.alb-front"},
+					Source:     "module.cycloid.aws_alb.front",
+					Target:     "module.cycloid.aws_db_instance.website",
+					Canonicals: []string{"module.cycloid.aws_security_group.rds-website", "module.cycloid.aws_security_group.front", "module.cycloid.aws_security_group.alb-front"},
 				},
 				&graph.Edge{
-					Source:     "aws_instance.batch",
-					Target:     "aws_elasticache_cluster.redis",
-					Canonicals: []string{"aws_security_group.redis", "aws_security_group.batch"},
+					Source:     "module.cycloid.aws_instance.batch",
+					Target:     "module.cycloid.aws_elasticache_cluster.redis",
+					Canonicals: []string{"module.cycloid.aws_security_group.redis", "module.cycloid.aws_security_group.batch"},
 				},
 				&graph.Edge{
-					Source:     "aws_alb.front",
-					Target:     "aws_elasticache_cluster.redis",
-					Canonicals: []string{"aws_security_group.redis", "aws_security_group.front", "aws_security_group.alb-front"},
+					Source:     "module.cycloid.aws_alb.front",
+					Target:     "module.cycloid.aws_elasticache_cluster.redis",
+					Canonicals: []string{"module.cycloid.aws_security_group.redis", "module.cycloid.aws_security_group.front", "module.cycloid.aws_security_group.alb-front"},
 				},
 			},
 		}
