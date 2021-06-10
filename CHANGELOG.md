@@ -1,5 +1,7 @@
 ## [Unreleased]
 
+## [0.6.6] _2021-06-10_
+
 ### Changed
 
 - Reduced the number of Nodes on Azurerm
