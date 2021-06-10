@@ -24,7 +24,7 @@ func FromState(tfstate json.RawMessage, opt Options) (*graph.Graph, map[string]i
 	// replace from '"depends_on"' to '"dependencies"'
 	hasDependsOn := bytes.Contains(tfstate, []byte("\"depends_on\""))
 	tfstate = bytes.ReplaceAll(tfstate, []byte("\"depends_on\""), []byte("\"dependencies\""))
-	err := validateTFStateVersion(tfstate)
+	err := ValidateTFStateVersion(tfstate)
 	if err != nil {
 		return nil, nil, fmt.Errorf("error while validating TFStateVersion: %w", err)
 	}
@@ -273,9 +273,9 @@ func migrateVersions(src []byte, f *statefile.File) error {
 	return nil
 }
 
-// validateTFStateVersion validates that the version is the
+// ValidateTFStateVersion validates that the version is the
 // one we support which is only 3 and 4
-func validateTFStateVersion(b []byte) error {
+func ValidateTFStateVersion(b []byte) error {
 	v, err := tfStateVersion(b)
 	if err != nil {
 		return fmt.Errorf("could not read version: %w", err)
