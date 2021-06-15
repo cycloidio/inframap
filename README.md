@@ -174,14 +174,6 @@ Terraform allows users to use `backends` (S3, Google Cloud Storage, Swift, etc.)
 | S3      | `aws s3 cp s3://bucket/path/to/your/file.tfstate - \| inframap generate` |
 | GCS     | `gsutil cat gs://bucket/path/to/your/file.tfstate \| inframap generate`  |
 
-### What does the error `Error: error while reading TFState: state snapshot was created by Terraform v0.13.0, which is newer than current v0.12.28; upgrade to Terraform v0.13.0 or greater to work with this state` mean?
-
-We use Terraform internally to read the TFStates and it has a built-in validation that checks that the version of Terraform used (specified as `"version": "X.Y.Z",` on the state) is the same or older than the one defined.
-
-In this case it means that Terraform released a new version and InfraMap did not yet update to that version so we have to update to the latest version of Terraform. It'll not take more than a few days but if you update on the same day as the Terraform release then InfraMap will fail due to that.
-
-You can open an issue to notify us just in case we missed it, similar to https://github.com/cycloidio/inframap/issues/47
-
 ## License
 
 Please see the [MIT LICENSE](https://github.com/cycloidio/inframap/blob/master/LICENSE) file.
