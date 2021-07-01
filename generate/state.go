@@ -99,7 +99,7 @@ func FromState(tfstate json.RawMessage, opt Options) (*graph.Graph, map[string]i
 				if hasDependsOn {
 					for i, d := range deps {
 						if !strings.HasPrefix(d, "module.") {
-							deps[i] = prefixWithModule(m.Addr.Module().String(), d)
+							deps[i] = prefixWithModule(m.Addr.String(), d)
 						}
 					}
 				}
@@ -137,7 +137,7 @@ func FromState(tfstate json.RawMessage, opt Options) (*graph.Graph, map[string]i
 				}
 				n := &graph.Node{
 					ID:        uuid.NewV4().String(),
-					Canonical: prefixWithModule(m.Addr.Module().String(), rk),
+					Canonical: prefixWithModule(m.Addr.String(), rk),
 					TFID:      tfid.(string),
 					Resource:  *res,
 				}

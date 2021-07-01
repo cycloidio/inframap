@@ -1,0 +1,395 @@
+{
+    "version": 4,
+    "terraform_version": "0.15.3",
+    "serial": 899,
+    "lineage": "d170e278-4de7-37d9-5083-fd901247cebd",
+    "outputs": {},
+    "resources": [
+        {
+            "module": "module.all_sg",
+            "mode": "managed",
+            "type": "aws_security_group",
+            "name": "this_name_prefix",
+            "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+            "instances": [
+                {
+                    "index_key": 0,
+                    "schema_version": 1,
+                    "attributes": {
+                        "egress": [],
+                        "id": "sg-0987114dd4c1ff786",
+                        "ingress": []
+                    },
+                    "sensitive_attributes": [],
+                    "dependencies": [
+                        "module.vpc.aws_vpc.this"
+                    ],
+                    "create_before_destroy": true
+                }
+            ]
+        },
+        {
+            "module": "module.all_sg",
+            "mode": "managed",
+            "type": "aws_security_group_rule",
+            "name": "egress_rules",
+            "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+            "instances": [
+                {
+                    "index_key": 0,
+                    "schema_version": 2,
+                    "attributes": {
+                        "id": "sgrule-3777339840",
+                        "security_group_id": "sg-0987114dd4c1ff786",
+                        "source_security_group_id": null
+                    },
+                    "sensitive_attributes": [],
+                    "dependencies": [
+                        "module.all_sg.aws_security_group.this",
+                        "module.all_sg.aws_security_group.this_name_prefix",
+                        "module.vpc.aws_vpc.this"
+                    ]
+                }
+            ]
+        },
+        {
+            "module": "module.all_sg",
+            "mode": "managed",
+            "type": "aws_security_group_rule",
+            "name": "ingress_rules",
+            "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+            "instances": [
+                {
+                    "index_key": 0,
+                    "schema_version": 2,
+                    "attributes": {
+                        "id": "sgrule-1734591447",
+                        "security_group_id": "sg-0987114dd4c1ff786",
+                        "source_security_group_id": null
+                    },
+                    "sensitive_attributes": [],
+                    "dependencies": [
+                        "module.all_sg.aws_security_group.this",
+                        "module.all_sg.aws_security_group.this_name_prefix",
+                        "module.vpc.aws_vpc.this"
+                    ]
+                }
+            ]
+        },
+        {
+            "module": "module.ec2_openvpn.module.bastion_sg",
+            "mode": "managed",
+            "type": "aws_security_group",
+            "name": "this_name_prefix",
+            "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+            "instances": [
+                {
+                    "index_key": 0,
+                    "schema_version": 1,
+                    "attributes": {
+                        "egress": [],
+                        "id": "sg-0004cc061bc236c1c",
+                        "ingress": []
+                    },
+                    "sensitive_attributes": [],
+                    "dependencies": [
+                        "module.vpc.aws_vpc.this"
+                    ],
+                    "create_before_destroy": true
+                }
+            ]
+        },
+        {
+            "module": "module.ec2_openvpn.module.bastion_sg",
+            "mode": "managed",
+            "type": "aws_security_group_rule",
+            "name": "egress_rules",
+            "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+            "instances": [
+                {
+                    "index_key": 0,
+                    "schema_version": 2,
+                    "attributes": {
+                        "id": "sgrule-82634802",
+                        "security_group_id": "sg-0004cc061bc236c1c",
+                        "source_security_group_id": null
+                    },
+                    "sensitive_attributes": [],
+                    "dependencies": [
+                        "module.ec2_openvpn.module.bastion_sg.aws_security_group.this",
+                        "module.ec2_openvpn.module.bastion_sg.aws_security_group.this_name_prefix",
+                        "module.vpc.aws_vpc.this"
+                    ]
+                }
+            ]
+        },
+        {
+            "module": "module.ec2_openvpn.module.bastion_sg",
+            "mode": "managed",
+            "type": "aws_security_group_rule",
+            "name": "ingress_rules",
+            "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+            "instances": [
+                {
+                    "index_key": 0,
+                    "schema_version": 2,
+                    "attributes": {
+                        "id": "sgrule-96428233",
+                        "security_group_id": "sg-0004cc061bc236c1c",
+                        "source_security_group_id": null
+                    },
+                    "sensitive_attributes": [],
+                    "dependencies": [
+                        "module.ec2_openvpn.module.bastion_sg.aws_security_group.this",
+                        "module.ec2_openvpn.module.bastion_sg.aws_security_group.this_name_prefix",
+                        "module.vpc.aws_vpc.this"
+                    ]
+                }
+            ]
+        },
+        {
+            "module": "module.ec2_openvpn.module.ec2_bastion",
+            "mode": "managed",
+            "type": "aws_instance",
+            "name": "this",
+            "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+            "instances": [
+                {
+                    "index_key": 0,
+                    "schema_version": 1,
+                    "attributes": {
+                        "id": "i-0a21b3e118e0ba2ef"
+                    },
+                    "sensitive_attributes": [],
+                    "dependencies": [
+                        "aws_key_pair.key_pair",
+                        "module.ec2_openvpn.module.bastion_sg.aws_security_group.this",
+                        "module.ec2_openvpn.module.bastion_sg.aws_security_group.this_name_prefix",
+                        "module.vpc.aws_subnet.public",
+                        "module.vpc.aws_vpc.this",
+                        "module.vpc.aws_vpc_ipv4_cidr_block_association.this",
+                        "tls_private_key.private_key"
+                    ]
+                }
+            ]
+        },
+        {
+            "module": "module.ec2_redhat_a",
+            "mode": "managed",
+            "type": "aws_instance",
+            "name": "this",
+            "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+            "instances": [
+                {
+                    "index_key": 0,
+                    "schema_version": 1,
+                    "attributes": {
+                        "id": "i-05f9a6abce16ab928"
+                    },
+                    "sensitive_attributes": [],
+                    "dependencies": [
+                        "aws_key_pair.key_pair",
+                        "module.all_sg.aws_security_group.this",
+                        "module.all_sg.aws_security_group.this_name_prefix",
+                        "module.vpc.aws_subnet.private",
+                        "module.vpc.aws_vpc.this",
+                        "module.vpc.aws_vpc_ipv4_cidr_block_association.this",
+                        "tls_private_key.private_key"
+                    ]
+                }
+            ]
+        },
+        {
+            "module": "module.ec2_redhat_b",
+            "mode": "managed",
+            "type": "aws_instance",
+            "name": "this",
+            "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+            "instances": [
+                {
+                    "index_key": 0,
+                    "schema_version": 1,
+                    "attributes": {
+                        "id": "i-0befa657413af7c25"
+                    },
+                    "sensitive_attributes": [],
+                    "dependencies": [
+                        "aws_key_pair.key_pair",
+                        "module.all_sg.aws_security_group.this",
+                        "module.all_sg.aws_security_group.this_name_prefix",
+                        "module.vpc.aws_subnet.private",
+                        "module.vpc.aws_vpc.this",
+                        "module.vpc.aws_vpc_ipv4_cidr_block_association.this",
+                        "tls_private_key.private_key"
+                    ]
+                }
+            ]
+        },
+        {
+            "module": "module.ec2_ubuntu_a[0]",
+            "mode": "managed",
+            "type": "aws_instance",
+            "name": "this",
+            "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+            "instances": [
+                {
+                    "index_key": 0,
+                    "schema_version": 1,
+                    "attributes": {
+                        "id": "i-01cde81471bc7715c"
+                    },
+                    "sensitive_attributes": [],
+                    "dependencies": [
+                        "aws_key_pair.key_pair",
+                        "module.all_sg.aws_security_group.this",
+                        "module.all_sg.aws_security_group.this_name_prefix",
+                        "module.vpc.aws_subnet.private",
+                        "module.vpc.aws_vpc.this",
+                        "module.vpc.aws_vpc_ipv4_cidr_block_association.this",
+                        "tls_private_key.private_key"
+                    ]
+                }
+            ]
+        },
+        {
+            "module": "module.ec2_ubuntu_a[1]",
+            "mode": "managed",
+            "type": "aws_instance",
+            "name": "this",
+            "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+            "instances": [
+                {
+                    "index_key": 0,
+                    "schema_version": 1,
+                    "attributes": {
+                        "id": "i-0bbdaaaca5cf61ef5"
+                    },
+                    "sensitive_attributes": [],
+                    "dependencies": [
+                        "aws_key_pair.key_pair",
+                        "module.all_sg.aws_security_group.this",
+                        "module.all_sg.aws_security_group.this_name_prefix",
+                        "module.vpc.aws_subnet.private",
+                        "module.vpc.aws_vpc.this",
+                        "module.vpc.aws_vpc_ipv4_cidr_block_association.this",
+                        "tls_private_key.private_key"
+                    ]
+                }
+            ]
+        },
+        {
+            "module": "module.ec2_ubuntu_b[0]",
+            "mode": "managed",
+            "type": "aws_instance",
+            "name": "this",
+            "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+            "instances": [
+                {
+                    "index_key": 0,
+                    "schema_version": 1,
+                    "attributes": {
+                        "id": "i-09f7c0b262ec08dfa"
+                    },
+                    "sensitive_attributes": [],
+                    "dependencies": [
+                        "aws_key_pair.key_pair",
+                        "module.all_sg.aws_security_group.this",
+                        "module.all_sg.aws_security_group.this_name_prefix",
+                        "module.vpc.aws_subnet.private",
+                        "module.vpc.aws_vpc.this",
+                        "module.vpc.aws_vpc_ipv4_cidr_block_association.this",
+                        "tls_private_key.private_key"
+                    ]
+                }
+            ]
+        },
+        {
+            "module": "module.ec2_ubuntu_b[1]",
+            "mode": "managed",
+            "type": "aws_instance",
+            "name": "this",
+            "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+            "instances": [
+                {
+                    "index_key": 0,
+                    "schema_version": 1,
+                    "attributes": {
+                        "id": "i-0df31351fc10da682"
+                    },
+                    "sensitive_attributes": [],
+                    "dependencies": [
+                        "aws_key_pair.key_pair",
+                        "module.all_sg.aws_security_group.this",
+                        "module.all_sg.aws_security_group.this_name_prefix",
+                        "module.vpc.aws_subnet.private",
+                        "module.vpc.aws_vpc.this",
+                        "module.vpc.aws_vpc_ipv4_cidr_block_association.this",
+                        "tls_private_key.private_key"
+                    ]
+                }
+            ]
+        },
+        {
+            "module": "module.vpc",
+            "mode": "managed",
+            "type": "aws_eip",
+            "name": "nat",
+            "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+            "instances": [
+                {
+                    "index_key": 0,
+                    "schema_version": 0,
+                    "attributes": {
+                        "id": "eipalloc-0353cd2b1a2c0ed66"
+                    },
+                    "sensitive_attributes": []
+                }
+            ]
+        },
+        {
+            "module": "module.vpc",
+            "mode": "managed",
+            "type": "aws_internet_gateway",
+            "name": "this",
+            "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+            "instances": [
+                {
+                    "index_key": 0,
+                    "schema_version": 0,
+                    "attributes": {
+                        "id": "igw-0e982a7cdfc39d2ff"
+                    },
+                    "sensitive_attributes": [],
+                    "dependencies": [
+                        "module.vpc.aws_vpc.this",
+                        "module.vpc.aws_vpc_ipv4_cidr_block_association.this"
+                    ]
+                }
+            ]
+        },
+        {
+            "module": "module.vpc",
+            "mode": "managed",
+            "type": "aws_nat_gateway",
+            "name": "this",
+            "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+            "instances": [
+                {
+                    "index_key": 0,
+                    "schema_version": 0,
+                    "attributes": {
+                        "id": "nat-0d46ed83250f7d846"
+                    },
+                    "sensitive_attributes": [],
+                    "dependencies": [
+                        "module.vpc.aws_eip.nat",
+                        "module.vpc.aws_internet_gateway.this",
+                        "module.vpc.aws_subnet.public",
+                        "module.vpc.aws_vpc.this",
+                        "module.vpc.aws_vpc_ipv4_cidr_block_association.this"
+                    ]
+                }
+            ]
+        }
+    ]
+}
