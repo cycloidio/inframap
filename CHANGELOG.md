@@ -3,6 +3,8 @@
 ### Fixed
 - Prune was not working with old TF versions because of the `depends_on`
   ([Issue #144](https://github.com/cycloidio/inframap/pull/144))
+- Repeated/Reused modules on TFState now work properly
+  ([Issue #103](https://github.com/cycloidio/inframap/pull/103))
 
 ## [0.6.6] _2021-06-10_
 

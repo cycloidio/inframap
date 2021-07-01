@@ -73,6 +73,15 @@ func TestFromState(t *testing.T) {
 
 		assertEqualGraph(t, eg, g, cfg)
 	})
+	t.Run("RepeatedModules", func(t *testing.T) {
+		src, err := ioutil.ReadFile("./testdata/repeated_modules.json")
+		require.NoError(t, err)
+
+		g, cfg, err := generate.FromState(src, generate.Options{Clean: true, Connections: true, ExternalNodes: true})
+		require.NoError(t, err)
+		require.NotNil(t, g)
+		require.NotNil(t, cfg)
+	})
 }
 
 func TestFromState_AWS(t *testing.T) {
