@@ -18,11 +18,12 @@ resources that are most important/relevant.
 
 ## Cloud Providers
 
-We support certain providers. This allows us to better represent information that comes from these providers.
+We support **all** cloud providers, but we have some (listed below) that we have specific logic that allows
+us to better represent information that comes from these providers.
 
-If your state file or HCL is from a provider we do not support, the resulting representation will simply be all resources present without any simplification or refinement.
+For the other providers the resulting representation will simply be all resources present without any simplification or refinement.
 
-We support Terraform 0.15.3 (and previous) and Terraform State version 3 and 4.
+For TFState generations we are limited to versions 3 and 4.
 
 | Provider | State | HCL |  Grouping<sup>1</sup> | External Nodes<sup>2</sup> | IAM<sup>3</sup> |
 |:--:|:--:|:--:|:--:|:--:|:--:|
