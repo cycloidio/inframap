@@ -1,5 +1,7 @@
 ## [Unreleased]
 
+## [0.6.7] _2021-07-09_
+
 ### Fixed
 - Prune was not working with old TF versions because of the `depends_on`
   ([Issue #144](https://github.com/cycloidio/inframap/pull/144))
