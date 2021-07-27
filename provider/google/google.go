@@ -175,13 +175,19 @@ func (a Provider) PreProcess(cfg map[string]map[string]interface{}) [][]string {
 	// we build the lookup table
 	for id, node := range cfg {
 		if sources, ok := node["source_tags"]; ok {
-			for _, source := range sources.([]interface{}) {
-				fwTags[source.(string)] = append(fwTags[source.(string)], id)
+			slicesources, ok := sources.([]interface{})
+			if ok {
+				for _, source := range slicesources {
+					fwTags[source.(string)] = append(fwTags[source.(string)], id)
+				}
 			}
 		}
 		if targets, ok := node["target_tags"]; ok {
-			for _, target := range targets.([]interface{}) {
-				fwTags[target.(string)] = append(fwTags[target.(string)], id)
+			slicetargets, ok := targets.([]interface{})
+			if ok {
+				for _, target := range slicetargets {
+					fwTags[target.(string)] = append(fwTags[target.(string)], id)
+				}
 			}
 		}
 	}
@@ -189,7 +195,11 @@ func (a Provider) PreProcess(cfg map[string]map[string]interface{}) [][]string {
 	// add extra edges for each components with "tags" attributes
 	for id, node := range cfg {
 		if tags, ok := node["tags"]; ok {
-			for _, tag := range tags.([]interface{}) {
+			slicetags, ok := tags.([]interface{})
+			if !ok {
+				continue
+			}
+			for _, tag := range slicetags {
 				if fws, ok := fwTags[tag.(string)]; ok {
 					for _, fw := range fws {
 						edges = append(edges, []string{id, fw})

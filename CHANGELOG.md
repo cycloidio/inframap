@@ -1,12 +1,16 @@
 ## [Unreleased]
 
+### Fixed
+- Google PreProcess assumed some types which now are validated beforehand
+  ([Issue #153](https://github.com/cycloidio/inframap/issues/153))
+
 ## [0.6.7] _2021-07-09_
 
 ### Fixed
 - Prune was not working with old TF versions because of the `depends_on`
-  ([Issue #144](https://github.com/cycloidio/inframap/pull/144))
+  ([Issue #144](https://github.com/cycloidio/inframap/issues/144))
 - Repeated/Reused modules on TFState now work properly
-  ([Issue #103](https://github.com/cycloidio/inframap/pull/103))
+  ([Issue #103](https://github.com/cycloidio/inframap/issues/103))
 
 ## [0.6.6] _2021-06-10_
 
@@ -18,7 +22,7 @@
 ### Fixed
 
 - Multiple modules connecting between them now works correctly
-  ([Issue #141](https://github.com/cycloidio/inframap/pull/141))
+  ([Issue #141](https://github.com/cycloidio/inframap/issues/141))
 
 ## [0.6.5] _2021-05-28_
 
