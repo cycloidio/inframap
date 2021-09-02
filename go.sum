@@ -142,6 +142,10 @@ github.com/cycloidio/flatmap v1.0.0 h1:JU3qCiedgEgw+Gv9Hd+a6uqw/b20roph+NtsFcPzm
 github.com/cycloidio/flatmap v1.0.0/go.mod h1:mv5bQmrwtt5NLjC0l1JY+j6v/O69l61YrviC+3JwIck=
 github.com/cycloidio/tfdocs v0.0.0-20210325124514-48185a336974 h1:ZJJixo6gHyZeZYwX8ud/MLD0KXqsBmq5KjlHnTQc120=
 github.com/cycloidio/tfdocs v0.0.0-20210325124514-48185a336974/go.mod h1:4zRiWOHuVkhb2vatajIFxV5g/AC4W7Zb/0pMF1G0yyA=
+github.com/cycloidio/tfdocs v0.0.0-20210713114615-6a7f069f11c3 h1:nw8uAsH2N88BTa8EowPpOzS4Hz/rfTsywgfh8O7rGAk=
+github.com/cycloidio/tfdocs v0.0.0-20210713114615-6a7f069f11c3/go.mod h1:4zRiWOHuVkhb2vatajIFxV5g/AC4W7Zb/0pMF1G0yyA=
+github.com/cycloidio/tfdocs v0.0.0-20210903075122-31a804b31daf h1:bTxGdxb8uk0orMw726niNd3EYmnwuygtZZidDXZura8=
+github.com/cycloidio/tfdocs v0.0.0-20210903075122-31a804b31daf/go.mod h1:4zRiWOHuVkhb2vatajIFxV5g/AC4W7Zb/0pMF1G0yyA=
 github.com/davecgh/go-spew v0.0.0-20151105211317-5215b55f46b2/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
