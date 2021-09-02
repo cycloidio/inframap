@@ -1,5 +1,10 @@
 ## [Unreleased]
 
+### Changed
+
+- Updated the `tfdcos` version
+  ([PR #143](https://github.com/cycloidio/inframap/pull/143))
+
 ## [0.6.7] _2021-07-09_
 
 ### Fixed
