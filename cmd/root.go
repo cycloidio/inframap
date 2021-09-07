@@ -3,11 +3,9 @@ package cmd
 import (
 	"encoding/json"
 	"errors"
-	"io"
 	"io/ioutil"
 	"os"
 
-	"github.com/cycloidio/terracognita/log"
 	"github.com/spf13/cobra"
 )
 
@@ -17,7 +15,6 @@ var (
 	file    []byte
 	path    string
 	debug   bool
-	logsOut io.Writer = ioutil.Discard
 
 	rootCmd = &cobra.Command{
 		Use:   "inframap",
@@ -25,9 +22,8 @@ var (
 		Long:  "Reads the TFState or HCL to generate a Graphical view with Nodes and Edges.",
 		PersistentPreRun: func(cmd *cobra.Command, args []string) {
 			if debug {
-				logsOut = os.Stdout
+				os.Setenv("TF_LOG", "DEBUG")
 			}
-			log.Init(logsOut, debug)
 		},
 	}
 )
