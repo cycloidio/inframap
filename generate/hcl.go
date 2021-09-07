@@ -327,7 +327,10 @@ func moduleInstall(calls []*configs.ModuleCall, mRes *map[string]*configs.Resour
 		return nil
 	}
 
-	var src string = call.SourceAddr
+	var (
+		src  string = call.SourceAddr
+		vers string
+	)
 
 	// we check if the module is a Terraform registry module
 	// in order to get its source address from Terraform registry
@@ -366,9 +369,11 @@ func moduleInstall(calls []*configs.ModuleCall, mRes *map[string]*configs.Resour
 				}
 			}
 		}
+
+		vers = match.String()
 		// we finally get the module location, it will return
 		// a string `go-getter` compliant
-		src, err = client.ModuleLocation(regMod, match.String())
+		src, err = client.ModuleLocation(regMod, vers)
 		if err != nil {
 			return fmt.Errorf("unable to fetch module location: %w", err)
 		}
@@ -396,7 +401,7 @@ func moduleInstall(calls []*configs.ModuleCall, mRes *map[string]*configs.Resour
 	// the module is not a local one or a Terraform registry one
 	// it should be handle by `go-getter`
 	if !isLocal {
-		dst := path.Join(cachePath, name)
+		dst := path.Join(cachePath, fmt.Sprintf("%s-%s", name, vers))
 		// TODO: we should add a logic to invalidate
 		// the cache
 		if _, err := os.Stat(dst); os.IsNotExist(err) {
