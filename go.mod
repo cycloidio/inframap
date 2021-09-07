@@ -4,11 +4,12 @@ go 1.15
 
 require (
 	github.com/adrg/xdg v0.3.3
+	github.com/agext/levenshtein v1.2.3 // indirect
 	github.com/awalterschulze/gographviz v2.0.3+incompatible
 	github.com/chr4/pwgen v1.1.0
-	github.com/cycloidio/terracognita v0.6.3
 	github.com/cycloidio/tfdocs v0.0.0-20210325124514-48185a336974
 	github.com/dmarkham/enumer v1.5.2
+	github.com/fatih/color v1.9.0 // indirect
 	github.com/gobuffalo/here v0.6.2 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect
@@ -21,8 +22,11 @@ require (
 	github.com/hashicorp/hcl/v2 v2.9.1
 	github.com/hashicorp/terraform v0.14.10
 	github.com/markbates/pkger v0.17.1
+	github.com/mattn/go-colorable v0.1.7 // indirect
 	github.com/mitchellh/copystructure v1.1.2 // indirect
+	github.com/mitchellh/go-testing-interface v1.0.4 // indirect
 	github.com/mitchellh/go-wordwrap v1.0.1 // indirect
+	github.com/pascaldekloe/name v1.0.1 // indirect
 	github.com/satori/go.uuid v1.2.0
 	github.com/spf13/afero v1.6.0
 	github.com/spf13/cobra v1.1.3
