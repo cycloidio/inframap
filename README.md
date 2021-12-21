@@ -78,13 +78,13 @@ The most important subcommands are:
 
 ### Example
 
-Visualizing with dot
+Visualizing with [dot](https://graphviz.org/download/)
 
 ```shell
 $ inframap generate state.tfstate | dot -Tpng > graph.png
 ```
 
-or from the terminal itself
+or from the terminal itself with [graph-easy](https://github.com/ironcamel/Graph-Easy)
 
 ```shell
 $ inframap generate state.tfstate | graph-easy
