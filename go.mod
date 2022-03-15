@@ -3,7 +3,7 @@ module github.com/cycloidio/inframap
 go 1.15
 
 require (
-	github.com/adrg/xdg v0.3.3
+	github.com/adrg/xdg v0.4.0
 	github.com/agext/levenshtein v1.2.3 // indirect
 	github.com/awalterschulze/gographviz v2.0.3+incompatible
 	github.com/chr4/pwgen v1.1.0
