@@ -79,10 +79,8 @@ func assertEqualGraph(t *testing.T, expected, actual *graph.Graph, actualCfg map
 	// it'll be ignored if nil
 	if actualCfg != nil {
 		actualCans := make([]string, 0, 0)
-		for k, v := range actualCfg["resource"].(map[string]interface{}) {
-			for n := range v.(map[string]interface{}) {
-				actualCans = append(actualCans, fmt.Sprintf("%s.%s", k, n))
-			}
+		for k, _ := range actualCfg {
+			actualCans = append(actualCans, k)
 		}
 
 		expectedCans := make([]string, 0, 0)

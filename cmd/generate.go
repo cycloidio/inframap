@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 	"strings"
@@ -14,12 +15,13 @@ import (
 )
 
 var (
-	printerType   string
-	raw           bool
-	clean         bool
-	connections   bool
-	showIcons     bool
-	externalNodes bool
+	printerType     string
+	raw             bool
+	clean           bool
+	connections     bool
+	showIcons       bool
+	externalNodes   bool
+	descriptionFile string
 
 	generateCmd = &cobra.Command{
 		Use:     "generate [FILE]",
@@ -37,15 +39,16 @@ var (
 			}
 
 			var (
-				g   *graph.Graph
-				err error
+				g     *graph.Graph
+				gdesc map[string]interface{}
+				err   error
 			)
 
 			if tfstate {
-				g, _, err = generate.FromState(file, opt)
+				g, gdesc, err = generate.FromState(file, opt)
 			} else {
 				if len(file) == 0 {
-					g, err = generate.FromHCL(afero.NewOsFs(), path, opt)
+					g, gdesc, err = generate.FromHCL(afero.NewOsFs(), path, opt)
 				} else {
 					fs := afero.NewMemMapFs()
 					path = "module.tf"
@@ -66,7 +69,7 @@ var (
 						return err
 					}
 
-					g, err = generate.FromHCL(fs, path, opt)
+					g, gdesc, err = generate.FromHCL(fs, path, opt)
 				}
 			}
 
@@ -77,6 +80,29 @@ var (
 			p, err := factory.Get(printerType)
 			if err != nil {
 				return err
+			}
+
+			if descriptionFile != "" && gdesc != nil {
+				df, err := os.OpenFile(descriptionFile, os.O_APPEND|os.O_TRUNC|os.O_RDWR|os.O_CREATE, 0644)
+				if err != nil {
+					return err
+				}
+				defer df.Close()
+
+				// The gdesc has the description of all the elements of the graph, including the
+				// edges so we have to remove them from the output
+				for can := range gdesc {
+					if _, err := g.GetNodeByCanonical(can); err != nil {
+						delete(gdesc, can)
+					}
+				}
+
+				b, err := json.Marshal(gdesc)
+				if err != nil {
+					return err
+				}
+
+				df.Write(b)
 			}
 
 			popt := printer.Options{
@@ -99,4 +125,5 @@ func init() {
 	generateCmd.Flags().BoolVar(&connections, "connections", true, "Connections will apply the logic of the provider to remove resources that are not nodes")
 	generateCmd.Flags().BoolVar(&showIcons, "show-icons", true, "Toggle the icons on the printed graph")
 	generateCmd.Flags().BoolVar(&externalNodes, "external-nodes", true, "Toggle the addition of external nodes like 'im_out' (used to show ingress connections)")
+	generateCmd.Flags().StringVar(&descriptionFile, "description-file", "", "On the given file (will be created or overwritten) we'll output the description of the returned graph, with the attributes of all the visible nodes")
 }

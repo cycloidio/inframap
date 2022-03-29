@@ -19,7 +19,7 @@ import (
 
 // FromHCL generates a new graph from the HCL on the path,
 // it can be a file or a Module/Dir
-func FromHCL(fs afero.Fs, path string, opt Options) (*graph.Graph, error) {
+func FromHCL(fs afero.Fs, path string, opt Options) (*graph.Graph, map[string]interface{}, error) {
 	parser := configs.NewParser(fs)
 
 	g := graph.New()
@@ -35,18 +35,18 @@ func FromHCL(fs afero.Fs, path string, opt Options) (*graph.Graph, error) {
 	} else {
 		f, dgs := parser.LoadConfigFile(path)
 		if dgs.HasErrors() {
-			return nil, errors.New(dgs.Error())
+			return nil, nil, errors.New(dgs.Error())
 		}
 		mod, diags = configs.NewModule([]*configs.File{f}, nil)
 	}
 
 	if diags.HasErrors() {
-		return nil, errors.New(diags.Error())
+		return nil, nil, errors.New(diags.Error())
 	}
 
-	// nodeCanID holds as key the `aws_alb.front` (graph.Node.Canonical)
+	// nodeCanIDs holds as key the `aws_alb.front` (graph.Node.Canonical)
 	// and as value the UUID (graph.Node.ID) we give to it
-	nodeCanID := make(map[string]string)
+	nodeCanIDs := make(map[string][]string)
 
 	// nodeIDEdges holds as key the UUID (graph.Node.ID) and as value
 	// all the edges it has, in this case it's the `depends_on` values
@@ -60,7 +60,7 @@ func FromHCL(fs afero.Fs, path string, opt Options) (*graph.Graph, error) {
 	if !opt.Raw {
 		opt, err = checkHCLProviders(mod, opt)
 		if err != nil {
-			return nil, err
+			return nil, nil, err
 		}
 	}
 
@@ -70,7 +70,7 @@ func FromHCL(fs afero.Fs, path string, opt Options) (*graph.Graph, error) {
 			if errors.Is(err, errcode.ErrProviderNotFound) {
 				continue
 			}
-			return nil, err
+			return nil, nil, err
 		}
 
 		// If it's not a Node or Edge we ignore it
@@ -80,7 +80,7 @@ func FromHCL(fs afero.Fs, path string, opt Options) (*graph.Graph, error) {
 
 		res, err := pv.Resource(rs)
 		if err != nil {
-			return nil, err
+			return nil, nil, err
 		}
 		n := &graph.Node{
 			ID:        uuid.NewV4().String(),
@@ -90,10 +90,10 @@ func FromHCL(fs afero.Fs, path string, opt Options) (*graph.Graph, error) {
 
 		err = g.AddNode(n)
 		if err != nil {
-			return nil, err
+			return nil, nil, err
 		}
 
-		nodeCanID[n.Canonical] = n.ID
+		nodeCanIDs[n.Canonical] = append(nodeCanIDs[n.Canonical], n.ID)
 
 		links := make(map[string][]string)
 		body, ok := rv.Config.(*hclsyntax.Body)
@@ -109,7 +109,7 @@ func FromHCL(fs afero.Fs, path string, opt Options) (*graph.Graph, error) {
 			// and manually deal with them. For what I've tested
 			// the Blocks (so egess an ingress for example) do not
 			// work and fail so we should find a workaround.
-			return nil, errcode.ErrGenerateFromJSON
+			return nil, nil, errcode.ErrGenerateFromJSON
 		}
 
 		for _, resources := range links {
@@ -130,10 +130,11 @@ func FromHCL(fs afero.Fs, path string, opt Options) (*graph.Graph, error) {
 				rk = strings.Join(keys[:len(keys)-1], ".")
 			}
 
-			tnid, ok := nodeCanID[rk]
+			tnids, ok := nodeCanIDs[rk]
 			if !ok {
 				continue
 			}
+			tnid := tnids[0]
 
 			err := g.AddEdge(&graph.Edge{
 				ID:     uuid.NewV4().String(),
@@ -145,7 +146,7 @@ func FromHCL(fs afero.Fs, path string, opt Options) (*graph.Graph, error) {
 				if errors.Is(err, errcode.ErrGraphAlreadyExistsEdge) {
 					continue
 				}
-				return nil, err
+				return nil, nil, err
 			}
 
 		}
@@ -154,7 +155,7 @@ func FromHCL(fs afero.Fs, path string, opt Options) (*graph.Graph, error) {
 	// call the preprocess method for each
 	// TF provider in the file
 	if err := preprocess(g, resourcesRawConfig, opt); err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	if opt.Clean {
@@ -163,24 +164,28 @@ func FromHCL(fs afero.Fs, path string, opt Options) (*graph.Graph, error) {
 
 	err = fixEdges(g, resourcesRawConfig, opt)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	if opt.Connections {
 		err = mutate(g, opt)
 		if err != nil {
-			return nil, err
+			return nil, nil, err
 		}
 	}
 
 	if opt.Clean {
 		err = cleanHangingEdges(g, opt)
 		if err != nil {
-			return nil, err
+			return nil, nil, err
 		}
 	}
 
-	return g, nil
+	endCfg, err := buildConfig(g, resourcesRawConfig, nodeCanIDs)
+	if err != nil {
+		return nil, nil, err
+	}
+	return g, endCfg, nil
 }
 
 // getBodyLinks gets all the variables used and the key in which
