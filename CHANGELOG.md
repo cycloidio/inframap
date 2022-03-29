@@ -1,5 +1,10 @@
 ## [Unreleased]
 
+### Added
+
+- New flag `--description-file` to generate a description file of the Graph Nodes
+  ([Issue #178](https://github.com/cycloidio/inframap/issues/178))
+
 ### Changed
 
 - Updated the `tfdocs` version

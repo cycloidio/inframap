@@ -365,23 +365,15 @@ func buildConfig(g *graph.Graph, cfg map[string]map[string]interface{}, nodeCanI
 			return nil, fmt.Errorf("could not find config of node %q: %w", n.Canonical, errcode.ErrInvalidTFStateFile)
 		}
 
-		// Canonical = module.name.aws_security_group.front-port80
-		// rt == path[-2] == resource Type ex: module.name.aws_security_group
-		// rn == path[-1] == resource Name ex: front-port80
-		path := strings.Split(n.Canonical, ".")
-		rn := path[len(path)-1]
-		rt := strings.Join(path[:len(path)-1], ".")
-
-		if _, ok := endCfg[rt]; !ok {
-			endCfg[rt] = make(map[string]interface{})
-		}
-
-		if _, ok := endCfg[rt].(map[string]interface{})[rn]; ok {
+		if _, ok := endCfg[n.Canonical]; ok {
 			// If we have it already set, then it's not a valid config
 			return nil, fmt.Errorf("repeated config node for %q: %w", n.Canonical, errcode.ErrInvalidTFStateFile)
 		}
 
-		endCfg[rt].(map[string]interface{})[rn] = c
+		// Delete the key added by the HCL generator
+		delete(c, provider.HCLCanonicalKey)
+
+		endCfg[n.Canonical] = c
 	}
 
 	for _, e := range g.Edges {
@@ -404,29 +396,17 @@ func buildConfig(g *graph.Graph, cfg map[string]map[string]interface{}, nodeCanI
 				return nil, fmt.Errorf("could not find config of the Node %q: %w", can, errcode.ErrInvalidTFStateFile)
 			}
 
-			// Canonical = module.name.aws_security_group.front-port80
-			// rt == path[-2] == resource Type ex: module.name.aws_security_group
-			// rn == path[-1] == resource Name ex: front-port80
-			path := strings.Split(can, ".")
-			rn := path[len(path)-1]
-			rt := strings.Join(path[:len(path)-1], ".")
-
-			if _, ok := endCfg[rt]; !ok {
-				endCfg[rt] = make(map[string]interface{})
-			}
-
-			if _, ok := endCfg[rt].(map[string]interface{})[rn]; ok {
+			if _, ok := endCfg[can]; ok {
 				// As a connection canonical can be shared between different
 				// connections this will happen so we ignore it
 				continue
 			}
 
-			endCfg[rt].(map[string]interface{})[rn] = c
-		}
-	}
+			// Delete the key added by the HCL generator
+			delete(c, provider.HCLCanonicalKey)
 
-	endCfg = map[string]interface{}{
-		"resource": endCfg,
+			endCfg[can] = c
+		}
 	}
 
 	return endCfg, nil

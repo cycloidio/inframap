@@ -13,7 +13,7 @@ func TestFromHCL_AWS(t *testing.T) {
 	t.Run("SuccessSG", func(t *testing.T) {
 		fs := afero.NewOsFs()
 
-		g, err := generate.FromHCL(fs, "./testdata/aws_hcl_sg.tf", generate.Options{Clean: true, Connections: true, ExternalNodes: true})
+		g, cfg, err := generate.FromHCL(fs, "./testdata/aws_hcl_sg.tf", generate.Options{Clean: true, Connections: true, ExternalNodes: true})
 		require.NoError(t, err)
 		require.NotNil(t, g)
 
@@ -67,7 +67,7 @@ func TestFromHCL_AWS(t *testing.T) {
 			},
 		}
 
-		assertEqualGraph(t, eg, g, nil)
+		assertEqualGraph(t, eg, g, cfg)
 	})
 }
 
@@ -75,7 +75,7 @@ func TestFromHCL_FlexibleEngine(t *testing.T) {
 	t.Run("SuccessSG", func(t *testing.T) {
 		fs := afero.NewOsFs()
 
-		g, err := generate.FromHCL(fs, "./testdata/flexibleengine_hcl.tf", generate.Options{Clean: true, Connections: true, ExternalNodes: true})
+		g, cfg, err := generate.FromHCL(fs, "./testdata/flexibleengine_hcl.tf", generate.Options{Clean: true, Connections: true, ExternalNodes: true})
 		require.NoError(t, err)
 		require.NotNil(t, g)
 
@@ -103,7 +103,7 @@ func TestFromHCL_FlexibleEngine(t *testing.T) {
 			},
 		}
 
-		assertEqualGraph(t, eg, g, nil)
+		assertEqualGraph(t, eg, g, cfg)
 	})
 }
 
@@ -111,7 +111,7 @@ func TestFromHCL_Google(t *testing.T) {
 	t.Run("Success", func(t *testing.T) {
 		fs := afero.NewOsFs()
 
-		g, err := generate.FromHCL(fs, "./testdata/google_hcl.tf", generate.Options{Clean: true, Connections: true, ExternalNodes: true})
+		g, cfg, err := generate.FromHCL(fs, "./testdata/google_hcl.tf", generate.Options{Clean: true, Connections: true, ExternalNodes: true})
 		require.NoError(t, err)
 		require.NotNil(t, g)
 
@@ -135,7 +135,7 @@ func TestFromHCL_Google(t *testing.T) {
 			},
 		}
 
-		assertEqualGraph(t, eg, g, nil)
+		assertEqualGraph(t, eg, g, cfg)
 	})
 }
 
@@ -143,7 +143,7 @@ func TestFromHCL_Module(t *testing.T) {
 	t.Run("SuccessSG", func(t *testing.T) {
 		fs := afero.NewOsFs()
 
-		g, err := generate.FromHCL(fs, "./testdata/tf-module/", generate.Options{Clean: true, Connections: true, ExternalNodes: true})
+		g, cfg, err := generate.FromHCL(fs, "./testdata/tf-module/", generate.Options{Clean: true, Connections: true, ExternalNodes: true})
 		require.NoError(t, err)
 		require.NotNil(t, g)
 
@@ -197,6 +197,6 @@ func TestFromHCL_Module(t *testing.T) {
 			},
 		}
 
-		assertEqualGraph(t, eg, g, nil)
+		assertEqualGraph(t, eg, g, cfg)
 	})
 }
