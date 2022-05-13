@@ -174,7 +174,8 @@ Terraform allows users to use `backends` (S3, Google Cloud Storage, Swift, etc.)
 |---------|--------------------------------------------------------------------------|
 | S3      | `aws s3 cp s3://bucket/path/to/your/file.tfstate - \| inframap generate` |
 | GCS     | `gsutil cat gs://bucket/path/to/your/file.tfstate \| inframap generate`  |
-| HTTP    | `terraform state pull \| inframap generate`                              |
+
+A general solution is also to just use `terraform state pull \| inframap generate` as it'll pull the state from whichever backend is actually stored
 
 ## License
 
