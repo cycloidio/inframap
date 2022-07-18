@@ -26,7 +26,7 @@ require (
 	github.com/mitchellh/go-wordwrap v1.0.1 // indirect
 	github.com/pascaldekloe/name v1.0.1 // indirect
 	github.com/satori/go.uuid v1.2.0
-	github.com/spf13/afero v1.8.2
+	github.com/spf13/afero v1.9.0
 	github.com/spf13/cobra v1.5.0
 	github.com/stretchr/testify v1.8.0
 	golang.org/x/lint v0.0.0-20210508222113-6edffad5e616
