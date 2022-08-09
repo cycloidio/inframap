@@ -8,7 +8,7 @@
 ### Changed
 
 - Updated the `tfdocs` version
-  ([PR #156](https://github.com/cycloidio/inframap/pull/156))
+  ([PR #198](https://github.com/cycloidio/inframap/pull/198))
 
 ## [0.6.7] _2021-07-09_
 
