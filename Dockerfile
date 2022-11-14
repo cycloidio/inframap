@@ -1,4 +1,4 @@
-FROM golang:1.16.5-alpine3.12 as builder
+FROM golang:1.16.5-alpine3.15 as builder
 
 WORKDIR /app
 
@@ -11,6 +11,6 @@ COPY . .
 RUN apk -q --no-progress add git make; \
 	make build
 
-FROM alpine
+FROM alpine:3.15
 COPY --from=builder /app/inframap /app/
 ENTRYPOINT ["/app/inframap"]
