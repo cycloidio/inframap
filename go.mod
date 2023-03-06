@@ -9,7 +9,7 @@ require (
 	github.com/chr4/pwgen v1.1.0
 	github.com/cycloidio/flatmap v1.0.0
 	github.com/cycloidio/tfdocs v0.0.0-20220809201117-e73e2388cfa8
-	github.com/dmarkham/enumer v1.5.6
+	github.com/dmarkham/enumer v1.5.8
 	github.com/fatih/color v1.13.0 // indirect
 	github.com/gobuffalo/here v0.6.2 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
