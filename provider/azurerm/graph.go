@@ -31,6 +31,7 @@ var (
 		"azurerm_lb":                                struct{}{},
 		"azurerm_linux_function_app":                struct{}{},
 		"azurerm_linux_virtual_machine":             struct{}{},
+		"azurerm_linux_web_app":                     struct{}{},
 		"azurerm_mariadb_database":                  struct{}{},
 		"azurerm_mariadb_server":                    struct{}{},
 		"azurerm_mssql_database":                    struct{}{},
@@ -59,8 +60,9 @@ var (
 		"azurerm_virtual_machine":                   struct{}{},
 		"azurerm_virtual_network_gateway":           struct{}{},
 		"azurerm_vpn_gateway":                       struct{}{},
-		"azurerm_windows_virtual_machine":           struct{}{},
 		"azurerm_windows_function_app":              struct{}{},
+		"azurerm_windows_virtual_machine":           struct{}{},
+		"azurerm_windows_web_app":                   struct{}{},
 		"azurerm_virtual_network":                   struct{}{},
 	}
 
