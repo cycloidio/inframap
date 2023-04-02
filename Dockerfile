@@ -8,7 +8,7 @@ RUN go mod download
 
 COPY . .
 
-RUN apk -q --no-progress add git make; \
+RUN apk -q --no-progress add git make graphviz ttf-dejavu; \
 	make build
 
 FROM alpine
