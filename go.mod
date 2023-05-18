@@ -8,7 +8,7 @@ require (
 	github.com/awalterschulze/gographviz v2.0.3+incompatible
 	github.com/chr4/pwgen v1.1.0
 	github.com/cycloidio/flatmap v1.0.0
-	github.com/cycloidio/tfdocs v0.0.0-20220809201117-e73e2388cfa8
+	github.com/cycloidio/tfdocs v0.0.0-20230516095646-1dc8f8412d50
 	github.com/dmarkham/enumer v1.5.6
 	github.com/fatih/color v1.13.0 // indirect
 	github.com/gobuffalo/here v0.6.2 // indirect
