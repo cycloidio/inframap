@@ -158,9 +158,7 @@ func FromState(tfstate json.RawMessage, opt Options) (*graph.Graph, map[string]i
 		edgeIDs := make([]string, 0)
 		for _, e := range edges {
 			if IDs, ok := nodeCanIDs[e]; ok {
-				for _, nid := range IDs {
-					edgeIDs = append(edgeIDs, nid)
-				}
+				edgeIDs = append(edgeIDs, IDs...)
 			}
 		}
 
