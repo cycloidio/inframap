@@ -12,7 +12,7 @@ RUN apk -q --no-progress add git make \
 
 FROM alpine
 
-RUN apk -q --no-progress add graphviz ttf-dejavu\
+RUN apk -q --no-progress add graphviz ttf-dejavu \
         && addgroup -g 1000 inframap \
         && adduser -u 1000 -G inframap -s /bin/ash -D inframap
 
@@ -22,4 +22,4 @@ WORKDIR /home/inframap
 
 COPY --from=builder /app/inframap /home/inframap
 
-ENTRYPOINT ["inframap"]
+ENTRYPOINT ["./inframap"]

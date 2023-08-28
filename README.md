@@ -81,32 +81,40 @@ The most important subcommands are:
 Visualizing with [dot](https://graphviz.org/download/)
 
 ```shell
-$ inframap generate state.tfstate | dot -Tpng > graph.png
+inframap generate state.tfstate | dot -Tpng > graph.png
 ```
 
 or from the terminal itself with [graph-easy](https://github.com/ironcamel/Graph-Easy)
 
 ```shell
-$ inframap generate state.tfstate | graph-easy
+inframap generate state.tfstate | graph-easy
 ```
 
 or from HCL
 
 ```shell
-$ inframap generate config.tf | graph-easy
+inframap generate config.tf | graph-easy
 ```
 
 or HCL module
 
 ```shell
-$ inframap generate ./my-module/ | graph-easy
+inframap generate ./my-module/ | graph-easy
 ```
 
 using docker image (assuming that your Terraform files are in the working directory)
 
 ```shell
-$ docker run --rm -v ${PWD}:/opt cycloid/inframap generate /opt/terraform.tfstate
+docker run --rm -v ${PWD}:/opt cycloid/inframap generate /opt/terraform.tfstate
 ```
+
+or if you use docker and want to have the images generated already, the docker image has the `graphviz` lib installed:
+
+```shell
+docker run --rm -v ${PWD}:/opt --entrypoint "/bin/ash" inframap -c './inframap generate /opt/PATH_TO_HCL_STATE | dot -Tpng > /opt/graph.png'
+```
+
+and the generated image will be on `$PWD/graph.png`
 
 
 **Note:** InfraMap will guess the type of the input (HCL or TFState) by validating if it's a JSON and if it fails then we fallback
