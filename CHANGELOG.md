@@ -4,6 +4,8 @@
 
 - New flag `--description-file` to generate a description file of the Graph Nodes
   ([Issue #178](https://github.com/cycloidio/inframap/issues/178))
+- `graphviz` is now in the Docker image so no need of external tools to generate the graph by **[agalazis](https://github.com/agalazis)**
+  ([PR #221](https://github.com/cycloidio/inframap/pull/221))
 
 ### Changed
 
