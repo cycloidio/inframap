@@ -10,6 +10,9 @@ type Node struct {
 	// Canonical it's 'aws_lb.front' format
 	Canonical string
 
+	// Name it's the name of the resource
+	Name string
+
 	// Position holds the position of the node if any
 	Position []int // x, y
 

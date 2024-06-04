@@ -27,6 +27,7 @@ func TestFromHCL_AWS(t *testing.T) {
 				},
 				&graph.Node{
 					Canonical: "aws_lb.front",
+					Name:      "some name",
 				},
 				&graph.Node{
 					Canonical: "aws_launch_template.front",
@@ -83,9 +84,11 @@ func TestFromHCL_FlexibleEngine(t *testing.T) {
 			Nodes: []*graph.Node{
 				&graph.Node{
 					Canonical: "flexibleengine_compute_instance_v2.instance_one",
+					Name:      "instance-one",
 				},
 				&graph.Node{
 					Canonical: "flexibleengine_compute_instance_v2.instance_two",
+					Name:      "instance-two",
 				},
 			},
 			Edges: []*graph.Edge{
@@ -119,9 +122,11 @@ func TestFromHCL_Google(t *testing.T) {
 			Nodes: []*graph.Node{
 				&graph.Node{
 					Canonical: "google_compute_instance.inframap-tmp-two",
+					Name:      "inframap-tmp-two",
 				},
 				&graph.Node{
 					Canonical: "google_compute_instance.inframap-tmp",
+					Name:      "inframap-tmp",
 				},
 			},
 			Edges: []*graph.Edge{
@@ -157,6 +162,7 @@ func TestFromHCL_Module(t *testing.T) {
 				},
 				&graph.Node{
 					Canonical: "aws_lb.front",
+					Name:      "some name",
 				},
 				&graph.Node{
 					Canonical: "aws_launch_template.front",

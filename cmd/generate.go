@@ -15,13 +15,14 @@ import (
 )
 
 var (
-	printerType     string
-	raw             bool
-	clean           bool
-	connections     bool
-	showIcons       bool
-	externalNodes   bool
-	descriptionFile string
+	printerType          string
+	raw                  bool
+	clean                bool
+	connections          bool
+	showIcons            bool
+	externalNodes        bool
+	descriptionFile      string
+	alternativeNodeNames bool
 
 	generateCmd = &cobra.Command{
 		Use:     "generate [FILE]",
@@ -106,7 +107,8 @@ var (
 			}
 
 			popt := printer.Options{
-				ShowIcons: showIcons,
+				ShowIcons:            showIcons,
+				AlternativeNodeNames: alternativeNodeNames,
 			}
 			err = p.Print(g, popt, os.Stdout)
 			if err != nil {
@@ -126,4 +128,5 @@ func init() {
 	generateCmd.Flags().BoolVar(&showIcons, "show-icons", true, "Toggle the icons on the printed graph")
 	generateCmd.Flags().BoolVar(&externalNodes, "external-nodes", true, "Toggle the addition of external nodes like 'im_out' (used to show ingress connections)")
 	generateCmd.Flags().StringVar(&descriptionFile, "description-file", "", "On the given file (will be created or overwritten) we'll output the description of the returned graph, with the attributes of all the visible nodes")
+	generateCmd.Flags().BoolVar(&alternativeNodeNames, "alternative-node-names", false, "Whether to try reading node names from tags, labels and other sources instead of using the canonical names")
 }

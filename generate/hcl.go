@@ -88,11 +88,6 @@ func FromHCL(fs afero.Fs, path string, opt Options) (*graph.Graph, map[string]in
 			Resource:  *res,
 		}
 
-		err = g.AddNode(n)
-		if err != nil {
-			return nil, nil, err
-		}
-
 		nodeCanIDs[n.Canonical] = append(nodeCanIDs[n.Canonical], n.ID)
 
 		links := make(map[string][]string)
@@ -102,6 +97,8 @@ func FromHCL(fs afero.Fs, path string, opt Options) (*graph.Graph, map[string]in
 			cfg := getBodyJSON(body)
 			cfg[provider.HCLCanonicalKey] = rk
 			resourcesRawConfig[n.ID] = cfg
+			nodeName := extractResourceName(resourcesRawConfig[n.ID])
+			n.Name = nodeName
 		} else {
 			// If it's not a hclsyntax.Body normally
 			// means it's from a JSON file, the only
@@ -110,6 +107,11 @@ func FromHCL(fs afero.Fs, path string, opt Options) (*graph.Graph, map[string]in
 			// the Blocks (so egess an ingress for example) do not
 			// work and fail so we should find a workaround.
 			return nil, nil, errcode.ErrGenerateFromJSON
+		}
+
+		err = g.AddNode(n)
+		if err != nil {
+			return nil, nil, err
 		}
 
 		for _, resources := range links {
