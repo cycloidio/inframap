@@ -1,5 +1,7 @@
 ## [Unreleased]
 
+## [0.7.0] _2024-06-05_
+
 ### Added
 
 - New flag `--description-file` to generate a description file of the Graph Nodes
