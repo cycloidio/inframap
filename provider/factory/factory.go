@@ -5,11 +5,10 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/cycloidio/inframap/provider/azurerm"
-
 	"github.com/cycloidio/inframap/errcode"
 	"github.com/cycloidio/inframap/provider"
 	"github.com/cycloidio/inframap/provider/aws"
+	"github.com/cycloidio/inframap/provider/azurerm"
 	"github.com/cycloidio/inframap/provider/flexibleengine"
 	"github.com/cycloidio/inframap/provider/google"
 	"github.com/cycloidio/inframap/provider/im"

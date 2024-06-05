@@ -6,12 +6,13 @@ import (
 	"os"
 	"strings"
 
+	"github.com/spf13/afero"
+	"github.com/spf13/cobra"
+
 	"github.com/cycloidio/inframap/generate"
 	"github.com/cycloidio/inframap/graph"
 	"github.com/cycloidio/inframap/printer"
 	"github.com/cycloidio/inframap/printer/factory"
-	"github.com/spf13/afero"
-	"github.com/spf13/cobra"
 )
 
 var (

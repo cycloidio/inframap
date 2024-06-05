@@ -48,13 +48,6 @@ var (
 		"aws_launch_template":               struct{}{},
 	}
 
-	// noSecurityGroup is a map of all the resourcese that do not
-	// have/relay on SecurityGroups
-	noSecurityGroup = map[string]struct{}{
-		"aws_s3_bucket":               struct{}{},
-		"aws_cloudfront_distribution": struct{}{},
-	}
-
 	// edgeTypes map of all the supported Edges
 	edgeTypes = map[string]struct{}{
 		"aws_security_group":      struct{}{},

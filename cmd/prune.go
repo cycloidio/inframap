@@ -4,8 +4,9 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/cycloidio/inframap/prune"
 	"github.com/spf13/cobra"
+
+	"github.com/cycloidio/inframap/prune"
 )
 
 var (

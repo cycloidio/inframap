@@ -3,8 +3,9 @@ package aws_test
 import (
 	"testing"
 
-	"github.com/cycloidio/inframap/provider/aws"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/cycloidio/inframap/provider/aws"
 )
 
 func TestResourceInOutNodes(t *testing.T) {

@@ -5,18 +5,19 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"path"
 	"regexp"
 	"strings"
+
+	"github.com/hashicorp/terraform/addrs"
+	"github.com/hashicorp/terraform/states/statefile"
+	uuid "github.com/satori/go.uuid"
 
 	"github.com/cycloidio/flatmap"
 	"github.com/cycloidio/inframap/errcode"
 	"github.com/cycloidio/inframap/graph"
 	"github.com/cycloidio/inframap/provider"
 	"github.com/cycloidio/inframap/provider/factory"
-	"github.com/hashicorp/terraform/addrs"
-	"github.com/hashicorp/terraform/states/statefile"
-	uuid "github.com/satori/go.uuid"
-	"path"
 )
 
 // FromState generate a graph.Graph from the tfstate applying the opt
@@ -259,8 +260,8 @@ func extractResourceName(attrs map[string]interface{}) string {
 
 // migrateVersions will try to apply migrations of old
 // statefile:
-// * For version 3 will try to populate the Dependencies as they are
-//   removed by TF as they cannot be migrated from v3->v4
+//   - For version 3 will try to populate the Dependencies as they are
+//     removed by TF as they cannot be migrated from v3->v4
 func migrateVersions(src []byte, f *statefile.File) error {
 	version, err := tfStateVersion(src)
 	if err != nil {

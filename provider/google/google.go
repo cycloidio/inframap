@@ -5,7 +5,6 @@ import (
 
 	"github.com/cycloidio/inframap/errcode"
 	"github.com/cycloidio/inframap/provider"
-
 	tfdocGCP "github.com/cycloidio/tfdocs/providers/google"
 	"github.com/cycloidio/tfdocs/resource"
 )

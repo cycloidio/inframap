@@ -5,9 +5,10 @@ import (
 	"sort"
 	"testing"
 
-	"github.com/cycloidio/inframap/graph"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+
+	"github.com/cycloidio/inframap/graph"
 )
 
 // assertEqualGraph will compare the expected graph to the actual one, the way it'll do that is by ignoring the IDs

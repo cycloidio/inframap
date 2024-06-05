@@ -9,15 +9,15 @@ import (
 
 	"github.com/adrg/xdg"
 	"github.com/awalterschulze/gographviz"
-	"github.com/cycloidio/inframap/graph"
-	"github.com/cycloidio/inframap/printer"
-	"github.com/cycloidio/inframap/provider"
-	"github.com/cycloidio/inframap/provider/factory"
 	"github.com/markbates/pkger"
 
 	// As we require to load the assets to be used
 	// we import it as empty
 	_ "github.com/cycloidio/inframap/assets"
+	"github.com/cycloidio/inframap/graph"
+	"github.com/cycloidio/inframap/printer"
+	"github.com/cycloidio/inframap/provider"
+	"github.com/cycloidio/inframap/provider/factory"
 )
 
 // Dot is the struct that implements

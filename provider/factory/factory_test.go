@@ -4,11 +4,12 @@ import (
 	"errors"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
+
 	"github.com/cycloidio/inframap/errcode"
 	"github.com/cycloidio/inframap/provider"
 	"github.com/cycloidio/inframap/provider/factory"
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 )
 
 func TestGetProviderAndResource(t *testing.T) {

@@ -5,9 +5,6 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/cycloidio/inframap/errcode"
-	"github.com/cycloidio/inframap/graph"
-	"github.com/cycloidio/inframap/provider"
 	"github.com/hashicorp/hcl/v2"
 	"github.com/hashicorp/hcl/v2/hclsyntax"
 	"github.com/hashicorp/hcl/v2/hclwrite"
@@ -15,6 +12,10 @@ import (
 	"github.com/hashicorp/terraform/configs/hcl2shim"
 	uuid "github.com/satori/go.uuid"
 	"github.com/spf13/afero"
+
+	"github.com/cycloidio/inframap/errcode"
+	"github.com/cycloidio/inframap/graph"
+	"github.com/cycloidio/inframap/provider"
 )
 
 // FromHCL generates a new graph from the HCL on the path,
@@ -90,7 +91,7 @@ func FromHCL(fs afero.Fs, path string, opt Options) (*graph.Graph, map[string]in
 
 		nodeCanIDs[n.Canonical] = append(nodeCanIDs[n.Canonical], n.ID)
 
-		links := make(map[string][]string)
+		var links map[string][]string
 		body, ok := rv.Config.(*hclsyntax.Body)
 		if ok {
 			links = getBodyLinks(body)

@@ -9,12 +9,13 @@ import (
 	"strings"
 
 	"github.com/chr4/pwgen"
-	"github.com/cycloidio/inframap/errcode"
-	"github.com/cycloidio/inframap/generate"
-	"github.com/cycloidio/inframap/provider/factory"
 	"github.com/hashicorp/terraform/addrs"
 	"github.com/hashicorp/terraform/states/statefile"
 	uuid "github.com/satori/go.uuid"
+
+	"github.com/cycloidio/inframap/errcode"
+	"github.com/cycloidio/inframap/generate"
+	"github.com/cycloidio/inframap/provider/factory"
 )
 
 // reARN matches an arn string

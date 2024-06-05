@@ -3,8 +3,9 @@ package openstack_test
 import (
 	"testing"
 
-	"github.com/cycloidio/inframap/provider/openstack"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/cycloidio/inframap/provider/openstack"
 )
 
 func TestResourceInOutNodes(t *testing.T) {

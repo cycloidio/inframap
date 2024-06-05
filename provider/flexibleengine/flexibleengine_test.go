@@ -3,8 +3,9 @@ package flexibleengine_test
 import (
 	"testing"
 
-	"github.com/cycloidio/inframap/provider/flexibleengine"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/cycloidio/inframap/provider/flexibleengine"
 )
 
 func TestResourceInOutNodes(t *testing.T) {
