@@ -16,6 +16,7 @@ import (
 	"github.com/hashicorp/terraform/addrs"
 	"github.com/hashicorp/terraform/states/statefile"
 	uuid "github.com/satori/go.uuid"
+	"path"
 )
 
 // FromState generate a graph.Graph from the tfstate applying the opt
@@ -131,13 +132,18 @@ func FromState(tfstate json.RawMessage, opt Options) (*graph.Graph, map[string]i
 				if err != nil {
 					return nil, nil, err
 				}
+
 				tfid, ok := aux["id"]
 				if !ok {
 					return nil, nil, fmt.Errorf("resource %q: %w", rk, errcode.ErrInvalidTFStateFileMissingResourceID)
 				}
+
+				name := extractResourceName(aux)
+
 				n := &graph.Node{
 					ID:        uuid.NewV4().String(),
 					Canonical: prefixWithModule(m.Addr.String(), rk),
+					Name:      name,
 					TFID:      tfid.(string),
 					Resource:  *res,
 				}
@@ -207,6 +213,48 @@ func FromState(tfstate json.RawMessage, opt Options) (*graph.Graph, map[string]i
 		return nil, nil, err
 	}
 	return g, endCfg, nil
+}
+
+func extractResourceName(attrs map[string]interface{}) string {
+	if t, ok := attrs["tags"]; ok && t != nil {
+		if m, ok := t.(map[string]interface{}); ok {
+			if n, ok := m["Name"]; ok {
+				return n.(string)
+			}
+		}
+	}
+
+	if l, ok := attrs["labels"]; ok && l != nil {
+		if m, ok := l.(map[string]interface{}); ok {
+			if n, ok := m["Name"]; ok {
+				return n.(string)
+			}
+		}
+	}
+
+	if n, ok := attrs["name"]; ok {
+		s, ok := n.(string)
+		if ok {
+			return s
+		}
+	}
+
+	if id, ok := attrs["id"]; ok {
+		var name string
+		switch tid := id.(type) {
+		case string:
+			name = path.Base(tid) // If the ID is a path, we take the last part
+		case int, int64, int32:
+			name = fmt.Sprintf("%d", tid)
+		case float64, float32:
+			name = fmt.Sprintf("%.0f", tid)
+		}
+		if name != "" {
+			return name
+		}
+	}
+
+	return ""
 }
 
 // migrateVersions will try to apply migrations of old
@@ -535,6 +583,7 @@ func fixEdges(g *graph.Graph, cfg map[string]map[string]interface{}, opt Options
 					Canonical: no,
 					TFID:      no,
 					Resource:  *res,
+					Name:      extractResourceName(cfg[no]),
 				}
 
 				err = g.AddNode(newn)

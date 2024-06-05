@@ -88,7 +88,11 @@ func (d Dot) Print(g *graph.Graph, opt printer.Options, w io.Writer) error {
 			}
 		}
 
-		graph.AddNode(parentName, fmt.Sprintf("%q", n.Canonical), attr)
+		if opt.AlternativeNodeNames {
+			graph.AddNode(parentName, fmt.Sprintf("%q", n.Name), attr)
+		} else {
+			graph.AddNode(parentName, fmt.Sprintf("%q", n.Canonical), attr)
+		}
 	}
 
 	for _, e := range g.Edges {
@@ -102,7 +106,11 @@ func (d Dot) Print(g *graph.Graph, opt printer.Options, w io.Writer) error {
 			return err
 		}
 
-		graph.AddEdge(fmt.Sprintf("%q", src.Canonical), fmt.Sprintf("%q", tr.Canonical), true, nil)
+		if opt.AlternativeNodeNames {
+			graph.AddEdge(fmt.Sprintf("%q", src.Name), fmt.Sprintf("%q", tr.Name), true, nil)
+		} else {
+			graph.AddEdge(fmt.Sprintf("%q", src.Canonical), fmt.Sprintf("%q", tr.Canonical), true, nil)
+		}
 	}
 
 	buff := bytes.NewBufferString(graph.String())

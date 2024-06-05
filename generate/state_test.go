@@ -49,12 +49,15 @@ func TestFromState(t *testing.T) {
 			Nodes: []*graph.Node{
 				&graph.Node{
 					Canonical: "module.node_pool.scaleway_k8s_pool_beta.nodes",
+					Name:      "kubernetes-infra",
 				},
 				&graph.Node{
 					Canonical: "module.kapsule.scaleway_k8s_cluster_beta.cluster",
+					Name:      "kubernetes",
 				},
 				&graph.Node{
 					Canonical: "scaleway_instance_placement_group.infra",
+					Name:      "kubernetes-infra",
 				},
 			},
 			Edges: []*graph.Edge{
@@ -98,12 +101,15 @@ func TestFromState_AWS(t *testing.T) {
 			Nodes: []*graph.Node{
 				&graph.Node{
 					Canonical: "module.lemp.aws_lb.tQBgz",
+					Name:      "5d7daaa0-68a7-4ca5-a491-3f78c102d562",
 				},
 				&graph.Node{
 					Canonical: "module.lemp.aws_launch_template.vIkyE",
+					Name:      "lt-08e7a3cd65dc2457c",
 				},
 				&graph.Node{
 					Canonical: "module.lemp.aws_db_instance.Cpbzf",
+					Name:      "sample-lemp-rds-prod",
 				},
 				&graph.Node{
 					Canonical: "im_out.tcp/443->443",
@@ -152,15 +158,19 @@ func TestFromState_AWS(t *testing.T) {
 			Nodes: []*graph.Node{
 				&graph.Node{
 					Canonical: "module.magento.aws_elb.tMVdH",
+					Name:      "sample-magento-front-prod",
 				},
 				&graph.Node{
 					Canonical: "module.magento.aws_instance.TObJL",
+					Name:      "i-08ffccfdf54168280",
 				},
 				&graph.Node{
 					Canonical: "module.magento.aws_db_instance.qktIK",
+					Name:      "sample-magento-rds-prod",
 				},
 				&graph.Node{
 					Canonical: "module.magento.aws_elasticache_cluster.VUhMF",
+					Name:      "cy323i4p3rf0szblrtmu",
 				},
 				&graph.Node{
 					Canonical: "im_out.tcp/443->443",
@@ -214,12 +224,15 @@ func TestFromState_AWS(t *testing.T) {
 			Nodes: []*graph.Node{
 				&graph.Node{
 					Canonical: "module.tf-8-wordpress-demo.aws_lb.load-balancer",
+					Name:      "1c827203-82fc-415a-ae40-618de9b57419",
 				},
 				&graph.Node{
 					Canonical: "module.tf-8-wordpress-demo.aws_ecs_service.wordpress",
+					Name:      "fc7ed1fc-fd44-4dc6-8dd4-a6b478807ba9",
 				},
 				&graph.Node{
 					Canonical: "module.tf-8-wordpress-demo.aws_ecs_cluster.ecs-cluster",
+					Name:      "c737f2bf-9ef5-46b3-abd1-419539a9501b",
 				},
 			},
 			Edges: []*graph.Edge{
@@ -256,9 +269,11 @@ func TestFromState_AWS(t *testing.T) {
 			Nodes: []*graph.Node{
 				&graph.Node{
 					Canonical: "aws_instance.bastion0",
+					Name:      "i-00eab1355727cfb44",
 				},
 				&graph.Node{
 					Canonical: "aws_instance.prometheus-prometheus-eu-we1-infra",
+					Name:      "i-04c8b20a499d12182",
 				},
 			},
 			Edges: []*graph.Edge{
@@ -300,24 +315,31 @@ func TestFromState_AWS(t *testing.T) {
 			Nodes: []*graph.Node{
 				&graph.Node{
 					Canonical: "module.cycloid.aws_alb.front",
+					Name:      "123",
 				},
 				&graph.Node{
 					Canonical: "module.cycloid.aws_cloudfront_distribution.cdn",
+					Name:      "E1263EB7GE2JS2",
 				},
 				&graph.Node{
 					Canonical: "module.cycloid.aws_s3_bucket.medias",
+					Name:      "cycloid-website-prod-medias",
 				},
 				&graph.Node{
 					Canonical: "module.cycloid.aws_instance.batch",
+					Name:      "i-0c53df6c1e4dc1f89",
 				},
 				&graph.Node{
 					Canonical: "module.cycloid.aws_ebs_volume.flux",
+					Name:      "vol-080719c992853ff01",
 				},
 				&graph.Node{
 					Canonical: "module.cycloid.aws_db_instance.website",
+					Name:      "cycloid-rds-website-prod",
 				},
 				&graph.Node{
 					Canonical: "module.cycloid.aws_elasticache_cluster.redis",
+					Name:      "cycloid0-prod",
 				},
 				&graph.Node{
 					Canonical: "im_out.tcp/443->443",
@@ -410,12 +432,15 @@ func TestFromState_OpenStack(t *testing.T) {
 			Nodes: []*graph.Node{
 				&graph.Node{
 					Canonical: "openstack_compute_instance_v2.AaCFA",
+					Name:      "51a31efd-09ec-45a9-904f-f79fb41d67a1",
 				},
 				&graph.Node{
 					Canonical: "openstack_compute_instance_v2.gZfYc",
+					Name:      "c74857da-3565-404a-8983-be3e1ec6839b",
 				},
 				&graph.Node{
 					Canonical: "openstack_lb_loadbalancer_v2.PPdjL",
+					Name:      "f0893220-4fcd-4714-a653-d697efba57ab",
 				},
 			},
 			Edges: []*graph.Edge{
@@ -457,9 +482,11 @@ func TestFromState_OpenStack(t *testing.T) {
 			Nodes: []*graph.Node{
 				&graph.Node{
 					Canonical: "openstack_compute_instance_v2.sjSbA",
+					Name:      "141a1e75-11c2-4b3d-90cf-243f384b1fbb",
 				},
 				&graph.Node{
 					Canonical: "openstack_compute_instance_v2.PiGtZ",
+					Name:      "21bc79d5-7ff4-4c6e-81ba-eff95fd0daea",
 				},
 			},
 			Edges: []*graph.Edge{
@@ -496,12 +523,15 @@ func TestFromState_FlexibleEngine(t *testing.T) {
 			Nodes: []*graph.Node{
 				&graph.Node{
 					Canonical: "flexibleengine_compute_instance_v2.Aumwn",
+					Name:      "141a1e75-11c2-4b3d-90cf-243f384b1fbb",
 				},
 				&graph.Node{
 					Canonical: "flexibleengine_compute_instance_v2.bkbLl",
+					Name:      "21bc79d5-7ff4-4c6e-81ba-eff95fd0daea",
 				},
 				&graph.Node{
 					Canonical: "flexibleengine_blockstorage_volume_v2.hOHQu",
+					Name:      "2ff83afc-ccfa-452c-8569-c7ab49870fd2",
 				},
 			},
 			Edges: []*graph.Edge{
@@ -545,9 +575,11 @@ func TestFromState_FlexibleEngine(t *testing.T) {
 			Nodes: []*graph.Node{
 				&graph.Node{
 					Canonical: "flexibleengine_compute_instance_v2.CpCKR",
+					Name:      "74e5d095-0da6-405a-b083-2eb186ecd814",
 				},
 				&graph.Node{
 					Canonical: "flexibleengine_compute_instance_v2.uwGDt",
+					Name:      "0f6dab7f-cd6e-4751-864d-173b344c3b20",
 				},
 			},
 			Edges: []*graph.Edge{
@@ -581,9 +613,11 @@ func TestFromState_FlexibleEngine(t *testing.T) {
 			Nodes: []*graph.Node{
 				&graph.Node{
 					Canonical: "flexibleengine_compute_instance_v2.KnHdC",
+					Name:      "b1f167c5-7503-4365-95ba-044ac9a86089",
 				},
 				&graph.Node{
 					Canonical: "flexibleengine_compute_instance_v2.LJwaI",
+					Name:      "977ae080-b663-46b1-a656-fb6e360c8d5f",
 				},
 			},
 			Edges: []*graph.Edge{
@@ -621,9 +655,11 @@ func TestFromState_Google(t *testing.T) {
 			Nodes: []*graph.Node{
 				&graph.Node{
 					Canonical: "google_compute_instance.ZthAT",
+					Name:      "infraview-tmp-two",
 				},
 				&graph.Node{
 					Canonical: "google_compute_instance.lodiw",
+					Name:      "infraview-tmp",
 				},
 			},
 			Edges: []*graph.Edge{
@@ -653,10 +689,10 @@ func TestFromState_Azure(t *testing.T) {
 
 		eg := &graph.Graph{
 			Nodes: []*graph.Node{
-				{Canonical: "azurerm_linux_virtual_machine.myterraformvm"},
-				{Canonical: "azurerm_virtual_network.myterraformnetwork"},
-				{Canonical: "azurerm_linux_virtual_machine.myterraformvm2"},
-				{Canonical: "azurerm_virtual_network.myterraformnetwork2"},
+				{Canonical: "azurerm_linux_virtual_machine.myterraformvm", Name: "myVM"},
+				{Canonical: "azurerm_virtual_network.myterraformnetwork", Name: "myVnet"},
+				{Canonical: "azurerm_linux_virtual_machine.myterraformvm2", Name: "myVM2"},
+				{Canonical: "azurerm_virtual_network.myterraformnetwork2", Name: "myVnet2"},
 			},
 			Edges: []*graph.Edge{
 				{

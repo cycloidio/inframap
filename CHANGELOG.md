@@ -11,6 +11,9 @@
 
 - Updated the `tfdocs` version
   ([PR #198](https://github.com/cycloidio/inframap/pull/198))
+- The generate command will now print more suitable node names if `alternative-node-names` flag is used. 
+  It's turned off by default
+  ([Issue #230](https://github.com/cycloidio/inframap/issues/230))
 
 ## [0.6.7] _2021-07-09_
 
