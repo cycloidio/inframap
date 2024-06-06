@@ -1,0 +1,37 @@
+# options for analysis running
+# full configuration example can be found at https://github.com/golangci/golangci-lint/blob/master/.golangci.example.yml
+run:
+  # timeout for analysis, e.g. 30s, 5m, default is 1m
+  timeout: 10m
+  concurrency: 4
+  go: "1.22"
+
+
+# all available settings of specific linters
+linters-settings:
+
+  misspell:
+    # Correct spellings using locale preferences for US or UK.
+    # Default is to use a neutral variety of English.
+    # Setting locale to US will correct the British spelling of 'colour' to 'color'.
+    locale: US
+    ignore-words:
+      - licence
+      - licences
+      - utilisation
+      - cancelled
+
+  staticcheck:
+    # https://staticcheck.io/docs/options#checks
+    checks: ["all", "-SA1019", "-SA5012"]
+
+
+linters:
+  disable-all: true
+  enable:
+    - staticcheck
+    - goimports
+    - ineffassign
+    - unused
+    - unconvert
+    - misspell

@@ -1,7 +1,6 @@
 BIN := inframap
 TOOL_BIN := $(PWD)/bin
 
-GOLINT := $(TOOL_BIN)/golint
 GOIMPORTS := $(TOOL_BIN)/goimports
 ENUMER := $(TOOL_BIN)/enumer
 PKGER := $(TOOL_BIN)/go-bindata
@@ -29,9 +28,6 @@ help: Makefile ## This help dialog
 $(ENUMER):
 	@GOBIN=$(TOOL_BIN) go install github.com/dmarkham/enumer
 
-$(GOLINT):
-	@GOBIN=$(TOOL_BIN) go install golang.org/x/lint/golint
-
 $(GOIMPORTS):
 	@GOBIN=$(TOOL_BIN) go install golang.org/x/tools/cmd/goimports
 
@@ -43,8 +39,9 @@ test: ## Tests all the project
 	@go test ./...
 
 .PHONY: lint
-lint: $(GOLINT) $(GOIMPORTS) ## Runs the linter
-	@$(GOLINT) -set_exit_status ./... && test -z "`go list -f {{.Dir}} ./... | xargs $(GOIMPORTS) -l | tee /dev/stderr`"
+lint: ## Lint the source code
+	@echo -e "# \e[33mRunning golangci-lint\e[0m"
+	@golangci-lint run -v
 
 .PHONY: generate
 generate: $(ENUMER) ## Generates the needed code
@@ -76,3 +73,8 @@ build-compress: build-all ## Builds and compress the binaries
 .PHONY: dbuild
 dbuild: ## Builds the docker image with same name as the binary
 	@docker build -t $(BIN) .
+
+.PHONY: format-go
+format-go:
+	@gci write --skip-generated -s standard -s default -s "prefix(github.com/cycloidio)" . > /dev/null
+	@goimports -w -local github.com/cycloidio .

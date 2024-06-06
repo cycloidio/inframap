@@ -3,10 +3,11 @@ package generate_test
 import (
 	"testing"
 
-	"github.com/cycloidio/inframap/generate"
-	"github.com/cycloidio/inframap/graph"
 	"github.com/spf13/afero"
 	"github.com/stretchr/testify/require"
+
+	"github.com/cycloidio/inframap/generate"
+	"github.com/cycloidio/inframap/graph"
 )
 
 func TestFromHCL_AWS(t *testing.T) {

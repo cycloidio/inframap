@@ -4,10 +4,11 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/cycloidio/inframap/errcode"
-	"github.com/cycloidio/inframap/printer/factory"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+
+	"github.com/cycloidio/inframap/errcode"
+	"github.com/cycloidio/inframap/printer/factory"
 )
 
 func TestGet(t *testing.T) {

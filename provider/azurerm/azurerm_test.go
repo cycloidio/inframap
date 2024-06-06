@@ -3,8 +3,9 @@ package azurerm_test
 import (
 	"testing"
 
-	"github.com/cycloidio/inframap/provider/azurerm"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/cycloidio/inframap/provider/azurerm"
 )
 
 func TestResourceInOut(t *testing.T) {

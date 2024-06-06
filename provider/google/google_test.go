@@ -4,9 +4,10 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
+
 	"github.com/cycloidio/inframap/provider"
 	"github.com/cycloidio/inframap/provider/google"
-	"github.com/stretchr/testify/assert"
 )
 
 func TestResourceInOutNodes(t *testing.T) {

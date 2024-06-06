@@ -5,11 +5,12 @@ import (
 	"io/ioutil"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
+
 	"github.com/cycloidio/inframap/errcode"
 	"github.com/cycloidio/inframap/generate"
 	"github.com/cycloidio/inframap/graph"
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 )
 
 func TestFromState(t *testing.T) {
