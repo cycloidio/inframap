@@ -111,7 +111,7 @@ docker run --rm -v ${PWD}:/opt cycloid/inframap generate /opt/terraform.tfstate
 or if you use docker and want to have the images generated already, the docker image has the `graphviz` lib installed:
 
 ```shell
-docker run --rm -v ${PWD}:/opt --entrypoint "/bin/ash" inframap -c './inframap generate /opt/PATH_TO_HCL_STATE | dot -Tpng > /opt/graph.png'
+docker run --rm -v ${PWD}:/opt --entrypoint "/bin/ash" cycloid/inframap -c './inframap generate /opt/PATH_TO_HCL_STATE | dot -Tpng > /opt/graph.png'
 ```
 
 and the generated image will be on `$PWD/graph.png`
