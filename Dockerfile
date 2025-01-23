@@ -1,4 +1,4 @@
-FROM golang:1.22-alpine as builder
+FROM golang:1.22.4-alpine as builder
 WORKDIR /app
 
 COPY go.mod go.sum ./
@@ -8,7 +8,7 @@ RUN go mod download
 COPY . .
 
 RUN apk -q --no-progress add git make \
-	&& make build
+  && make build
 
 FROM alpine
 
