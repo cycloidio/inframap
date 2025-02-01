@@ -85,8 +85,11 @@ func FromState(tfstate json.RawMessage, opt Options) (*graph.Graph, map[string]i
 			// The Instances is the representation of the
 			// 'count' on the Instance, could also be a 'for_each'
 			for id, iv := range rv.Instances {
-				if id != nil && id.String() != "[0]" {
-					continue
+				if id != nil {
+					matched, _ := regexp.MatchString("^\\[([0-9]*|\"(.*)\")\\]$", id.String())
+					if !matched {
+						continue
+					}
 				}
 				deps := make([]string, 0)
 				if len(iv.Current.Dependencies) != 0 {
@@ -102,6 +105,9 @@ func FromState(tfstate json.RawMessage, opt Options) (*graph.Graph, map[string]i
 					for i, d := range deps {
 						if !strings.HasPrefix(d, "module.") {
 							deps[i] = prefixWithModule(m.Addr.String(), d)
+							if id != nil {
+								deps[i] = postfixWithId(deps[i], id.String())
+							}
 						}
 					}
 				}
@@ -147,6 +153,10 @@ func FromState(tfstate json.RawMessage, opt Options) (*graph.Graph, map[string]i
 					Name:      name,
 					TFID:      tfid.(string),
 					Resource:  *res,
+				}
+
+				if id != nil {
+					n.Canonical = postfixWithId(n.Canonical, id.String())
 				}
 
 				err = g.AddNode(n)
@@ -892,5 +902,20 @@ func prefixWithModule(moduleName, resource string) string {
 	if moduleName != "" {
 		resource = fmt.Sprintf("%s.%s", moduleName, resource)
 	}
+
+	return resource
+}
+
+func postfixWithId(resource string, id string) string {
+	matched, err := regexp.MatchString("^\\[\"(.*)\"\\]$", id)
+	if matched && err == nil {
+		resource = fmt.Sprintf("%s!%s", resource, id[2:len(id) - 2])
+	}
+
+	matched, err = regexp.MatchString("^\\[([0-9]*)]$", id)
+	if matched && err == nil {
+		resource = fmt.Sprintf("%s!%s", resource, id[1:len(id) - 1])
+	}
+
 	return resource
 }

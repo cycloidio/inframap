@@ -7,6 +7,7 @@ var (
 		"azurerm_app_service_environment":           struct{}{},
 		"azurerm_app_service_plan":                  struct{}{},
 		"azurerm_application_gateway":               struct{}{},
+		"azurerm_application_insights":              struct{}{},
 		"azurerm_bastion_host":                      struct{}{},
 		"azurerm_batch_account":                     struct{}{},
 		"azurerm_batch_application":                 struct{}{},
@@ -24,10 +25,13 @@ var (
 		"azurerm_frontdoor":                         struct{}{},
 		"azurerm_function_app":                      struct{}{},
 		"azurerm_image":                             struct{}{},
+		"azurerm_key_vault":                         struct{}{},
 		"azurerm_kubernetes_cluster":                struct{}{},
 		"azurerm_kubernetes_cluster_node_pool":      struct{}{},
 		"azurerm_lb":                                struct{}{},
+		"azurerm_linux_function_app":                struct{}{},
 		"azurerm_linux_virtual_machine":             struct{}{},
+		"azurerm_linux_web_app":                     struct{}{},
 		"azurerm_mariadb_database":                  struct{}{},
 		"azurerm_mariadb_server":                    struct{}{},
 		"azurerm_mssql_database":                    struct{}{},
@@ -47,18 +51,24 @@ var (
 		"azurerm_private_endpoint":                  struct{}{},
 		"azurerm_public_ip":                         struct{}{},
 		"azurerm_redis_cache":                       struct{}{},
+		"azurerm_resource_group":                    struct{}{},
+		"azurerm_service_plan":                      struct{}{},
 		"azurerm_sql_database":                      struct{}{},
 		"azurerm_sql_server":                        struct{}{},
+		"azurerm_storage_account":                   struct{}{},
 		"azurerm_storage_container":                 struct{}{},
 		"azurerm_virtual_machine":                   struct{}{},
 		"azurerm_virtual_network_gateway":           struct{}{},
 		"azurerm_vpn_gateway":                       struct{}{},
+		"azurerm_windows_function_app":              struct{}{},
 		"azurerm_windows_virtual_machine":           struct{}{},
+		"azurerm_windows_web_app":                   struct{}{},
 		"azurerm_virtual_network":                   struct{}{},
 	}
 
 	// edgeTypes map of all the supported Edges
 	edgeTypes = map[string]struct{}{
 		"azurerm_virtual_network_peering": {},
+		"azurerm_key_vault_secret": {},
 	}
 )
