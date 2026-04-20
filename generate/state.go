@@ -26,6 +26,10 @@ func FromState(tfstate json.RawMessage, opt Options) (*graph.Graph, map[string]i
 	// replace from '"depends_on"' to '"dependencies"'
 	hasDependsOn := bytes.Contains(tfstate, []byte("\"depends_on\""))
 	tfstate = bytes.ReplaceAll(tfstate, []byte("\"depends_on\""), []byte("\"dependencies\""))
+	// Strip old-style resource instance keys (resource.name.0 -> resource.name) from
+	// dependency strings in TFState files produced by Terraform <0.12.
+	// Dependencies expect ConfigResource addresses (no instance key).
+	tfstate = reOldInstanceKey.ReplaceAll(tfstate, []byte(`$1"`))
 	err := ValidateTFStateVersion(tfstate)
 	if err != nil {
 		return nil, nil, fmt.Errorf("error while validating TFStateVersion: %w", err)
@@ -461,6 +465,11 @@ func buildConfig(g *graph.Graph, cfg map[string]map[string]interface{}, nodeCanI
 
 // reVariable matches ${aws_security_group.front.id}
 var reVariable = regexp.MustCompile(`\$\{(?P<type>[^\.][a-z0-9-_]+)\.(?P<name>[^\.][a-z0-9-_]+)\.(?P<attr>[a-z0-9-_]+)\}`)
+
+// reOldInstanceKey matches old-style resource instance keys like aws_instance.foo.0
+// that appear in TFState dependency strings from Terraform <0.12
+var reOldInstanceKey = regexp.MustCompile(`([a-z_][a-z0-9_]*\.[a-zA-Z0-9_-]+)\.\d+"`)
+
 
 // fixEdges tries to fix the direction of the edges that was done based on the 'depends_on'
 // to something more Provider dependent by reading the actual config.

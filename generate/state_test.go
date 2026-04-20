@@ -293,6 +293,44 @@ func TestFromState_AWS(t *testing.T) {
 		assertEqualGraph(t, eg, g, cfg)
 	})
 
+	t.Run("OldInstanceKeyInDependencies", func(t *testing.T) {
+		// Regression test: TFState files from older Terraform versions use
+		// "aws_security_group.foo.0" instead of "aws_security_group.foo[0]"
+		// in dependency addresses. Verify this is handled correctly.
+		src, err := ioutil.ReadFile("./testdata/aws_state_old_instance_key.json")
+		require.NoError(t, err)
+
+		g, cfg, err := generate.FromState(src, generate.Options{Clean: true, Connections: true})
+		require.NoError(t, err)
+		require.NotNil(t, g)
+		require.NotNil(t, cfg)
+
+		eg := &graph.Graph{
+			Nodes: []*graph.Node{
+				{
+					Canonical: "aws_instance.bastion0",
+					Name:      "i-00eab1355727cfb44",
+				},
+				{
+					Canonical: "aws_instance.prometheus-prometheus-eu-we1-infra",
+					Name:      "i-04c8b20a499d12182",
+				},
+			},
+			Edges: []*graph.Edge{
+				{
+					Source: "aws_instance.prometheus-prometheus-eu-we1-infra",
+					Target: "aws_instance.bastion0",
+					Canonicals: []string{
+						"aws_security_group.prometheus-infra-allow-metrics",
+						"aws_security_group.prometheus-prometheus-infra",
+						"aws_security_group_rule.sgrule-2589285800",
+					},
+				},
+			},
+		}
+
+		assertEqualGraph(t, eg, g, cfg)
+	})
 	t.Run("WithCount", func(t *testing.T) {
 		src, err := ioutil.ReadFile("./testdata/aws_state_with_count.json")
 		require.NoError(t, err)
