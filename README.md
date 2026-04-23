@@ -28,7 +28,7 @@ For TFState generations we are limited to versions 3 and 4.
 | Provider | State | HCL |  Grouping<sup>1</sup> | External Nodes<sup>2</sup> | IAM<sup>3</sup> |
 |:--:|:--:|:--:|:--:|:--:|:--:|
 | <img alt="AWS" src="docs/aws.png" width="50"> | :heavy_check_mark: | :heavy_check_mark: | [WIP](https://github.com/cycloidio/inframap/issues/6) | :heavy_check_mark: | :heavy_multiplication_x: (https://github.com/cycloidio/inframap/issues/11)|
-| <img alt="Google" src="docs/google-cloud.svg" width="50"> | :heavy_check_mark: | :heavy_check_mark: | :heavy_multiplication_x: | :heavy_multiplication_x: | :heavy_multiplication_x: |
+| <img alt="Google" src="docs/google-cloud.svg" width="50"> | [WIP](https://github.com/cycloidio/inframap/issues/153) | [WIP](https://github.com/cycloidio/inframap/issues/153) | :heavy_multiplication_x: | :heavy_multiplication_x: | :heavy_multiplication_x: |
 | <img alt="Azure" src="docs/azure.svg" width="50"> | :heavy_check_mark: | :heavy_check_mark: | :heavy_multiplication_x: | :heavy_multiplication_x: | :heavy_multiplication_x: |
 | <img alt="OpenStack" src="docs/Openstack-vertical-small.png" width="50"> | :heavy_check_mark: | :heavy_check_mark: | :heavy_multiplication_x: | :heavy_multiplication_x: | :heavy_multiplication_x: |
 | <img alt="FlexibleEngine" src="docs/flexibleengine.png" width="50"> | :heavy_check_mark: | :heavy_check_mark: | :heavy_multiplication_x: | :heavy_multiplication_x: | :heavy_multiplication_x: |
