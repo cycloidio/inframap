@@ -124,7 +124,7 @@ var (
 func init() {
 	generateCmd.Flags().StringVar(&printerType, "printer", "dot", fmt.Sprintf("Type of printer to use for the output. Supported ones are: %s", strings.Join(printer.TypeStrings(), ",")))
 	generateCmd.Flags().BoolVar(&raw, "raw", false, "Raw will not use any specific logic from the provider, will just display the connections between elements. It's used by default if none of the Providers is known")
-	generateCmd.Flags().BoolVar(&clean, "clean", true, "Clean will the generated graph will not have any Node that does not have a connection/edge")
+	generateCmd.Flags().BoolVar(&clean, "clean", true, "The generated graph will not have any Node that does not have a connection/edge")
 	generateCmd.Flags().BoolVar(&connections, "connections", true, "Connections will apply the logic of the provider to remove resources that are not nodes")
 	generateCmd.Flags().BoolVar(&showIcons, "show-icons", true, "Toggle the icons on the printed graph")
 	generateCmd.Flags().BoolVar(&externalNodes, "external-nodes", true, "Toggle the addition of external nodes like 'im_out' (used to show ingress connections)")
