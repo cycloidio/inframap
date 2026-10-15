@@ -48,7 +48,7 @@ To install the latest release of Inframap, you can pick one of this methods:
 
 ### Development
 
-You can build and install with the latest sources, you will enjoy the new features and bug fixes. It uses Go Modules (1.13+)
+You can build and install with the latest sources, you will enjoy the new features and bug fixes. It requires Go 1.22+ and uses Go Modules
 
 ```shell
 $ git clone https://github.com/cycloidio/inframap
